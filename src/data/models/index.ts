@@ -7,10 +7,5 @@ import { IReviewModel, ReviewModel } from './review'
 import { IPlaceModel } from './place/index'
 
 export default (conn: IDatabaseConnector): [IUserModel, IPlaceModel, IReviewModel] => {
-  return [
-    UserModel(conn),
-    PlaceModel(conn),
-    ReviewModel(conn)
-  ]
+  return [UserModel(conn), PlaceModel(conn), ReviewModel(conn)]
 }
-

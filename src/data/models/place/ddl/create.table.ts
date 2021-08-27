@@ -1,4 +1,4 @@
-import { IDatabaseConnector } from "@app/data/connection"
+import { IDatabaseConnector } from '@app/data/connection'
 import _Promise from 'bluebird'
 
 export const CreatePlaceTable = (conn: IDatabaseConnector) => {

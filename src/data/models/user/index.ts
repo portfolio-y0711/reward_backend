@@ -8,7 +8,7 @@ import { uuidv4 } from '@app/util'
 export interface IUserModel extends ISchemaAdaptor {
   save: (user: IUser, userId?: string) => Promise<void>
   remove: () => Promise<void>
-} 
+}
 
 export interface IUser {
   userId?: string
@@ -19,22 +19,22 @@ export interface IUser {
 export const UserModel = (conn: IDatabaseConnector): IUserModel => {
   const dropSchema = DropUserTable(conn)
   const createSchema = CreateUserTable(conn)
-  const save = async(user: IUser, userId?: string) => {
+  const save = async (user: IUser, userId?: string) => {
     const db = conn.getConnection()
     const { uuid, name } = user
     const sql = `INSERT INTO USERS VALUES('${userId ?? uuidv4()}','${uuid}','${name}')`
-    db.run(sql, function(err) {
+    db.run(sql, function (err) {
       if (err) {
         console.log('error running sql ' + sql)
       }
     })
   }
-  const remove = async() =>{}
+  const remove = async () => {}
 
   return {
     createSchema,
     dropSchema,
     save,
-    remove
+    remove,
   }
 }

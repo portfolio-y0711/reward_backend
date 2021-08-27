@@ -11,6 +11,6 @@ export interface IUserController {
 export default (service: IEventHandlingService): IUserController => {
   const test = AsyncRequestHandler(Test(createService()))
   return {
-    test  
+    test,
   }
 }

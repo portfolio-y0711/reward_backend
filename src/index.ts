@@ -5,13 +5,12 @@ import createService from './services'
 import createDatabaseConnector from './data/connection'
 import createDatabaseAdaptor from './data/adaptor'
 import { Database } from './data'
-import { uid4digit } from './util'
 
-export default async() => {
+export default async () => {
   const app = express()
   const dbConnector = createDatabaseConnector({
-    filename: './dev.db'
-  });
+    filename: './dev.db',
+  })
 
   const dbAdaptor = createDatabaseAdaptor(dbConnector)
   const db = Database(dbConnector)

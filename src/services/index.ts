@@ -1,13 +1,12 @@
-
 export interface IEventHandlingService {
   test: () => Promise<void>
 }
 
 const EventHandlingService = (): IEventHandlingService => {
   return {
-    test: async() => {
-      return 
-    }
+    test: async () => {
+      return
+    },
   }
 }
 

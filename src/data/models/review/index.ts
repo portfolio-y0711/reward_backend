@@ -1,6 +1,6 @@
-import { IDatabaseConnector } from "@app/data/connection"
-import { CreateReviewTable } from "./ddl/create.table"
-import { DropReviewTable } from "./ddl/drop.table"
+import { IDatabaseConnector } from '@app/data/connection'
+import { CreateReviewTable } from './ddl/create.table'
+import { DropReviewTable } from './ddl/drop.table'
 import { ISchemaAdaptor } from '../../adaptor/index'
 
 interface IReview {
@@ -16,12 +16,12 @@ export interface IReviewModel extends ISchemaAdaptor {
 export const ReviewModel = (conn: IDatabaseConnector): IReviewModel => {
   const dropSchema = DropReviewTable(conn)
   const createSchema = CreateReviewTable(conn)
-  const save = () =>{}
-  const remove = () =>{}
+  const save = () => {}
+  const remove = () => {}
   return {
     createSchema,
     dropSchema,
     save,
-    remove
+    remove,
   }
 }

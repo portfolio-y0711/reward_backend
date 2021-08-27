@@ -12,17 +12,17 @@ const DatabaseConnector = (config: IDatabaseConfig) => {
   let conn: Database
   const getConnection = () => {
     if (conn === undefined) {
-      conn = new Database(config.filename, (err => {
+      conn = new Database(config.filename, (err) => {
         if (err) {
           console.log(err.message)
         }
         console.log('connected to database')
-      }))
+      })
     }
     return conn
   }
   return {
-    getConnection
+    getConnection,
   }
 }
 
