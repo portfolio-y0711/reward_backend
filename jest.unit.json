@@ -1,0 +1,18 @@
+{
+  "moduleFileExtensions": [
+    "json",
+    "ts",
+    "js"
+  ],
+  "rootDir": ".",
+  "testMatch": [
+    "<rootDir>./tests/_unit/_1_routers/**/*test.ts"
+  ],
+  "testEnvironment": "node",
+  "transform": {
+    "^.+\\.(t)s$": "ts-jest"
+  },
+  "restoreMocks": true,
+  "clearMocks": true,
+  "bail": true
+}
