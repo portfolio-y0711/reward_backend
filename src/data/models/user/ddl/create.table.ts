@@ -7,7 +7,7 @@ export const CreateUserTable = (conn: IDatabaseConnector) => {
 
     const sql = `CREATE TABLE IF NOT EXISTS 
     USERS (
-      userId INTEGER PRIMARY KEY AUTOINCREMENT, 
+      userId VARCHAR PRIMARY KEY, 
       uuid VARCHAR,
       name VARCHAR
     )`

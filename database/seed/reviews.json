@@ -1,0 +1,52 @@
+[
+  {
+      "uuid": "90eb",
+      "placeId":"1",
+      "userId": "1"
+  },
+  {
+      "uuid": "9016",
+      "placeId":"1",
+      "userId": "2"
+  },
+  {
+      "uuid": "c9e0",
+      "placeId":"2",
+      "userId": "1"
+  },
+  {
+      "uuid": "b417",
+      "placeId":"2",
+      "userId": "2"
+  },
+  {
+      "uuid": "5249",
+      "placeId":"3",
+      "userId": "1"
+  },
+  {
+      "uuid": "2b10",
+      "placeId":"3",
+      "userId": "2"
+  },
+  {
+      "uuid": "b32c",
+      "placeId":"3",
+      "userId": "333"
+  },
+  {
+      "uuid": "7d74",
+      "placeId":"4",
+      "userId": "1"
+  },
+  {
+      "uuid": "3e77",
+      "placeId":"4",
+      "userId": "2"
+  },
+  {
+      "uuid": "e7db",
+      "placeId":"4",
+      "userId": "3"
+  }
+]

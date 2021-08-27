@@ -6,7 +6,7 @@ export const CreateReviewTable = (conn: IDatabaseConnector) => {
     const db = conn.getConnection()
     const sql = `CREATE TABLE IF NOT EXISTS 
     REVIEWS (
-      reviewId INTEGER PRIMARY KEY AUTOINCREMENT, 
+      reviewId VARCHAR PRIMARY KEY, 
       uuid VARCHAR,
       name VARCHAR,
       category VARCHAR,

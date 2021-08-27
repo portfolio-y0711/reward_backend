@@ -7,7 +7,7 @@ export const CreatePlaceTable = (conn: IDatabaseConnector) => {
 
     const sql = `CREATE TABLE IF NOT EXISTS 
     PLACES (
-      placeId INTEGER PRIMARY KEY AUTOINCREMENT, 
+      placeId VARCHAR PRIMARY KEY, 
       uuid VARCHAR,
       name VARCHAR
     )`

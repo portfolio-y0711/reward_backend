@@ -3,6 +3,11 @@ import { CreateReviewTable } from "./ddl/create.table"
 import { DropReviewTable } from "./ddl/drop.table"
 import { ISchemaAdaptor } from '../../adaptor/index'
 
+interface IReview {
+  uuid: string
+  content: string
+}
+
 export interface IReviewModel extends ISchemaAdaptor {
   save: () => void
   remove: () => void
