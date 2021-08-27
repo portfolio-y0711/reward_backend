@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { IHttpRequest, IHttpResponse } from './index'
+import { IHttpRequest, IHttpResponse } from 'src/typings'
 
 export const AsyncRequestHandler = (requestHandler: (req: IHttpRequest) => Promise<IHttpResponse>) => {
   return (req: Request, res: Response, next: NextFunction): void => {
@@ -13,11 +13,13 @@ export const AsyncRequestHandler = (requestHandler: (req: IHttpRequest) => Promi
         if (httpResponse.body) {
           res
             .status(httpResponse.statusCode)
-            .json(httpResponse.body)
+            .json({
+              body: httpResponse.body
+            })
         } else {
           res
             .status(httpResponse.statusCode)
-            .send({
+            .json({
               message: httpResponse.message
             })
         }
