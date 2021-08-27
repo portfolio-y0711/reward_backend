@@ -1,0 +1,9 @@
+{
+	"watch": [
+		"./src",
+		"./bin"
+	],
+	"exec": "ts-node -r tsconfig-paths/register --files bin/www.ts",
+	"ext": "ts tsx js jsx json",
+	"signal": "SIGTERM"
+}
