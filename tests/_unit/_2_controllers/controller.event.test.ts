@@ -1,16 +1,16 @@
 import { PostEvent } from '@app/controllers/event/impl/controller.post-event'
-import { IEventHandlingServices } from '@app/services/event'
+import { IEventHandlingService } from '@app/services/event'
 import { IHttpRequest } from '@app/typings'
 import { mock, MockProxy} from 'jest-mock-extended'
 
 describe('[Event] controller => service', () => {
-  let mockEventHandlingService: MockProxy<IEventHandlingServices>
+  let mockEventHandlingService: MockProxy<IEventHandlingService>
 
   beforeAll(() => {
-    mockEventHandlingService = mock<IEventHandlingServices>()
+    mockEventHandlingService = mock<IEventHandlingService>()
   })
 
-  describe('when [POST: /api/events =>]', () => {
+  describe('when [POST: /events =>]', () => {
     it('controller.postEvent => service.getHandlingService', async() => {
       const postEvent = PostEvent(mockEventHandlingService)
       const httpRequest: IHttpRequest = {

@@ -1,5 +1,5 @@
-import { IUserService } from "@app/services/users"
-import { IHttpRequest, IHttpResponse } from "@app/typings"
+import { IUserService } from '@app/services/users'
+import { IHttpRequest, IHttpResponse } from '@app/typings'
 
 export const GetUsers = (service: IUserService) => {
   return async (_: IHttpRequest): Promise<IHttpResponse> => {

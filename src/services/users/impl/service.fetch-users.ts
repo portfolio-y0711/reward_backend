@@ -1,5 +1,5 @@
-import { IDatabase } from "@app/data"
-import { IUser } from "@app/data/models/user"
+import { IDatabase } from '@app/data'
+import { IUser } from '@app/data/models/user'
 
 export const FetchUsers = (db: IDatabase) => {
   return async (): Promise<IUser[]> => {

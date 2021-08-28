@@ -1,5 +1,5 @@
-import { IEventHandlingServices as IEventHandlingService } from "@app/services/event"
-import { IHttpRequest, IHttpResponse } from "@app/typings"
+import { IEventHandlingService as IEventHandlingService } from '@app/services/event'
+import { IHttpRequest, IHttpResponse } from '@app/typings'
 
 export const PostEvent = (service: IEventHandlingService) => {
   return async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
@@ -7,7 +7,7 @@ export const PostEvent = (service: IEventHandlingService) => {
     return await new Promise((res) =>
       setTimeout(res, 1000, {
         statusCode: 200,
-        message: 'events registered successfully'
+        message: 'events registered successfully',
       }),
     )
   }

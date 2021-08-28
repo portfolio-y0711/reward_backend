@@ -7,7 +7,8 @@
   "rootDir": ".",
   "testMatch": [
     "<rootDir>./tests/_unit/_1_routers/**/*test.ts",
-    "<rootDir>./tests/_unit/_2_controllers/**/*test.ts"
+    "<rootDir>./tests/_unit/_2_controllers/**/*test.ts",
+    "<rootDir>./tests/_unit/_3_services/**/*test.ts"
   ],
   "testEnvironment": "node",
   "transform": {

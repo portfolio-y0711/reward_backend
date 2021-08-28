@@ -25,9 +25,9 @@ export default async () => {
   const userRouter = createUserRouter(userController)
 
   const eventController = createEventController({ handleEvent: (type: IEvent) => 'service' })
-  const eventRouter = createEventRouter({ postEvent: () => {}})
+  const eventRouter = createEventRouter({ postEvent: () => {} })
 
-  app.use("/api", userRouter)
-  app.use("/api", eventRouter)
+  app.use('/api', userRouter)
+  app.use('/api', eventRouter)
   return app
 }

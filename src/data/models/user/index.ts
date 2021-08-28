@@ -9,6 +9,7 @@ export interface IUserModel extends ISchemaAdaptor {
   save: (user: IUser, userId?: string) => Promise<void>
   remove: () => Promise<void>
   findUsers: () => Promise<IUser[]>
+  saveReviewPoint: (userId: string, points: number) => Promise<void>
 }
 
 export interface IUser {
@@ -20,10 +21,10 @@ export interface IUser {
 export const UserModel = (conn: IDatabaseConnector): IUserModel => {
   const dropSchema = DropUserTable(conn)
   const createSchema = CreateUserTable(conn)
-  const findUsers = async() => {
+  const findUsers = async () => {
     const db = conn.getConnection()
     const sql = `SELECT * FROM USERS`
-    return new _Promise<IUser[]>((res, rej)=> {
+    return new _Promise<IUser[]>((res, rej) => {
       db.all(sql, function (err, result) {
         res(result)
         if (err) {
@@ -43,12 +44,16 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
     })
   }
   const remove = async () => {}
+  const saveReviewPoint = async (userId: string, points: number) => {
+    return
+  }
 
   return {
     createSchema,
     dropSchema,
     save,
     remove,
-    findUsers
+    findUsers,
+    saveReviewPoint,
   }
 }
