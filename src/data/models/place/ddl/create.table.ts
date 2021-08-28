@@ -3,7 +3,7 @@ import _Promise from 'bluebird'
 
 export const CreatePlaceTable = (conn: IDatabaseConnector) => {
   return async () => {
-    const db = conn.getConnection()
+    const db = await conn.getConnection()
 
     const sql = `CREATE TABLE IF NOT EXISTS 
     PLACES (

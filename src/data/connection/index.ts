@@ -1,25 +1,30 @@
 import { Database } from 'sqlite3'
+import _Promise from 'bluebird'
 
 interface IDatabaseConfig {
   filename: string
 }
 
 export interface IDatabaseConnector {
-  getConnection: () => Database
+  getConnection: () => Promise<Database>
 }
 
 const DatabaseConnector = (config: IDatabaseConfig) => {
   let conn: Database
-  const getConnection = () => {
-    if (conn === undefined) {
-      conn = new Database(config.filename, (err) => {
-        if (err) {
-          console.log(err.message)
-        }
-        console.log('connected to database')
-      })
-    }
-    return conn
+  const getConnection = async() => {
+    return new Promise<Database>((resolve, reject) => {
+      if (conn == undefined) {
+        conn = new Database(config.filename, (err) => {
+          if (err) {
+            reject(err.message)
+          } else {
+            resolve(conn)
+          }
+        })
+      } else {
+        resolve(conn)
+      }
+    })
   }
   return {
     getConnection,

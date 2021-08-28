@@ -22,7 +22,7 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
   const dropSchema = DropUserTable(conn)
   const createSchema = CreateUserTable(conn)
   const findUsers = async () => {
-    const db = conn.getConnection()
+    const db = await conn.getConnection()
     const sql = `SELECT * FROM USERS`
     return new _Promise<IUser[]>((res, rej) => {
       db.all(sql, function (err, result) {
@@ -34,7 +34,7 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
     })
   }
   const save = async (user: IUser, userId?: string) => {
-    const db = conn.getConnection()
+    const db = await conn.getConnection()
     const { uuid, name } = user
     const sql = `INSERT INTO USERS VALUES('${userId ?? uuidv4()}','${uuid}','${name}')`
     db.run(sql, function (err) {

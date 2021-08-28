@@ -33,9 +33,9 @@ describe('[Event] service => model', () => {
         }),
         getPlaceModel: () => mock<IPlaceModel>(),
         getUserModel: () => mock<IUserModel>(),
-        seed: async() => {},
+        init: async() => {},
         close: async() => {},
-        init: async() => {}
+        seed: async() => {},
       })
       reviewEventHandler(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
@@ -67,7 +67,7 @@ describe('[Event] service => model', () => {
         getUserModel: () => mock<IUserModel>(),
         init: async() => {},
         close: async() => {},
-        seed: async() => {}
+        seed: async() => {},
       })
       reviewEventHandler(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
@@ -100,7 +100,7 @@ describe('[Event] service => model', () => {
         }),
         init: async() => {},
         close: async() => {},
-        seed: async() => {}
+        seed: async() => {},
       })
       reviewEventHandler(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)

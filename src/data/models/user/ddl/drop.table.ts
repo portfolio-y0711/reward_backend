@@ -3,7 +3,7 @@ import _Promise from 'bluebird'
 
 export const DropUserTable = (conn: IDatabaseConnector) => {
   return async () => {
-    const db = conn.getConnection()
+    const db = await conn.getConnection()
     const sql = `DROP TABLE IF EXISTS USERS`
 
     new _Promise((res, rej) => {

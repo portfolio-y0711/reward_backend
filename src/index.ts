@@ -8,7 +8,7 @@ import createDatabaseAdaptor from './data/adaptor'
 import createEventRouter from './routers/event'
 import createEventController from './controllers/event'
 import { Database } from './data'
-import { IEvent } from './services/event'
+import { IEvent } from './typings'
 
 export default async () => {
   const app = express()

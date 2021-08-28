@@ -19,5 +19,5 @@
   },
   "restoreMocks": true,
   "clearMocks": true,
-  "bail": true
+  "bail": 1
 }

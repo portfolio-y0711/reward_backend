@@ -20,7 +20,7 @@ export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
   const dropSchema = DropPlaceTable(conn)
   const createSchema = CreatePlaceTable(conn)
   const save = async (place: IPlace, placeId?: string) => {
-    const db = conn.getConnection()
+    const db = await conn.getConnection()
     const { uuid, name } = place
 
     const sql = `INSERT INTO PLACES VALUES('${placeId ?? uuidv4()}','${uuid}','${name}')`

@@ -3,7 +3,7 @@ import { IDatabaseConnector } from '@app/data/connection'
 
 export const CreateReviewTable = (conn: IDatabaseConnector) => {
   return async () => {
-    const db = conn.getConnection()
+    const db = await conn.getConnection()
     const sql = `CREATE TABLE IF NOT EXISTS 
     REVIEWS (
       reviewId VARCHAR PRIMARY KEY, 
