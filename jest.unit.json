@@ -1,0 +1,22 @@
+{
+  "moduleFileExtensions": [
+    "json",
+    "ts",
+    "js"
+  ],
+  "rootDir": ".",
+  "testMatch": [
+    "<rootDir>./tests/_unit/_1_routers/**/*test.ts",
+    "<rootDir>./tests/_unit/_2_controllers/**/*test.ts"
+  ],
+  "testEnvironment": "node",
+  "transform": {
+    "^.+\\.(t)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/(.*)$": "<rootDir>/src/$1"
+  },
+  "restoreMocks": true,
+  "clearMocks": true,
+  "bail": true
+}

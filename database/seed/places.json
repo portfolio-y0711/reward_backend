@@ -1,0 +1,82 @@
+[
+  {
+      "placeId": "cd1aa206-5768-4cdd-b054-661b6b35d687",
+      "uuid": "099f",
+      "name": "시드니"
+  },
+  {
+      "placeId": "e50855fc-c1d5-42fb-9597-e0f02d8beb8b",
+      "uuid": "52a6",
+      "name": "멜번"
+  },
+  {
+      "placeId": "77bd0e72-6c46-4b1b-947e-9efa2b0b2a05",
+      "uuid": "4a28",
+      "name": "캔버라"
+  },
+  {
+      "placeId": "ccd672d1-3b8b-446c-8d5c-5c59e649de60",
+      "uuid": "cd8a",
+      "name": "울런공"
+  },
+  {
+      "placeId": "bc23486c-5240-4661-8c3e-1b172c2033e8",
+      "uuid": "bb54",
+      "name": "퍼스"
+  },
+  {
+      "placeId": "36a1659c-2bef-4c83-ab90-5bc157543ef8",
+      "uuid": "b344",
+      "name": "다윈"
+  },
+  {
+      "placeId": "89db8fd-be13-43bc-a743-ce6affaafee4",
+      "uuid": "3729",
+      "name": "골드 코스트"
+  },
+  {
+      "placeId": "d3ea95dd-bc2c-496a-9499-bfae00fea83a",
+      "uuid": "9a1d",
+      "name": "호바트"
+  },
+  {
+      "placeId": "dae2740f-ac54-43bb-93a4-28c992a01007",
+      "uuid": "838f",
+      "name": "애들레이드"
+  },
+  {
+      "placeId": "cceaccea-b9b6-47b4-bd3e-12343b44f938",
+      "uuid": "0b8b",
+      "name": "브룸"
+  },
+  {
+      "placeId": "96bdf962-4072-484d-b595-d0921729dc25",
+      "uuid": "afe2",
+      "name": "케언즈"
+  },
+  {
+      "placeId": "a55bbdc-14ce-4162-9921-57a8decce319",
+      "uuid": "6764",
+      "name": "엘리스"
+  },
+  {
+      "placeId": "f78abc7b-99af-4870-b6f2-a4232c67d8dc",
+      "uuid": "f494",
+      "name": "뉴캐슬"
+  },
+  {
+      "placeId": "13e78b0a-f26f-4615-901a-19d561935d8e",
+      "uuid": "bcf4",
+      "name": "바이런 베이"
+  },
+  {
+      "placeId": "9197a4ee-d814-441c-978d-6fbc11b99fa8",
+      "uuid": "fdc5",
+      "name": "울런공"
+  },
+  {
+      "placeId": "0f116922-53bc-450c-9011-5b1dd154f9ad",
+      "uuid": "b0f2",
+      "name": "론서스톤"
+  }
+]
