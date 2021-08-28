@@ -1,7 +1,7 @@
 import createApp from '../src'
 
 void (async () => {
-  const PORT = 5000
+  const PORT = 8000
   const app = await createApp()
 
   app.listen(PORT, () => {

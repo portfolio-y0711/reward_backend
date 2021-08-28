@@ -1,4 +1,4 @@
-import { Test } from '@app/controllers/impl'
+import { Test } from '@app/controllers/user/impl'
 import { IEventHandlingService } from '@app/services'
 import { IHttpRequest } from '@app/typings'
 import { mock, MockProxy} from 'jest-mock-extended'

@@ -1,9 +1,11 @@
 import express from 'express'
-import createRouter from './routers'
-import createController from './controllers'
-import createService from './services'
+import createUserRouter from './routers/user'
+import createUserController from './controllers/user'
+import createUserService from './services/users'
 import createDatabaseConnector from './data/connection'
 import createDatabaseAdaptor from './data/adaptor'
+
+import createEventRouter from './routers/event'
 import { Database } from './data'
 
 export default async () => {
@@ -15,12 +17,14 @@ export default async () => {
   const dbAdaptor = createDatabaseAdaptor(dbConnector)
   const db = Database(dbConnector)
   await db.init()
-  const placeModel = db.getPlaceModel()
 
-  const service = createService()
-  const controller = createController(service)
-  const router = createRouter(controller)
+  const userService = createUserService(db)
+  const userController = createUserController(userService)
+  const userRouter = createUserRouter(userController)
 
-  app.use(router)
+  const eventRouter = createEventRouter({ postEvent: () => {}})
+
+  app.use("/api", userRouter)
+  app.use("/api", eventRouter)
   return app
 }

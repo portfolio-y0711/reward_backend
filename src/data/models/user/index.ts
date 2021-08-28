@@ -8,6 +8,7 @@ import { uuidv4 } from '@app/util'
 export interface IUserModel extends ISchemaAdaptor {
   save: (user: IUser, userId?: string) => Promise<void>
   remove: () => Promise<void>
+  findUsers: () => Promise<IUser[]>
 }
 
 export interface IUser {
@@ -19,6 +20,18 @@ export interface IUser {
 export const UserModel = (conn: IDatabaseConnector): IUserModel => {
   const dropSchema = DropUserTable(conn)
   const createSchema = CreateUserTable(conn)
+  const findUsers = async() => {
+    const db = conn.getConnection()
+    const sql = `SELECT * FROM USERS`
+    return new _Promise<IUser[]>((res, rej)=> {
+      db.all(sql, function (err, result) {
+        res(result)
+        if (err) {
+          console.log('error running sql ' + sql)
+        }
+      })
+    })
+  }
   const save = async (user: IUser, userId?: string) => {
     const db = conn.getConnection()
     const { uuid, name } = user
@@ -36,5 +49,6 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
     dropSchema,
     save,
     remove,
+    findUsers
   }
 }

@@ -6,7 +6,7 @@ import { IReviewModel } from './models/review'
 import { users } from '@datasource/index'
 import { places } from '@datasource/index'
 
-interface IDatabase {
+export interface IDatabase {
   init: () => Promise<void>
   getUserModel: () => IUserModel
   getPlaceModel: () => IPlaceModel
