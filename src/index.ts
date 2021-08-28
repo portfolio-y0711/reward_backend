@@ -6,7 +6,9 @@ import createDatabaseConnector from './data/connection'
 import createDatabaseAdaptor from './data/adaptor'
 
 import createEventRouter from './routers/event'
+import createEventController from './controllers/event'
 import { Database } from './data'
+import { IEvent } from './services/event'
 
 export default async () => {
   const app = express()
@@ -22,9 +24,10 @@ export default async () => {
   const userController = createUserController(userService)
   const userRouter = createUserRouter(userController)
 
-  const eventRouter = createEventRouter({ postEvent: () => {}})
+  const eventController = createEventController({ handleEvent: (type: IEvent) => 'service' })
+  const eventRouter = createEventRouter({ postEvent: () => {} })
 
-  app.use("/api", userRouter)
-  app.use("/api", eventRouter)
+  app.use('/api', userRouter)
+  app.use('/api', eventRouter)
   return app
 }

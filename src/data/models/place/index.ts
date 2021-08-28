@@ -13,6 +13,7 @@ export interface IPlace {
 export interface IPlaceModel extends ISchemaAdaptor {
   save: (place: IPlace, placeId?: string) => Promise<void>
   remove: () => void
+  findBonusPoint: (placeId: string) => Promise<number>
 }
 
 export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
@@ -30,11 +31,15 @@ export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
     })
   }
   const remove = () => {}
+  const findBonusPoint = async (placeId: string) => {
+    return 0
+  }
 
   return {
     createSchema,
     dropSchema,
     save,
     remove,
+    findBonusPoint,
   }
 }

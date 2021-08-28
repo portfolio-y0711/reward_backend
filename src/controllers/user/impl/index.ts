@@ -1,9 +1,8 @@
-import { IEventHandlingService } from '@app/services'
+import { IEventHandlingService } from '@app/services/event'
 import { IHttpRequest, IHttpResponse } from 'src/typings'
 
-export const Test = (service: IEventHandlingService) => {
+export const Test = (services: IEventHandlingService) => {
   return async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
-    service.test()
     return await new Promise((res) =>
       setTimeout(res, 1000, {
         statusCode: 200,

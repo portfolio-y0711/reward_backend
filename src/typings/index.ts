@@ -11,3 +11,8 @@ export interface IHttpResponse {
   message?: string
   body?: any
 }
+
+export interface IEvent {
+  type: string
+  [name: string]: any
+}
