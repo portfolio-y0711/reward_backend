@@ -10,7 +10,7 @@ describe('[Event] router  => controller', () => {
     spy = jest.fn()
   })
 
-  it('GET: /events', (done) => {
+  it('POST: /events', (done) => {
     spy.mockImplementation((req: express.Request, res: express.Response) => {
       res.status(200)
       res.json('')

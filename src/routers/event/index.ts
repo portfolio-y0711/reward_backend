@@ -1,4 +1,3 @@
-import { IEventController } from '@app/controllers/event'
 import { Router } from 'express'
 
 export default (controller: any) => {

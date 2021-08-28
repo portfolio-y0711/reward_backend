@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { AsyncRequestHandler } from '../async'
 import createUserService, { IUserService } from '../../services/users'
-import createService from '../../services'
+import createService from '../../services/event'
 import { Test } from './impl'
-import { IEventHandlingService } from '../../services/index'
+import { IEventHandlingServices } from '../../services/event/index'
 import { GetUsers } from './impl/controller.get-users'
 
 export interface IUserController {
