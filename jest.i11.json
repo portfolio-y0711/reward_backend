@@ -14,7 +14,8 @@
   },
   "moduleNameMapper": {
     "@app/(.*)$": "<rootDir>/src/$1",
-    "@datasource/(.*)$": "<rootDir>/database/$1"
+    "@datasource/(.*)$": "<rootDir>/database/$1",
+    "@tests/(.*)$": "<rootDir>/tests/$1"
   },
   "setupFilesAfterEnv": ["<rootDir>/tests/config/setup-db.i11.ts"],
   "bail": 1

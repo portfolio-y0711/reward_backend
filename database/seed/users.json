@@ -1,42 +1,34 @@
 [
   {
       "userId": "13ae28fe-8b79-4808-a102-b8ffd8d06098",
-      "uuid": "be67",
       "name": "James"
   },
   {
-      "userId": "ae6e5d0e-3fdb-4194-bb33-03dd3ed37d00",
-      "uuid": "4fae",
+      "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
       "name": "Michael"
   },
   {
       "userId": "b87d09e5-e97e-4588-badb-b5599ef95e40",
-      "uuid": "9f9e",
       "name": "Jenny"
   },
   {
       "userId": "328c3d2d-3d97-4a43-90b1-2b3fde3fb82f",
-      "uuid": "a939",
       "name": "Tom"
   },
   {
       "userId": "494c9e08-cb1a-4d0b-9767-43f8b68c0dba",
-      "uuid": "c097",
       "name": "Jacky"
   },
   {
       "userId": "b2ff45b5-432c-48fb-9e55-e1e96bfa3590",
-      "uuid": "2e3f",
       "name": "Mark"
   },
   {
       "userId": "78e0ed09-9210-4abb-86e4-dd47695d9291",
-      "uuid": "14ac",
       "name": "Ethan"
   },
   {
       "userId": "7348437e-609e-42a6-bcdb-dcd0237645c7",
-      "uuid": "3c07",
       "name": "Mia"
   }
 ]

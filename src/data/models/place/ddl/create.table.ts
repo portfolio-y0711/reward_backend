@@ -8,9 +8,11 @@ export const CreatePlaceTable = (conn: IDatabaseConnector) => {
     const sql = `CREATE TABLE IF NOT EXISTS 
     PLACES (
       placeId VARCHAR PRIMARY KEY, 
-      uuid VARCHAR,
-      name VARCHAR
-    )`
+      country VARCHAR NOT NULL,
+      name VARCHAR NOT NULL,
+      bonusPoint INTEGER NOT NULL,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+    ) WITHOUT ROWID`
     new _Promise((res, rej) => {
       db.run(sql, function (err) {
         if (err) {

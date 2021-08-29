@@ -1,3 +1,7 @@
+import { IDatabaseConnector } from '@app/data/connection'
+import { IPlaceModel } from '@app/data/models/place'
+import { IReviewModel } from '@app/data/models/review'
+import { IUserModel } from '@app/data/models/user'
 import { Request } from 'express'
 
 export interface IHttpRequest {
@@ -15,4 +19,10 @@ export interface IHttpResponse {
 export interface IEvent {
   type: string
   [name: string]: any
+}
+
+export interface IEventDatabaseModels {
+  userModel: IUserModel,
+  placeModel: IPlaceModel,
+  reviewModel: IReviewModel
 }
