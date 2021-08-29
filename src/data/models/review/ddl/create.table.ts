@@ -5,14 +5,23 @@ export const CreateReviewTable = (conn: IDatabaseConnector) => {
   return async () => {
     const db = await conn.getConnection()
     const sql = `CREATE TABLE IF NOT EXISTS 
-    REVIEWS (
+    PLACES_REVIEWS (
       reviewId VARCHAR PRIMARY KEY, 
-      uuid VARCHAR,
-      name VARCHAR,
-      category VARCHAR,
+      placeId INTEGER,
+      content VARCHAR NOT NULL,
+      attachedPhotoIds VARCHAR NOT NULL,
       userId INTEGER,
-      targetId INTEGER
-    )`
+      rewarded INTEGER NOT NULL,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
+      CONSTRAINT fk_places
+      FOREIGN KEY (placeId)
+      REFERENCES PLACES (id)
+
+      CONSTRAINT fk_users
+      FOREIGN KEY (userId)
+      REFERENCES USERS (id)
+    ) WITHOUT ROWID`
 
     new _Promise((res, rej) => {
       db.run(sql, function (err) {

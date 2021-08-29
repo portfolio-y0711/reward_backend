@@ -1,52 +1,100 @@
 [
   {
-      "uuid": "90eb",
-      "placeId":"1",
-      "userId": "1"
+      "reviewId": "6a4eaf8a-2bbb-47b4-baa4-f987a8dcb37b",
+      "placeId": "cd1aa206-5768-4cdd-b054-661b6b35d687",
+      "content": "좋아요",
+      "attachedPhotoIds": [],
+      "userId": "1",
+      "rewarded": false
   },
   {
-      "uuid": "9016",
-      "placeId":"1",
-      "userId": "2"
+      "reviewId": "82b27d6d-4aaa-4267-8ccd-38a3cdeb7062",
+      "placeId": "cd1aa206-5768-4cdd-b054-661b6b35d687",
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "21b7a242-ed06-4d74-b5e1-7de320bb5a02","432ef480-7ae4-4576-bea1-c91f20e10241"
+      ],
+      "userId": "2",
+      "rewarded": true
   },
   {
-      "uuid": "c9e0",
-      "placeId":"2",
-      "userId": "1"
+      "reviewId": "46e79a5e-11e3-4a72-b3a4-38922593af95",
+      "placeId": "e50855fc-c1d5-42fb-9597-e0f02d8beb8b",
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "57df34f3-bae1-4ecc-ab5c-b1ad4035bf4b","efcfb6bb-d073-4aab-9576-2153270a9a25"
+      ],
+      "userId": "1",
+      "rewarded": false
   },
   {
-      "uuid": "b417",
-      "placeId":"2",
-      "userId": "2"
+      "reviewId": "1f02ae0b-e940-4018-81c6-5e9c09227d16",
+      "placeId": "e50855fc-c1d5-42fb-9597-e0f02d8beb8b",
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "28980af9-1943-4138-9383-40d321802bf1","c2341c91-4111-4145-963b-0d429323853f"
+      ],
+      "userId": "2",
+      "rewarded": false
   },
   {
-      "uuid": "5249",
+      "reviewId": "233589ba-16e8-4bf9-ada7-5b49c188c71b",
       "placeId":"3",
-      "userId": "1"
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "02d3874b-5f32-4e72-9b23-76796c21c57c","05465e83-9654-4290-845d-082fc553f82e"
+      ],
+      "userId": "1",
+      "rewarded": false
   },
   {
-      "uuid": "2b10",
+      "reviewId": "b78d514a-a0c8-4588-ba10-862897f9613f",
       "placeId":"3",
-      "userId": "2"
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "42644c14-2583-4ba3-8533-356b9aa8e9a1","cb18d92a-01ab-4733-97dc-1e2c29cc20d1"
+      ],
+      "userId": "2",
+      "rewarded": false
   },
   {
-      "uuid": "b32c",
+      "reviewId": "bcfac99c-a32b-4dd0-a2e4-a3efb8204f79",
       "placeId":"3",
-      "userId": "333"
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "610bacaa-3bbf-4d56-ae4e-f8c8695f06db","6f52b231-4bcc-487a-8137-991a3ab605a4"
+      ],
+      "userId": "3",
+      "rewarded": false
   },
   {
-      "uuid": "7d74",
+      "reviewId": "8eec2153-9dba-456e-bb6c-b8dc8e568a82",
       "placeId":"4",
-      "userId": "1"
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "ee8b7946-a25b-40db-85aa-30e3baaec6e1","22a8fcf5-9d6a-4c4b-b594-179cf34c8df8"
+      ],
+      "userId": "4",
+      "rewarded": false
   },
   {
-      "uuid": "3e77",
+      "reviewId": "3159b2f9-bbdf-458f-bba6-8271be5c06cb",
       "placeId":"4",
-      "userId": "2"
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "393eae27-1093-4e2c-8401-413cfc152f29","3745a79a-8912-4d7e-a654-155cd826fb50"
+      ],
+      "userId": "2",
+      "rewarded": false
   },
   {
-      "uuid": "e7db",
+      "reviewId": "ce727d8e-7a50-4d41-80c3-c98320e5288c",
       "placeId":"4",
-      "userId": "3"
+      "content": "좋아요",
+      "attachedPhotoIds": [
+        "afcbc00f-1f07-41eb-b741-62ed6bd48d93","aca3248e-9e13-41f6-9038-9b7258f0b3b0"
+      ],
+      "userId": "2",
+      "rewarded": false
   }
 ]

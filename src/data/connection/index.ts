@@ -11,7 +11,7 @@ export interface IDatabaseConnector {
 
 const DatabaseConnector = (config: IDatabaseConfig) => {
   let conn: Database
-  const getConnection = async() => {
+  const getConnection = async () => {
     return new Promise<Database>((resolve, reject) => {
       if (conn == undefined) {
         conn = new Database(config.filename, (err) => {

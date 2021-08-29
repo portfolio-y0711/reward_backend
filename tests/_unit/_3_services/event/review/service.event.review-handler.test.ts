@@ -1,6 +1,8 @@
+import { IDatabase } from '@app/data'
 import { IPlaceModel } from '@app/data/models/place'
 import { IReviewModel } from '@app/data/models/review'
 import { IUserModel } from '@app/data/models/user'
+import { IUserRewardModel } from '@app/data/models/user-review-reward'
 import { IReviewEventHandler } from '@app/services/event/review/handlers/handler.review-event'
 import { IReviewPointEvent } from '@app/services/event/review/handlers/handler.review-event'
 import { ReviewEventHandler } from '@app/services/event/review/handlers/handler.review-event'
@@ -15,7 +17,7 @@ describe('[Event] service => model', () => {
         'reviewModel.findReviewCountsByPlaceId(✔︎)',
         'placeModel.findBonusPoint',
         'userModel.saveReviewPoint'
-      ].join('\n'), () => {
+      ].join('\n\t '), () => {
 
       const eventInfo: IReviewPointEvent = {
         "action": "ADD",
@@ -33,9 +35,8 @@ describe('[Event] service => model', () => {
         }),
         getPlaceModel: () => mock<IPlaceModel>(),
         getUserModel: () => mock<IUserModel>(),
-        seed: async() => {},
-        close: async() => {},
-        init: async() => {}
+        getUserRewardModel: () => mock<IUserRewardModel>(),
+        ...mock<IDatabase>()
       })
       reviewEventHandler(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
@@ -47,7 +48,7 @@ describe('[Event] service => model', () => {
         'reviewModel.findReviewCountsByPlaceId',
         'placeModel.findBonusPoint(✔︎)',
         'userModel.saveReviewPoint'
-      ].join('\n'), () => {
+      ].join('\n\t '), () => {
 
       const eventInfo: IReviewPointEvent = {
         "action": "ADD",
@@ -65,9 +66,8 @@ describe('[Event] service => model', () => {
           findBonusPoint: spy 
         }),
         getUserModel: () => mock<IUserModel>(),
-        init: async() => {},
-        close: async() => {},
-        seed: async() => {}
+        getUserRewardModel: () => mock<IUserRewardModel>(),
+        ...mock<IDatabase>()
       })
       reviewEventHandler(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
@@ -80,7 +80,7 @@ describe('[Event] service => model', () => {
         'reviewModel.findReviewCountsByPlaceId',
         'placeModel.findBonusPoint',
         'userModel.saveReviewPoint(✔︎)'
-      ].join('\n'), () => {
+      ].join('\n\t '), () => {
 
       const eventInfo: IReviewPointEvent = {
         "action": "ADD",
@@ -98,9 +98,8 @@ describe('[Event] service => model', () => {
           ...mock<IUserModel>(),
           saveReviewPoint: spy
         }),
-        init: async() => {},
-        close: async() => {},
-        seed: async() => {}
+        getUserRewardModel: () => mock<IUserRewardModel>(),
+        ...mock<IDatabase>()
       })
       reviewEventHandler(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)

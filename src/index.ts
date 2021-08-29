@@ -3,7 +3,6 @@ import createUserRouter from './routers/user'
 import createUserController from './controllers/user'
 import createUserService from './services/users'
 import createDatabaseConnector from './data/connection'
-import createDatabaseAdaptor from './data/adaptor'
 
 import createEventRouter from './routers/event'
 import createEventController from './controllers/event'
@@ -16,7 +15,6 @@ export default async () => {
     filename: './dev.db',
   })
 
-  const dbAdaptor = createDatabaseAdaptor(dbConnector)
   const db = Database(dbConnector)
   await db.init()
 

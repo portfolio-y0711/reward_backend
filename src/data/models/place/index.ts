@@ -1,36 +1,47 @@
 import { IDatabaseConnector } from '@app/data/connection'
 import { CreatePlaceTable } from './ddl/create.table'
 import { DropPlaceTable } from './ddl/drop.table'
-import { ISchemaAdaptor } from '../../adaptor/index'
-import { uuidv4 } from '@app/util'
+import _Promise from 'bluebird'
+import { FindPlaceByName } from './dml/query/impl/find-place-by-name'
+import { Save } from './dml/cmd/impl'
+import { ISchemaAdaptor } from '@app/data'
 
 export interface IPlace {
-  placeId?: string
-  uuid: string
+  id?: string
+  country: string
+  placeId: string
+  bonusPoint: number
   name: string
 }
 
 export interface IPlaceModel extends ISchemaAdaptor {
   save: (place: IPlace, placeId?: string) => Promise<void>
   remove: () => void
+  removeAll: () => Promise<void>
   findBonusPoint: (placeId: string) => Promise<number>
+  findPlaceByName: (name: string) => Promise<IPlace>
 }
 
 export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
   const dropSchema = DropPlaceTable(conn)
   const createSchema = CreatePlaceTable(conn)
-  const save = async (place: IPlace, placeId?: string) => {
+  const save = Save(conn)
+  const remove = () => {}
+  const removeAll = async () => {
     const db = await conn.getConnection()
-    const { uuid, name } = place
-
-    const sql = `INSERT INTO PLACES VALUES('${placeId ?? uuidv4()}','${uuid}','${name}')`
-    db.run(sql, function (err) {
-      if (err) {
-        console.log('error running sql ' + sql)
-      }
+    const sql = `DELETE FROM PLACES`
+    return new _Promise<void>((res, rej) => {
+      db.run(sql, function (this, err) {
+        if (err) {
+          console.log('error running sql ' + sql)
+          rej(err.message)
+        } else {
+          res()
+        }
+      })
     })
   }
-  const remove = () => {}
+  const findPlaceByName = FindPlaceByName(conn)
   const findBonusPoint = async (placeId: string) => {
     return 0
   }
@@ -40,6 +51,8 @@ export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
     dropSchema,
     save,
     remove,
+    removeAll,
     findBonusPoint,
+    findPlaceByName,
   }
 }

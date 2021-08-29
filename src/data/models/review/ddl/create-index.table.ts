@@ -1,16 +1,11 @@
 import _Promise from 'bluebird'
 import { IDatabaseConnector } from '@app/data/connection'
 
-export const CreateUserTable = (conn: IDatabaseConnector) => {
+export const CreateReviewTableIndex = (conn: IDatabaseConnector) => {
   return async () => {
     const db = await conn.getConnection()
 
-    const sql = `CREATE TABLE IF NOT EXISTS 
-    USERS (
-      userId VARCHAR PRIMARY KEY, 
-      name VARCHAR NOT NULL,
-      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
-    ) WITHOUT ROWID`
+    const sql = `CREATE UNIQUE INDEX IF NOT EXISTS idx_reviews_rewarded ON REVIEWS(rewarded)`
 
     new _Promise((res, rej) => {
       db.run(sql, function (err) {
