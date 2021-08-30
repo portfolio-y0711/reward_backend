@@ -16,8 +16,11 @@ export interface IHttpResponse {
   body?: any
 }
 
+export type EVENT_TYPE = "REVIEW" | "BLAR_BLAR"
+
+
 export interface IEvent {
-  type: string
+  type: EVENT_TYPE
   [name: string]: any
 }
 
@@ -25,4 +28,16 @@ export interface IEventDatabaseModels {
   userModel: IUserModel,
   placeModel: IPlaceModel,
   reviewModel: IReviewModel
+}
+
+type REVIEW_ACTION = "ADD" | "MOD" | "DELETE"
+
+export interface IReviewEvent {
+  type: string
+  action: REVIEW_ACTION
+  reviewId: string
+  content: string
+  attachedPhotoIds: string[] | string
+  userId: string
+  placeId: string
 }

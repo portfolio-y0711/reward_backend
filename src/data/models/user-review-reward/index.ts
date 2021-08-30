@@ -12,10 +12,10 @@ export interface IUserRewardModel extends ISchemaAdaptor {
   removeAll: () => Promise<void>
   createIndex: () => Promise<void>
   createSchema: () => Promise<void>
-  saveReviewPoint: (userId: string, points: number) => Promise<void>
+  findUserRewardsByUserId: (userId: string) => Promise<IUserReward[]>
 }
 
-export type REWARD_OPERATION = 'ADD'| 'SUB'
+export type REWARD_OPERATION = 'ADD' | 'SUB'
 
 export type REWARD_REASON = 'NEW' | 'MOD' | 'DEL' | 'RED'
 
@@ -39,15 +39,20 @@ export const UserRewardModel = (conn: IDatabaseConnector): IUserRewardModel => {
     const { rewardId, userId, reviewId, operation, pointDelta, reason } = userReward
     const sql = `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES('${rewardId ?? uuidv4()}', '${userId}', '${reviewId}', '${operation}', '${pointDelta}', '${reason}')`
 
-    db.run(sql, function (err) {
-      if (err) {
-        console.log(err.message)
-        console.log('error running sql ' + sql)
-      }
-    })
+    return new _Promise<void>((res, rej) => {
+      db.run(sql, function (err) {
+        if (err) {
+          console.log(err.message)
+          console.log('error running sql ' + sql)
+          rej(err.message)
+        } else {
+          res()
+        }
+      })
+    }) 
   }
 
-  const remove = async () => {}
+  const remove = async () => { }
 
   const removeAll = async () => {
     const db = await conn.getConnection()
@@ -60,9 +65,20 @@ export const UserRewardModel = (conn: IDatabaseConnector): IUserRewardModel => {
       }
     })
   }
-
-  const saveReviewPoint = async (userId: string, points: number) => {
-    return
+  const findUserRewardsByUserId = async (userId: string) => {
+    const db = await conn.getConnection()
+    const sql = `SELECT * FROM USERS_REWARDS WHERE userId = '${userId}'`
+    return new _Promise<IUserReward[]>((res, rej) => {
+      db.all(sql, function (this, err, records) {
+        if (err) {
+          console.log(err.message)
+          console.log('error running sql ' + sql)
+          rej(err.message)
+        } else {
+          res(records)
+        }
+      })
+    })
   }
 
   return {
@@ -70,8 +86,8 @@ export const UserRewardModel = (conn: IDatabaseConnector): IUserRewardModel => {
     dropSchema,
     createIndex,
     save,
+    findUserRewardsByUserId,
     remove,
-    removeAll,
-    saveReviewPoint,
+    removeAll
   }
 }

@@ -1,4 +1,4 @@
-import { IEventHandlingService } from '@app/services/event'
+import { IEventHandlingService } from '@app/services/event-handlers'
 import { NextFunction, Request, Response } from 'express'
 import { AsyncRequestHandler } from '../async'
 import { PostEvent } from './impl/controller.post-event'

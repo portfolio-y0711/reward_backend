@@ -40,7 +40,6 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
         if (err) {
           rej(err.message)
         } else {
-          console.log('db closed')
           res()
         }
       })
@@ -62,10 +61,10 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     await userRewardModel.createSchema()
   }
   const clear = async () => {
-    userModel.removeAll()
-    placeModel.removeAll();
-    reviewModel.removeAll()
-    userRewardModel.removeAll()
+    await userModel.removeAll()
+    await placeModel.removeAll()
+    await reviewModel.removeAll()
+    await userRewardModel.removeAll()
   }
   const seed = async () => {
 
@@ -75,6 +74,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
           {
             userId: user.userId,
             name: user.name,
+            rewardPoint: parseInt(user.rewardPoint)
           },
           user.id,
         )

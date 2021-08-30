@@ -1,34 +1,42 @@
 [
   {
       "userId": "13ae28fe-8b79-4808-a102-b8ffd8d06098",
-      "name": "James"
+      "name": "James",
+      "userRewardPoint": 0
   },
   {
       "userId": "3ede0ef2-92b7-4817-a5f3-0c575361f745",
-      "name": "Michael"
+      "name": "Michael",
+      "userRewardPoint": 0
   },
   {
       "userId": "b87d09e5-e97e-4588-badb-b5599ef95e40",
-      "name": "Jenny"
+      "name": "Jenny",
+      "userRewardPoint": 0
   },
   {
       "userId": "328c3d2d-3d97-4a43-90b1-2b3fde3fb82f",
-      "name": "Tom"
+      "name": "Tom",
+      "userRewardPoint": 0
   },
   {
       "userId": "494c9e08-cb1a-4d0b-9767-43f8b68c0dba",
-      "name": "Jacky"
+      "name": "Jacky",
+      "userRewardPoint": 0
   },
   {
       "userId": "b2ff45b5-432c-48fb-9e55-e1e96bfa3590",
-      "name": "Mark"
+      "name": "Mark",
+      "userRewardPoint": 0
   },
   {
       "userId": "78e0ed09-9210-4abb-86e4-dd47695d9291",
-      "name": "Ethan"
+      "name": "Ethan",
+      "userRewardPoint": 0
   },
   {
       "userId": "7348437e-609e-42a6-bcdb-dcd0237645c7",
-      "name": "Mia"
+      "name": "Mia",
+      "userRewardPoint": 0
   }
 ]

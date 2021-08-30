@@ -3,17 +3,17 @@ import DatabaseConnector, { IDatabaseConnector } from "@app/data/connection"
 import { IPlace } from "@app/data/models/place"
 import { IReview } from "@app/data/models/review"
 import { FindReviewCountsByPlaceId } from "@app/data/models/review/dml/query/impl/find-review-counts-by-placeId"
-import { IUser } from "@app/data/models/user"
+import { IUser, UserModel } from "@app/data/models/user"
 import { PlaceSeeder, ReviewSeeder, UserSeeder } from "@tests/helpers"
 import { IUserReward, UserRewardModel } from "@app/data/models/user-review-reward"
 
-describe('[MODEL] EventDatabase <= USERS_REWARDS', () => {
+describe('[MODEL] USERS_REWARDS', () => {
   let databaseConnector: IDatabaseConnector
   let db: IEventDatabase
+
   let placeSeeder: (place: IPlace) => Promise<void>
   let userSeeder: (user: IUser) => Promise<void>
   let reviewSeeder: (review: IReview) => Promise<void>
-  let findReviewCountsByPlaceId: (id: string) => Promise<number>
 
   beforeAll(async() => {
     databaseConnector = DatabaseConnector({
@@ -25,7 +25,10 @@ describe('[MODEL] EventDatabase <= USERS_REWARDS', () => {
     placeSeeder = PlaceSeeder(db)
     userSeeder = UserSeeder(db)
     reviewSeeder = ReviewSeeder(db)
-    findReviewCountsByPlaceId = FindReviewCountsByPlaceId(databaseConnector)
+  })
+
+  afterEach(async() => {
+    await db.clear()
   })
 
   it('handlers.handleReviewEvent <= userRewardModel.save', async() => {
@@ -34,18 +37,20 @@ describe('[MODEL] EventDatabase <= USERS_REWARDS', () => {
     const reviewId = "240a0658-dc5f-4878-9381-ebb7b2667772"
 
     const userRewardModel = UserRewardModel(databaseConnector)
-    await userRewardModel.save({
+    const expected: IUserReward = {
       userId,
       rewardId,
       reviewId,
       operation: "ADD",
       pointDelta: 3,
       reason: "NEW",
-    })
+    }
+    await userRewardModel.save(expected)
     
     const conn = await databaseConnector.getConnection()
     const sql = `SELECT * FROM USERS_REWARDS WHERE rewardId = '${rewardId}'`
-    const reward = await new Promise<IUserReward>((res, rej) => {
+
+    const result = await new Promise<IUserReward>((res, rej) => {
       conn.get(sql, function(this, err, row) {
         if (err) {
           rej(err.message)
@@ -54,6 +59,7 @@ describe('[MODEL] EventDatabase <= USERS_REWARDS', () => {
         }
       })
     })
-    expect(reward.pointDelta).toEqual(3)
+    expect(result).toEqual(expect.objectContaining(expected))
   })
+
 })

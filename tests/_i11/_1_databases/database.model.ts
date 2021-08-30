@@ -1,4 +1,4 @@
-import { Database, IEventDatabase } from "@app/data"
+import { Database, IEventDatabase } from '@app/data';
 import DatabaseConnector, { IDatabaseConnector } from "@app/data/connection"
 import { uuidv4 } from '@app/util'
 

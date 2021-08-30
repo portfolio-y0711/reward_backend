@@ -12,14 +12,16 @@ export interface IUserModel extends ISchemaAdaptor {
   removeAll: () => Promise<void>
   createIndex: () => Promise<void>
   findUsers: () => Promise<IUser[]>
-  saveReviewPoint: (userId: string, points: number) => Promise<void>
+  saveReviewPoint: (userId: string, points: number) => Promise<number>
   findUserById: (userId: string) => Promise<IUser>
+  findUserRewardPoint: (userId: string) => Promise<number>
 }
 
 export interface IUser {
   id?: string
   userId: string
   name: string
+  rewardPoint: number
 }
 
 export const UserModel = (conn: IDatabaseConnector): IUserModel => {
@@ -40,17 +42,22 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
   }
   const save = async (user: IUser, id?: string) => {
     const db = await conn.getConnection()
-    const { userId, name } = user
-    const sql = `INSERT INTO USERS(userId,name) VALUES('${userId ?? uuidv4()}', '${name}')`
+    const { userId, name, rewardPoint } = user
+    const sql = `INSERT INTO USERS(userId,name,rewardPoint) VALUES('${userId ?? uuidv4()}', '${name}', '${rewardPoint}')`
     // const sql = `INSERT INTO USERS VALUES('${userId ?? uuidv4()}', '${name}', 'null')`
-    db.run(sql, function (err) {
-      if (err) {
-        console.log(err.message)
-        console.log('error running sql ' + sql)
-      }
+    return new _Promise<void>((res, rej) => {
+      db.run(sql, function (err) {
+        if (err) {
+          console.log(err.message)
+          console.log('error running sql ' + sql)
+          rej(err.message)
+        } else {
+          res()
+        }
+      }) 
     })
   }
-  const remove = async () => {}
+  const remove = async () => { }
   const removeAll = async () => {
     const db = await conn.getConnection()
     const sql = `delete from USERS`
@@ -79,11 +86,39 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
       })
     })
   }
+  const findUserRewardPoint = async (userId: string) => {
+    const db = await conn.getConnection()
+    const sql = `SELECT rewardPoint FROM USERS WHERE userId = '${userId}'`
+    return new _Promise<number>((res, rej) => {
+      db.get(sql, function (this, err, row) {
+        if (err) {
+          console.log('error running sql ' + sql)
+          rej(err.message)
+        } else {
+          res(row.rewardPoint)
+        }
+      })
+    })
+  }
   const saveReviewPoint = async (userId: string, points: number) => {
-    return
+    const db = await conn.getConnection()
+    const currPoint = await findUserRewardPoint(userId)
+    const updatedPoint = currPoint + points
+    const sql = `UPDATE USERS SET rewardPoint = '${updatedPoint}' WHERE userID = '${userId}'`
+    return await new _Promise<number>((res, rej) => {
+      db.run(sql, function (this, err) {
+        if (err) {
+          console.log('error running sql ' + sql)
+          rej(err.message)
+        } else {
+          res(updatedPoint)
+        }
+      })
+    })
   }
 
   return {
+    saveReviewPoint,
     findUserById,
     createSchema,
     dropSchema,
@@ -92,6 +127,6 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
     remove,
     removeAll,
     findUsers,
-    saveReviewPoint,
+    findUserRewardPoint,
   }
 }
