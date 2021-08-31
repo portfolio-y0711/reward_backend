@@ -1,6 +1,6 @@
 import { BooleanCode } from '@app/data/models/review'
 import { IEventDatabaseModels } from '@app/typings'
-import { places, reviews, users } from '@datasource/index'
+import { places, reviews, users } from '@app/data/seed/index'
 
 export const Seed = (context: IEventDatabaseModels) => async () => {
   const { userModel, placeModel, reviewModel } = context
