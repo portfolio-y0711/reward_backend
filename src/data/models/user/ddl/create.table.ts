@@ -9,6 +9,7 @@ export const CreateUserTable = (conn: IDatabaseConnector) => {
     USERS (
       userId VARCHAR PRIMARY KEY, 
       name VARCHAR NOT NULL,
+      rewardPoint INTEGER NOT NULL,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
     ) WITHOUT ROWID`
 

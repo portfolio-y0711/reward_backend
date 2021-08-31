@@ -6,7 +6,8 @@
   ],
   "rootDir": ".",
   "testMatch": [
-    "<rootDir>./tests/_i11/_1_databases/**/*test.ts"
+    "<rootDir>./tests/_i11/_1_databases/**/*test.ts",
+    "<rootDir>./tests/_i11/_2_services/**/*test.ts"
   ],
   "testEnvironment": "node",
   "transform": {

@@ -1,0 +1,22 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testMatch": [
+    "<rootDir>/tests/_usecase/**/*.steps.[jt]s?(x)"
+  ],
+  "testEnvironment": "node",
+  "transform": {
+    "^.+\\.(t)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/(.*)$": "<rootDir>/src/$1",
+    "@datasource/(.*)$": "<rootDir>/database/$1",
+    "@tests/(.*)$": "<rootDir>/tests/$1"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/tests/config/setup-db.feature.ts"],
+  "bail": 1
+}

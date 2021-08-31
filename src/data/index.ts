@@ -7,7 +7,7 @@ import { reviews, users } from '@datasource/index'
 import { places } from '@datasource/index'
 import _Promise from 'bluebird'
 import { BooleanCode } from './models/review/index'
-import { IUserRewardModel } from './models/user-review-reward'
+import { IReviewRewardModel as IReviewRewardModel } from './models/user-review-reward'
 
 export interface ISchemaAdaptor {
   dropSchema: () => Promise<any>
@@ -24,30 +24,29 @@ export interface IEventDatabase extends IDatabase {
   getUserModel: () => IUserModel
   getPlaceModel: () => IPlaceModel
   getReviewModel: () => IReviewModel
-  getUserRewardModel: () => IUserRewardModel
+  getReviewRewardModel: () => IReviewRewardModel
 }
 
 export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
   let userModel: IUserModel
   let placeModel: IPlaceModel
   let reviewModel: IReviewModel
-  let userRewardModel: IUserRewardModel
+  let userRewardModel: IReviewRewardModel
 
-  const close = async() => {
+  const close = async () => {
     const db = await dbConnector.getConnection()
     return new _Promise<void>((res, rej) => {
       db.close((err) => {
         if (err) {
           rej(err.message)
         } else {
-          console.log('db closed')
           res()
         }
       })
     })
   }
   const init = async () => {
-    [userModel, placeModel, reviewModel, userRewardModel] = createModel(dbConnector)
+    ;[userModel, placeModel, reviewModel, userRewardModel] = createModel(dbConnector)
 
     // await userModel.dropSchema()
     await userModel.createSchema()
@@ -62,25 +61,24 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     await userRewardModel.createSchema()
   }
   const clear = async () => {
-    userModel.removeAll()
-    placeModel.removeAll();
-    reviewModel.removeAll()
-    userRewardModel.removeAll()
+    await userModel.removeAll()
+    await placeModel.removeAll()
+    await reviewModel.removeAll()
+    await userRewardModel.removeAll()
   }
   const seed = async () => {
-
     await Promise.all(
       users.map(async (user: any) => {
         return await userModel.save(
           {
             userId: user.userId,
             name: user.name,
+            rewardPoint: parseInt(user.rewardPoint),
           },
           user.id,
         )
       }),
     )
-
 
     await Promise.all(
       places.map(async (place: any) => {
@@ -95,7 +93,6 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
         )
       }),
     )
-
 
     await Promise.all(
       reviews.map(async (review: any) => {
@@ -121,6 +118,6 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     getUserModel: () => userModel,
     getPlaceModel: () => placeModel,
     getReviewModel: () => reviewModel,
-    getUserRewardModel: () => userRewardModel
+    getReviewRewardModel: () => userRewardModel,
   }
 }

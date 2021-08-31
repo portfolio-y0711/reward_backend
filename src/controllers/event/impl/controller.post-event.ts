@@ -1,4 +1,4 @@
-import { IEventHandlingService as IEventHandlingService } from '@app/services/event'
+import { IEventHandlingService as IEventHandlingService } from '@app/services/event-handlers'
 import { IHttpRequest, IHttpResponse } from '@app/typings'
 
 export const PostEvent = (service: IEventHandlingService) => {

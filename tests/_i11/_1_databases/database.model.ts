@@ -1,4 +1,4 @@
-import { Database, IEventDatabase } from "@app/data"
+import { Database, IEventDatabase } from '@app/data';
 import DatabaseConnector, { IDatabaseConnector } from "@app/data/connection"
 import { uuidv4 } from '@app/util'
 
@@ -32,7 +32,7 @@ describe('[Event] <= EventDatabase', () => {
     const reviewCount = await reviewModel.findReviewCountsByPlaceId(place.placeId)
     const userModel = db.getUserModel()
     const user = await userModel.findUserById('3ede0ef2-92b7-4817-a5f3-0c575361f745')
-    userModel.saveReviewPoint(user.userId, 2)
+    userModel.updateReviewPoint(user.userId, 2)
 
     expect(reviewCount).toEqual(2)
   })
@@ -47,7 +47,7 @@ describe('[Event] <= EventDatabase', () => {
 
     const userModel = db.getUserModel()
     const user = await userModel.findUserById('3ede0ef2-92b7-4817-a5f3-0c575361f745')
-    userModel.saveReviewPoint(user.userId, 2)
+    userModel.updateReviewPoint(user.userId, 2)
 
     expect(reviewCount).toEqual(2)
   })
@@ -62,7 +62,7 @@ describe('[Event] <= EventDatabase', () => {
 
     const userModel = db.getUserModel()
     const user = await userModel.findUserById('3ede0ef2-92b7-4817-a5f3-0c575361f745')
-    userModel.saveReviewPoint(user.userId, 2)
+    userModel.updateReviewPoint(user.userId, 2)
 
     expect(reviewCount).toEqual(2)
   })
