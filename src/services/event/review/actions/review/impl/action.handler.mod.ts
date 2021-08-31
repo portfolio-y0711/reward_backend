@@ -1,6 +1,6 @@
 import { IEventDatabase } from '@app/data'
 import { uuidv4 } from '@app/util'
-import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent } from '@app/services/event/review/actions'
 
 export const ModReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {

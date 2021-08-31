@@ -3,12 +3,11 @@ import { IPlaceModel } from '@app/data/models/place'
 import { IReviewModel } from '@app/data/models/review'
 import { IUserModel } from '@app/data/models/user'
 import { IReviewRewardModel } from '@app/data/models/user-review-reward'
-import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
-import { ReviewEventActionRouter } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent } from '@app/services/event/review/actions'
+import { ReviewEventActionRouter } from '@app/services/event/review/actions'
 import { mock } from 'jest-mock-extended'
 
 describe('[Event] service => model', () => {
-  // let reviewEventActionHandler: IReviewEventActionHandler
   let reviewEventActionHandler
 
   const eventInfo: IReviewPointEvent = {
@@ -92,52 +91,5 @@ describe('[Event] service => model', () => {
       expect(spy).toHaveBeenCalledWith(eventInfo['userId'], 2)
     })
 
-    // if (action == "ADD")
-    //
-    //  const reviewModel = fakeDatabase.getReviewModel()
-    //  const isRewardable = reviewModel.isFirstReview(placeId)
-
-    //  if (rewardable) 
-    //
-    //    const placeModel = fakeDatabase.getPlaceModel()
-    //    const bonusPoint = placeModel.findBonusPoint(placeId)
-    //    const totalPoint = ((content.length > 1) ? 1 : 0)  + ((attachedPhotoIds.length > 1) ? 1 : 0) + bonusPoint
-    //
-    //    const userModel = fakeDatabase.getUserModel()
-    //    userModel.saveReviewPoint(placeId, userId, contentPoint, photoPoint, bonusPoint)
-    //
-    // else { do nothing }
-    //
-    // 
-    
-
-    // action이 ADD이면
-    // 첫번째 리뷰인지 확인 (placeId로 Review 테이블을 조회하여 레코드가 없는지 확인)
-    // => true이면 
-    // 장소에 보너스 점수가 있는지 확인
-    // content와 attachedPhotoIds로부터 점수 계산
-    //   => 점수 계산 후 유저 점수 부여
-    // => false이면 리턴
-
-    // if (action == "MOD")
-    // 
-    //
-
-    // action이 MOD이면
-    // 첫번째 리뷰인지 확인 (placeId와 reviewId로 Review 테이블을 조회하여 첫번째 레코드인지 확인)
-    // => true이면 
-    // 장소에 보너스 점수가 있는지 확인
-    // content와 attachedPhotoIds로부터 점수 계산
-    //   => 유저 점수 timestamp(이력) 테이블에서 점수 부여된 내역을 확인
-    //   => 유저 점수와 계산된 점수를 비교하여 점수 가감이 필요한 경우 관련 레코드 생성
-    // => false이면 리턴
-
-    // action이 DELETE이면
-    // 첫번째 리뷰인지 확인 (placeId와 reviewId로 Review 테이블을 조회하여 첫번째 레코드인지 확인)
-    // 장소에 보너스 점수가 있는지 확인
-    // => true이면 
-    // content와 attachedPhotoIds로부터 점수 계산
-    //   => 유저 점수 timestamp(이력) 테이블에서 점수 부여된 내역을 확인
-    //   => 계산된 점수만큼 차감하는 레코드 생성
   })
 })

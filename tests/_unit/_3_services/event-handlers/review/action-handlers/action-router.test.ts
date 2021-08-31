@@ -1,9 +1,9 @@
 import { IEventDatabase } from '@app/data'
-import { ComposeActionHandlers } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
-import { IReviewEventActionHandler } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
-import { REVIEW_ACTION } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
-import { IReviewEventActionHandlers } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
-import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { ComposeActionHandlerRoutes } from '@app/services/event/review/actions'
+import { IReviewEventActionHandler } from '@app/services/event/review/actions'
+import { REVIEW_ACTION } from '@app/services/event/review/actions'
+import { IReviewEventActionHandlers } from '@app/services/event/review/actions'
+import { IReviewPointEvent } from '@app/services/event/review/actions'
 import { mock, MockProxy } from 'jest-mock-extended'
 
 describe('[Event] service => handlers', () => {
@@ -47,7 +47,7 @@ describe('[Event] service => handlers', () => {
         }
       }
       const event = { ...eventInfoExceptAction, action }
-      await ComposeActionHandlers(fakeComposeActionHandlers)(db).route(event)
+      await ComposeActionHandlerRoutes(fakeComposeActionHandlers)(db).route(event)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(event)
     })
@@ -62,7 +62,7 @@ describe('[Event] service => handlers', () => {
         }
       }
       const event = { ...eventInfoExceptAction, action }
-      await ComposeActionHandlers(fakeComposeActionHandlers)(db).route(event)
+      await ComposeActionHandlerRoutes(fakeComposeActionHandlers)(db).route(event)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(event)
     })
@@ -77,7 +77,7 @@ describe('[Event] service => handlers', () => {
         }
       }
       const event = { ...eventInfoExceptAction, action }
-      await ComposeActionHandlers(fakeComposeActionHandlers)(db).route(event)
+      await ComposeActionHandlerRoutes(fakeComposeActionHandlers)(db).route(event)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(event)
     })

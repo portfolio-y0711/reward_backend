@@ -1,9 +1,9 @@
 import { IEventDatabase } from '@app/data'
-import { IReviewPointEvent } from '../../handler.review-event'
+import { IReviewPointEvent } from '../..'
 import { BooleanCode } from '@app/data/models/review'
 import { uuidv4 } from '@app/util'
 
-export const DelReviewActionHandler = (db: IEventDatabase) => {
+export const AddReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {
     const reviewModel = db.getReviewModel()
     const isRewardable = (await reviewModel.findReviewCountsByPlaceId(eventInfo['placeId'])) == 0
@@ -24,6 +24,8 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
         pointDelta: totalpoint,
         reason: 'NEW',
       })
+      const userModel = db.getUserModel()
+      await userModel.updateReviewPoint(eventInfo['userId'], totalpoint)
     }
     await reviewModel.save({
       reviewId: eventInfo['reviewId'],

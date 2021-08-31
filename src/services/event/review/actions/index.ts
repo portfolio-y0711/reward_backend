@@ -1,8 +1,6 @@
 import { IEventDatabase } from '@app/data'
 import { IEvent } from '@app/typings'
-import { AddReviewActionHandler } from './review/impl/action.handler.add'
-import { DelReviewActionHandler } from './review/impl/action.handler.delete'
-import { ModReviewActionHandler } from './review/impl/action.handler.mod'
+import { reviewEventActionRoutes } from './routes'
 
 export type REVIEW_ACTION = 'ADD' | 'MOD' | 'DELETE'
 
@@ -22,7 +20,7 @@ export type IReviewEventActionHandlers = {
   [Key in REVIEW_ACTION]: IReviewEventActionHandler
 }
 
-export const ComposeActionHandlers = (
+export const ComposeActionHandlerRoutes = (
   createActionHandlers: (db: IEventDatabase) => IReviewEventActionHandlers,
 ) => {
   return (db: IEventDatabase) => {
@@ -36,12 +34,5 @@ export const ComposeActionHandlers = (
   }
 }
 
-export const ReviewEventActionHandlers = (db: IEventDatabase): IReviewEventActionHandlers => {
-  return {
-    ADD: AddReviewActionHandler(db),
-    MOD: ModReviewActionHandler(db),
-    DELETE: DelReviewActionHandler(db),
-  }
-}
 
-export const ReviewEventActionRouter = ComposeActionHandlers(ReviewEventActionHandlers)
+export const ReviewEventActionRouter = ComposeActionHandlerRoutes(reviewEventActionRoutes)

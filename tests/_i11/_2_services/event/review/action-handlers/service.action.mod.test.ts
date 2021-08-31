@@ -1,10 +1,10 @@
 import { Database, IEventDatabase } from '@app/data'
-import { IReviewPointEvent, ReviewEventActionRouter, REVIEW_ACTION } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent, ReviewEventActionRouter, REVIEW_ACTION } from '@app/services/event/review/actions'
 import DatabaseConnector from '@app/data/connection'
 import { IDatabaseConnector } from '@app/data/connection'
-import EventRouter, { IEventHandlingService } from '@app/services/event-handlers'
+import EventHandlerRouter, { IEventHandlingService } from '@app/services/event'
 import { IEvent, EVENT_TYPE } from '@app/typings'
-import { BlarBlarEventHandler } from '@app/services/event-handlers/review/action-handlers/blar_blar/handler.blar_blar-event'
+import { BlarBlarEventHandler } from '@app/services/event/review/actions/blar_blar/handler.blar_blar-event'
 import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, ReviewSeeder, RewardSeeder, UserSeeder } from '@tests/helpers'
@@ -30,7 +30,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
     await db.init()
     await db.clear()
 
-    service = EventRouter({
+    service = EventHandlerRouter({
       "REVIEW": ReviewEventActionRouter(db).route,
       "BLAR_BLAR": BlarBlarEventHandler(db)
     })

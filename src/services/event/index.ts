@@ -12,14 +12,14 @@ export type IEventHandlers = {
   [Key in EVENT_TYPE]: IEventHandler
 }
 
-const EventRouter = (handlers: IEventHandlers) => {
+const EventHandlerRouter = (routes: IEventHandlers) => {
   const handleEvent = async (event: IEvent) => {
     const { type } = event
-    await handlers[type](event)
+    await routes[type](event)
   }
   return {
     handleEvent,
   }
 }
 
-export default EventRouter
+export default EventHandlerRouter

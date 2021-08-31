@@ -1,5 +1,5 @@
 import { PostEvent } from '@app/controllers/event/impl/controller.post-event'
-import { IEventHandlingService } from '@app/services/event-handlers'
+import { IEventHandlingService } from '@app/services/event'
 import { IHttpRequest } from '@app/typings'
 import { mock, MockProxy} from 'jest-mock-extended'
 

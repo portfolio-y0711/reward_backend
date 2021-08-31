@@ -48,16 +48,17 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
   const init = async () => {
     ;[userModel, placeModel, reviewModel, userRewardModel] = createModel(dbConnector)
 
-    // await userModel.dropSchema()
+    await userModel.dropSchema()
     await userModel.createSchema()
     // await userModel.createIndex()
 
-    // await placeModel.dropSchema()
+    await placeModel.dropSchema()
     await placeModel.createSchema()
 
-    // await reviewModel.dropSchema()
+    await reviewModel.dropSchema()
     await reviewModel.createSchema()
 
+    await userRewardModel.dropSchema()
     await userRewardModel.createSchema()
   }
   const clear = async () => {
@@ -67,6 +68,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     await userRewardModel.removeAll()
   }
   const seed = async () => {
+    console.log('called')
     await Promise.all(
       users.map(async (user: any) => {
         return await userModel.save(

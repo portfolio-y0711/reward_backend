@@ -22,13 +22,13 @@ Rule: 유저가 삭제한 글이 리뷰 리워드 대상일 경우, 최초에 �
 
     Scenario: 사용자가 기존에 작성하였던 리뷰를 삭제함
 
-        Given 유저의 과거 포인트 부여 기록이 아래와 같음
-            | rewardId   | userId                                      | reviewId                              | operation | pointDelta | 
-            | REVIEW     | 3ede0ef2-92b7-4817-a5f3-0c575361f745        | 240a0658-dc5f-4878-9831-ebb7b26687772 | ADD       | 3          | 
+        Given 유저의 현재 포인트 총점은 아래와 같음
+            | userId                                | totalPoint |
+            | 3ede0ef2-92b7-4817-a5f3-0c575361f745  | 3          |
 
         When 유저가 아래와 같이 작성했던 리뷰를 삭제함
-            | type   | action | reviewId                              | content | attachedPhotos | userId                               | placeId                              |
-            | REVIEW | DELETE | 240a0658-dc5f-4878-9831-ebb7b26687772 |         |                | 3ede0ef2-92b7-4817-a5f3-0c575361f745 |  2e4baf1c-5acb-4efb-a1af-eddada31b00f|
+            | type   | action | reviewId                              | content | attachedPhotoIds | userId                               | placeId                               |
+            | REVIEW | DELETE | 240a0658-dc5f-4878-9831-ebb7b26687772 |         |                  | 3ede0ef2-92b7-4817-a5f3-0c575361f745 |  2e4baf1c-5acb-4efb-a1af-eddada31b00f |
 
         Then 유저의 포인트 총점이 아래와 같아짐
             | userId                                | totalPoint |
