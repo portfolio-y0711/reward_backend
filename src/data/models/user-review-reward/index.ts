@@ -6,20 +6,21 @@ import { uuidv4 } from '@app/util'
 import { ISchemaAdaptor } from '@app/data'
 import { CreateUserRewardTableIndex } from './ddl/create-index.table'
 
-export interface IUserRewardModel extends ISchemaAdaptor {
-  save: (user: IUserReward, userId?: string) => Promise<void>
+export interface IReviewRewardModel extends ISchemaAdaptor {
+  save: (user: IReviewReward, userId?: string) => Promise<void>
   remove: () => Promise<void>
   removeAll: () => Promise<void>
   createIndex: () => Promise<void>
   createSchema: () => Promise<void>
-  findUserRewardsByUserId: (userId: string) => Promise<IUserReward[]>
+  findUserReviewRewardsByUserId: (userId: string) => Promise<IReviewReward[]>
+  findLatestUserReviewRewardByReviewId: (userId: string, reviewId: string) => Promise<IReviewReward>
 }
 
 export type REWARD_OPERATION = 'ADD' | 'SUB'
 
 export type REWARD_REASON = 'NEW' | 'MOD' | 'DEL' | 'RED'
 
-export interface IUserReward {
+export interface IReviewReward {
   id?: string
   rewardId: string
   userId: string
@@ -29,12 +30,12 @@ export interface IUserReward {
   reason: REWARD_REASON
 }
 
-export const UserRewardModel = (conn: IDatabaseConnector): IUserRewardModel => {
+export const ReviewRewardModel = (conn: IDatabaseConnector): IReviewRewardModel => {
   const dropSchema = DropUserRewardTable(conn)
   const createSchema = CreateUserRewardTable(conn)
   const createIndex = CreateUserRewardTableIndex(conn)
 
-  const save = async (userReward: IUserReward, id?: string) => {
+  const save = async (userReward: IReviewReward, id?: string) => {
     const db = await conn.getConnection()
     const { rewardId, userId, reviewId, operation, pointDelta, reason } = userReward
     const sql = `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES('${rewardId ?? uuidv4()}', '${userId}', '${reviewId}', '${operation}', '${pointDelta}', '${reason}')`
@@ -65,10 +66,10 @@ export const UserRewardModel = (conn: IDatabaseConnector): IUserRewardModel => {
       }
     })
   }
-  const findUserRewardsByUserId = async (userId: string) => {
+  const findUserReviewRewardsByUserId = async (userId: string) => {
     const db = await conn.getConnection()
     const sql = `SELECT * FROM USERS_REWARDS WHERE userId = '${userId}'`
-    return new _Promise<IUserReward[]>((res, rej) => {
+    return new _Promise<IReviewReward[]>((res, rej) => {
       db.all(sql, function (this, err, records) {
         if (err) {
           console.log(err.message)
@@ -80,13 +81,30 @@ export const UserRewardModel = (conn: IDatabaseConnector): IUserRewardModel => {
       })
     })
   }
+  const findLatestUserReviewRewardByReviewId = async (userId: string, reviewId: string) => {
+    const db = await conn.getConnection()
+    const operation: REWARD_OPERATION = "ADD"
+    const sql = `SELECT * FROM USERS_REWARDS WHERE operation = '${operation}' AND userId = '${userId}' AND reviewId = '${reviewId}' ORDER BY timestamp DESC LIMIT 1`
+    return new _Promise<IReviewReward>((res, rej) => {
+      db.get(sql, function (this, err, record) {
+        if (err) {
+          console.log(err.message)
+          console.log('error running sql ' + sql)
+          rej(err.message)
+        } else {
+          res(record)
+        }
+      })
+    })
+  }
 
   return {
     createSchema,
     dropSchema,
     createIndex,
     save,
-    findUserRewardsByUserId,
+    findUserReviewRewardsByUserId,
+    findLatestUserReviewRewardByReviewId,
     remove,
     removeAll
   }

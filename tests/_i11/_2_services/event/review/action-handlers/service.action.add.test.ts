@@ -9,7 +9,7 @@ import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, UserSeeder } from '@tests/helpers'
 
-describe('[Event] service => model', () => {
+describe('[Event: REVIEW, ADD] service => model', () => {
   let conn: IDatabaseConnector
   let db: IEventDatabase
   let service: IEventHandlingService
@@ -26,7 +26,7 @@ describe('[Event] service => model', () => {
     await db.clear()
 
     service = EventRouter({
-      "REVIEW": ReviewEventActionRouter(db),
+      "REVIEW": ReviewEventActionRouter(db).handleAction,
       "BLAR_BLAR": BlarBlarEventHandler(db)
     })
 

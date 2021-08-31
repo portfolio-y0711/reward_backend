@@ -1,5 +1,4 @@
 import { IEventDatabase } from "@app/data"
-import { BooleanCode } from '@app/data/models/review'
 import { uuidv4 } from '@app/util'
 import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 
@@ -7,32 +6,44 @@ export const ModReviewActionHandler
   =  (db: IEventDatabase) => {
     return async (eventInfo: IReviewPointEvent) => {
       const reviewModel = db.getReviewModel()
-      const isRewardable = await reviewModel.findReviewCountsByPlaceId(eventInfo["placeId"]) == 0
 
-      if (isRewardable) {
-        const placeModel = db.getPlaceModel()
+      const isRewarded = await reviewModel.findReviewAndCheckRewarded(eventInfo["userId"])
+
+      if (isRewarded) {
+        const placeModel = db.getPlaceModel() 
         const bonusPoint = await placeModel.findBonusPoint(eventInfo["placeId"])
-        const totalpoint
+
+        const totalPoint
           = (eventInfo["content"].length > 1 ? 1 : 0) +
           (eventInfo["attachedPhotoIds"].length > 1 ? 1 : 0) +
           bonusPoint
-        const userRewardModel = db.getUserRewardModel()
-        await userRewardModel.save({
-          rewardId: uuidv4(),
-          userId: eventInfo["userId"],
-          reviewId: eventInfo["reviewId"],
-          operation: "ADD",
-          pointDelta: totalpoint,
-          reason: 'NEW'
-        })
+    
+        const reviewRewardModel = db.getReviewRewardModel()
+        const latestRewardRecord = await reviewRewardModel.findLatestUserReviewRewardByReviewId(eventInfo["userId"], eventInfo["reviewId"])
+
+        const diff = (totalPoint - latestRewardRecord.pointDelta) 
+
+        if (diff != 0) {
+          await reviewRewardModel.save({
+            rewardId: uuidv4(),
+            reviewId: eventInfo["reviewId"],
+            userId: eventInfo["userId"],
+            operation: "SUB",
+            pointDelta: latestRewardRecord.pointDelta,
+            reason: "MOD",
+          })
+
+          await new Promise(res => setTimeout(res, 1000))
+
+          await reviewRewardModel.save({
+            rewardId: uuidv4(),
+            reviewId: eventInfo["reviewId"],
+            userId: eventInfo["userId"],
+            operation: "ADD",
+            pointDelta: totalPoint,
+            reason: "MOD",
+          })
+        }
       }
-      await reviewModel.save({
-        reviewId: eventInfo["reviewId"],
-        content: eventInfo["content"],
-        attachedPhotoIds: eventInfo["attachedPhotoIds"],
-        placeId: eventInfo["placeId"],
-        rewarded: isRewardable ? (BooleanCode.True) : (BooleanCode.False),
-        userId: eventInfo["userId"]
-      })
     }
   }

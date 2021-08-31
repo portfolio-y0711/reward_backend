@@ -6,7 +6,7 @@ import { ReviewEventActionRouter } from './handler.review-event'
 export const EventHandlers = (context: { db: IEventDatabase }): IEventHandlers => {
   const { db } = context
   return {
-    "REVIEW": ReviewEventActionRouter(db),
+    "REVIEW": ReviewEventActionRouter(db).handleAction,
     "BLAR_BLAR": BlarBlarEventHandler(db)
   }
 }

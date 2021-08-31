@@ -2,14 +2,15 @@ import { IDatabase } from '@app/data'
 import { IPlaceModel } from '@app/data/models/place'
 import { IReviewModel } from '@app/data/models/review'
 import { IUserModel } from '@app/data/models/user'
-import { IUserRewardModel } from '@app/data/models/user-review-reward'
+import { IReviewRewardModel } from '@app/data/models/user-review-reward'
 import { IReviewEventActionHandler } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 import { ReviewEventActionRouter } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 import { mock } from 'jest-mock-extended'
 
 describe('[Event] service => model', () => {
-  let reviewEventActionHandler: IReviewEventActionHandler
+  // let reviewEventActionHandler: IReviewEventActionHandler
+  let reviewEventActionHandler
 
   const eventInfo: IReviewPointEvent = {
     "type": "REVIEW",
@@ -37,10 +38,10 @@ describe('[Event] service => model', () => {
         }),
         getPlaceModel: () => mock<IPlaceModel>(),
         getUserModel: () => mock<IUserModel>(),
-        getUserRewardModel: () => mock<IUserRewardModel>(),
+        getReviewRewardModel: () => mock<IReviewRewardModel>(),
         ...mock<IDatabase>()
       })
-      reviewEventActionHandler(eventInfo)
+      reviewEventActionHandler.handleAction(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(eventInfo['placeId'])
     })
@@ -60,10 +61,10 @@ describe('[Event] service => model', () => {
           findBonusPoint: spy 
         }),
         getUserModel: () => mock<IUserModel>(),
-        getUserRewardModel: () => mock<IUserRewardModel>(),
+        getReviewRewardModel: () => mock<IReviewRewardModel>(),
         ...mock<IDatabase>()
       })
-      reviewEventActionHandler(eventInfo)
+      reviewEventActionHandler.handleAction(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(eventInfo['placeId'])
     })
@@ -84,10 +85,10 @@ describe('[Event] service => model', () => {
           ...mock<IUserModel>(),
           saveReviewPoint: spy
         }),
-        getUserRewardModel: () => mock<IUserRewardModel>(),
+        getReviewRewardModel: () => mock<IReviewRewardModel>(),
         ...mock<IDatabase>()
       })
-      reviewEventActionHandler(eventInfo)
+      reviewEventActionHandler.handleAction(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(eventInfo['userId'], 2)
     })

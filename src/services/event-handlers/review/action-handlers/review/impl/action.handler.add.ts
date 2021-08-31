@@ -16,7 +16,7 @@ export const AddReviewActionHandler
           = (eventInfo["content"].length > 1 ? 1 : 0) +
           (eventInfo["attachedPhotoIds"].length > 1 ? 1 : 0) +
           bonusPoint
-        const userRewardModel = db.getUserRewardModel()
+        const userRewardModel = db.getReviewRewardModel()
         await userRewardModel.save({
           rewardId: uuidv4(),
           userId: eventInfo["userId"],

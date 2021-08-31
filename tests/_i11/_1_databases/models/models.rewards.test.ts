@@ -2,10 +2,9 @@ import { Database, IEventDatabase } from "@app/data"
 import DatabaseConnector, { IDatabaseConnector } from "@app/data/connection"
 import { IPlace } from "@app/data/models/place"
 import { IReview } from "@app/data/models/review"
-import { FindReviewCountsByPlaceId } from "@app/data/models/review/dml/query/impl/find-review-counts-by-placeId"
-import { IUser, UserModel } from "@app/data/models/user"
+import { IUser } from "@app/data/models/user"
 import { PlaceSeeder, ReviewSeeder, UserSeeder } from "@tests/helpers"
-import { IUserReward, UserRewardModel } from "@app/data/models/user-review-reward"
+import { IReviewReward, ReviewRewardModel } from "@app/data/models/user-review-reward"
 
 describe('[MODEL] USERS_REWARDS', () => {
   let databaseConnector: IDatabaseConnector
@@ -36,8 +35,8 @@ describe('[MODEL] USERS_REWARDS', () => {
     const rewardId = "c92fd7a6-991e-4484-8829-ae262cd6937b"
     const reviewId = "240a0658-dc5f-4878-9381-ebb7b2667772"
 
-    const userRewardModel = UserRewardModel(databaseConnector)
-    const expected: IUserReward = {
+    const userRewardModel = ReviewRewardModel(databaseConnector)
+    const expected: IReviewReward = {
       userId,
       rewardId,
       reviewId,
@@ -50,7 +49,7 @@ describe('[MODEL] USERS_REWARDS', () => {
     const conn = await databaseConnector.getConnection()
     const sql = `SELECT * FROM USERS_REWARDS WHERE rewardId = '${rewardId}'`
 
-    const result = await new Promise<IUserReward>((res, rej) => {
+    const result = await new Promise<IReviewReward>((res, rej) => {
       conn.get(sql, function(this, err, row) {
         if (err) {
           rej(err.message)

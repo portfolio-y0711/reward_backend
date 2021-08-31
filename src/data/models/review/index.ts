@@ -3,8 +3,9 @@ import { IDatabaseConnector } from '@app/data/connection'
 import { CreateReviewTable } from './ddl/create.table'
 import { DropReviewTable } from './ddl/drop.table'
 import { Save } from './dml/cmd/impl'
-import { FindReviewCountsByPlaceId } from './dml/query/impl/find-review-counts-by-placeId'
+import { FindReviewAndCheckRewarded, FindReviewCountsByPlaceId } from './dml/query/impl/find-review-counts-by-placeId'
 import _Promise from 'bluebird';
+import { UpdateRewardedReview } from './dml/cmd/impl/update'
 
 export enum BooleanCode {
   True = 1,
@@ -21,17 +22,25 @@ export interface IReview {
   rewarded: BooleanCode
 }
 
-export interface IReviewModel extends ISchemaAdaptor {
+export interface IReviewModelQuery {
+  findReviewCountsByPlaceId: (placeId: string) => Promise<number>
+  findReviewAndCheckRewarded: (reviewId: string) => Promise<boolean>
+}
+
+export interface IReviewModelCommand {
   save: (review: IReview, id?: string) => Promise<void>
+  updateRewardedReview: (review: IReview) => Promise<void>
   remove: (reviewId: string) => Promise<void>
   removeAll: () => Promise<void>
-  findReviewCountsByPlaceId: (placeId: string) => Promise<number>
 }
+
+export interface IReviewModel extends ISchemaAdaptor, IReviewModelCommand, IReviewModelQuery {}
 
 export const ReviewModel = (conn: IDatabaseConnector): IReviewModel => {
   const dropSchema = DropReviewTable(conn)
   const createSchema = CreateReviewTable(conn)
   const save = Save(conn)
+  const updateRewardedReview = UpdateRewardedReview(conn)
   const remove = async (reviewId: string) => {}
   const removeAll = async () => {
     const db = await conn.getConnection()
@@ -48,13 +57,16 @@ export const ReviewModel = (conn: IDatabaseConnector): IReviewModel => {
     })
   }
   const findReviewCountsByPlaceId = FindReviewCountsByPlaceId(conn)
+  const findReviewAndCheckRewarded = FindReviewAndCheckRewarded(conn)
 
   return {
     createSchema,
     dropSchema,
+    updateRewardedReview,
     save,
     remove,
     removeAll,
     findReviewCountsByPlaceId,
+    findReviewAndCheckRewarded
   }
 }
