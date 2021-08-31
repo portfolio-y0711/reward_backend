@@ -1,5 +1,5 @@
-import { BooleanCode } from "@app/data/models/review"
-import { IEventDatabaseModels } from "@app/typings"
+import { BooleanCode } from '@app/data/models/review'
+import { IEventDatabaseModels } from '@app/typings'
 import { places, reviews, users } from '@datasource/index'
 
 export const Seed = (context: IEventDatabaseModels) => async () => {
@@ -14,6 +14,7 @@ export const Seed = (context: IEventDatabaseModels) => async () => {
         {
           userId: user.userId,
           name: user.name,
+          rewardPoint: user.rewardPoint
         },
         user.id,
       )

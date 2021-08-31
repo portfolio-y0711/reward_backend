@@ -3,7 +3,6 @@ import { IPlaceModel } from '@app/data/models/place'
 import { IReviewModel } from '@app/data/models/review'
 import { IUserModel } from '@app/data/models/user'
 import { IReviewRewardModel } from '@app/data/models/user-review-reward'
-import { IReviewEventActionHandler } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 import { ReviewEventActionRouter } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 import { mock } from 'jest-mock-extended'
@@ -41,7 +40,7 @@ describe('[Event] service => model', () => {
         getReviewRewardModel: () => mock<IReviewRewardModel>(),
         ...mock<IDatabase>()
       })
-      reviewEventActionHandler.handleAction(eventInfo)
+      reviewEventActionHandler.route(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(eventInfo['placeId'])
     })
@@ -64,7 +63,7 @@ describe('[Event] service => model', () => {
         getReviewRewardModel: () => mock<IReviewRewardModel>(),
         ...mock<IDatabase>()
       })
-      reviewEventActionHandler.handleAction(eventInfo)
+      reviewEventActionHandler.route(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(eventInfo['placeId'])
     })
@@ -83,12 +82,12 @@ describe('[Event] service => model', () => {
         getPlaceModel: () => mock<IPlaceModel>(),
         getUserModel: () => ({
           ...mock<IUserModel>(),
-          saveReviewPoint: spy
+          updateReviewPoint: spy
         }),
         getReviewRewardModel: () => mock<IReviewRewardModel>(),
         ...mock<IDatabase>()
       })
-      reviewEventActionHandler.handleAction(eventInfo)
+      reviewEventActionHandler.route(eventInfo)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(eventInfo['userId'], 2)
     })

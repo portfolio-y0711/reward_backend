@@ -1,49 +1,55 @@
-import { IEventDatabase } from "@app/data"
+import { IEventDatabase } from '@app/data'
 import { uuidv4 } from '@app/util'
 import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 
-export const ModReviewActionHandler
-  =  (db: IEventDatabase) => {
-    return async (eventInfo: IReviewPointEvent) => {
-      const reviewModel = db.getReviewModel()
+export const ModReviewActionHandler = (db: IEventDatabase) => {
+  return async (eventInfo: IReviewPointEvent) => {
+    const reviewModel = db.getReviewModel()
 
-      const isRewarded = await reviewModel.findReviewAndCheckRewarded(eventInfo["userId"])
+    const isRewarded = await reviewModel.findReviewAndCheckRewarded(eventInfo['userId'])
 
-      if (isRewarded) {
-        const placeModel = db.getPlaceModel() 
-        const bonusPoint = await placeModel.findBonusPoint(eventInfo["placeId"])
+    if (isRewarded) {
+      const placeModel = db.getPlaceModel()
+      const bonusPoint = await placeModel.findBonusPoint(eventInfo['placeId'])
 
-        const totalPoint
-          = (eventInfo["content"].length > 1 ? 1 : 0) +
-          (eventInfo["attachedPhotoIds"].length > 1 ? 1 : 0) +
-          bonusPoint
-    
-        const reviewRewardModel = db.getReviewRewardModel()
-        const latestRewardRecord = await reviewRewardModel.findLatestUserReviewRewardByReviewId(eventInfo["userId"], eventInfo["reviewId"])
+      const totalPoint =
+        (eventInfo['content'].length > 1 ? 1 : 0) +
+        (eventInfo['attachedPhotoIds'].length > 1 ? 1 : 0) +
+        bonusPoint
 
-        const diff = (totalPoint - latestRewardRecord.pointDelta) 
+      const reviewRewardModel = db.getReviewRewardModel()
+      const latestRewardRecord = await reviewRewardModel.findLatestUserReviewRewardByReviewId(
+        eventInfo['userId'],
+        eventInfo['reviewId'],
+      )
 
-        if (diff != 0) {
-          await reviewRewardModel.save({
-            rewardId: uuidv4(),
-            reviewId: eventInfo["reviewId"],
-            userId: eventInfo["userId"],
-            operation: "SUB",
-            pointDelta: latestRewardRecord.pointDelta,
-            reason: "MOD",
-          })
+      const diff = totalPoint - latestRewardRecord.pointDelta
 
-          await new Promise(res => setTimeout(res, 1000))
+      if (diff != 0) {
+        await reviewRewardModel.save({
+          rewardId: uuidv4(),
+          reviewId: eventInfo['reviewId'],
+          userId: eventInfo['userId'],
+          operation: 'SUB',
+          pointDelta: latestRewardRecord.pointDelta,
+          reason: 'MOD',
+        })
 
-          await reviewRewardModel.save({
-            rewardId: uuidv4(),
-            reviewId: eventInfo["reviewId"],
-            userId: eventInfo["userId"],
-            operation: "ADD",
-            pointDelta: totalPoint,
-            reason: "MOD",
-          })
-        }
+        await new Promise((res) => setTimeout(res, 1000))
+
+        await reviewRewardModel.save({
+          rewardId: uuidv4(),
+          reviewId: eventInfo['reviewId'],
+          userId: eventInfo['userId'],
+          operation: 'ADD',
+          pointDelta: totalPoint,
+          reason: 'MOD',
+        })
+
+        const userModel = db.getUserModel()
+        const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
+        await userModel.updateReviewPoint(eventInfo['userId'], currPoint + diff)
       }
     }
   }
+}

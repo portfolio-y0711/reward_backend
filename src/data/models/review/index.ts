@@ -3,8 +3,11 @@ import { IDatabaseConnector } from '@app/data/connection'
 import { CreateReviewTable } from './ddl/create.table'
 import { DropReviewTable } from './ddl/drop.table'
 import { Save } from './dml/cmd/impl'
-import { FindReviewAndCheckRewarded, FindReviewCountsByPlaceId } from './dml/query/impl/find-review-counts-by-placeId'
-import _Promise from 'bluebird';
+import {
+  FindReviewAndCheckRewarded,
+  FindReviewCountsByPlaceId,
+} from './dml/query/impl/find-review-counts-by-placeId'
+import _Promise from 'bluebird'
 import { UpdateRewardedReview } from './dml/cmd/impl/update'
 
 export enum BooleanCode {
@@ -67,6 +70,6 @@ export const ReviewModel = (conn: IDatabaseConnector): IReviewModel => {
     remove,
     removeAll,
     findReviewCountsByPlaceId,
-    findReviewAndCheckRewarded
+    findReviewAndCheckRewarded,
   }
 }

@@ -1,10 +1,8 @@
 import DatabaseConnector, { IDatabaseConnector } from '@app/data/connection'
 import { defineFeature, loadFeature } from 'jest-cucumber'
-import { preconditions } from '../shared/preconditions.mod'
+import { preconditions } from '../preconditions/preconditions.mod'
 import { Database, IEventDatabase } from '@app/data'
-import EventRouter, { IEventHandler } from '@app/services/event-handlers'
-import { mock } from 'jest-mock-extended'
-import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 
 const feature = loadFeature('./tests/_usecase/features/basic/scenarios.delete.feature')
 
@@ -22,9 +20,9 @@ defineFeature(feature, (test) => {
     preconditions(db)({ given, and })
     
     given('유저의 과거 포인트 부여 기록이 아래와 같음', async(placeId: string) => {
-      // const reviewModel = db.getReviewModel()
-      // const reviewCount = await reviewModel.findReviewCountsByPlaceId(placeId)
-      // expect(reviewCount).toEqual(0)
+      const reviewModel = db.getReviewModel()
+      const reviewCount = await reviewModel.findReviewCountsByPlaceId(placeId)
+      expect(reviewCount).toEqual(0)
     })
 
 

@@ -33,7 +33,7 @@ export const FindReviewAndCheckRewarded = (conn: IDatabaseConnector) => {
           console.log('error running sql ' + sql)
           rej(err.message)
         } else {
-          isRewarded = (row['rewarded'] == BooleanCode.True) 
+          isRewarded = row['rewarded'] == BooleanCode.True
           res(isRewarded)
         }
       })
