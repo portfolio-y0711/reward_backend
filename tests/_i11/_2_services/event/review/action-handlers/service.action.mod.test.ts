@@ -31,7 +31,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
     await db.clear()
 
     service = EventRouter({
-      "REVIEW": ReviewEventActionRouter(db).handleAction,
+      "REVIEW": ReviewEventActionRouter(db).route,
       "BLAR_BLAR": BlarBlarEventHandler(db)
     })
 
@@ -42,7 +42,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
   })
 
   afterEach(async() => {
-    // await db.clear()
+    await db.clear()
   })
 
   describe('when [POST: /api/events => controller.postEvent => service.handleEvent => handlers.handleReviewEvent]', () => {
@@ -69,7 +69,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
       await userSeeder({
         userId,
         name: "Michael",
-        rewardPoint: 0
+        rewardPoint: 3
       })
 
       await placeSeeder({
@@ -145,20 +145,16 @@ describe('[Event: REVIEW, MOD] service => model', () => {
             pointDelta: totalPoint,
             reason: "MOD",
           })
+
+          const userModel = db.getUserModel()
+          const currPoint = await userModel.findUserRewardPoint(userId)
+          await userModel.updateReviewPoint(userId, currPoint + diff)
+
+          const result = await userModel.findUserRewardPoint(userId)
+          expect(result).toEqual(2)
         }
       }
-        
-
-      // await service.handleEvent(event)
-
-      // const userModel = db.getUserModel()
-      // const result = await userModel.findUserRewardPoint(event['userId'])
-      // expect(result).toEqual(3)
     })
-
-    // if (action == "MOD")
-    // 
-    //
 
     // action이 MOD이면
     // 첫번째 리뷰인지 확인 (reviewId와 rewarded 플래그로 Review 테이블을 조회하여 첫번째 레코드인지 확인)
@@ -168,13 +164,5 @@ describe('[Event: REVIEW, MOD] service => model', () => {
     //   => 유저 점수 timestamp(이력) 테이블에서 점수 부여된 내역을 확인
     //   => 유저 점수와 계산된 점수를 비교하여 점수 가감이 필요한 경우 관련 레코드 생성
     // => false이면 리턴
-
-    // action이 DELETE이면
-    // 첫번째 리뷰인지 확인 (placeId와 reviewId로 Review 테이블을 조회하여 첫번째 레코드인지 확인)
-    // 장소에 보너스 점수가 있는지 확인
-    // => true이면 
-    // content와 attachedPhotoIds로부터 점수 계산
-    //   => 유저 점수 timestamp(이력) 테이블에서 점수 부여된 내역을 확인
-    //   => 계산된 점수만큼 차감하는 레코드 생성
   })
 })

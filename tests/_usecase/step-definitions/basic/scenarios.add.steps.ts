@@ -6,7 +6,7 @@ import EventRouter, { IEventHandler } from '@app/services/event-handlers'
 import { mock } from 'jest-mock-extended'
 import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 
-const feature = loadFeature('./tests/_usecase/features/basic/scenarios.add.feature')
+const feature = loadFeature('./tests/_usecase/features/basic/scenarios.add.feature');
 
 defineFeature(feature, (test) => {
   test('사용자가 리뷰를 새로 작성함', async({ given, and, when, then }) => {
@@ -14,7 +14,7 @@ defineFeature(feature, (test) => {
     let db: IEventDatabase
 
     databaseConnector = DatabaseConnector({
-      filename: './feature.db'
+      filename: `./feature.db`
     })
 
     db = Database(databaseConnector)
@@ -30,7 +30,7 @@ defineFeature(feature, (test) => {
 
     when('유저가 아래와 같이 리뷰글을 작성함', async(_reviewEvents: IReviewPointEvent[]) => {
       const service = EventRouter({
-        "REVIEW": ReviewEventActionRouter(db),
+        "REVIEW": ReviewEventActionRouter(db).route,
         "BLAR_BLAR": mock<IEventHandler>()
       })
       const reviewEvents = _reviewEvents.map(event => ({ ...event, attachedPhotoIds: (event.attachedPhotoIds as any).split(",")}))

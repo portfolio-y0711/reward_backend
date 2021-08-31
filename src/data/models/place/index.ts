@@ -46,7 +46,7 @@ export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
     const db = await conn.getConnection()
     const sql = `SELECT bonusPoint FROM PLACES WHERE placeId = '${placeId}'`
     return new _Promise<number>((res, rej) => {
-      db.get(sql, function(err, row) {
+      db.get(sql, function (err, row) {
         if (err) {
           console.log(err.message)
           console.log('error running sql ' + sql)

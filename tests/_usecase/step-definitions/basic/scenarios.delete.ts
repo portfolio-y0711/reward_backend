@@ -2,9 +2,7 @@ import DatabaseConnector, { IDatabaseConnector } from '@app/data/connection'
 import { defineFeature, loadFeature } from 'jest-cucumber'
 import { preconditions } from '../shared/preconditions.mod'
 import { Database, IEventDatabase } from '@app/data'
-import EventRouter, { IEventHandler } from '@app/services/event-handlers'
-import { mock } from 'jest-mock-extended'
-import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
 
 const feature = loadFeature('./tests/_usecase/features/basic/scenarios.delete.feature')
 

@@ -6,7 +6,6 @@
   ],
   "rootDir": ".",
   "testMatch": [
-    "<rootDir>/tests/_usecase/**/?(*.)+(spec|test).[tj]s?(x)",
     "<rootDir>/tests/_usecase/**/*.steps.[jt]s?(x)"
   ],
   "testEnvironment": "node",

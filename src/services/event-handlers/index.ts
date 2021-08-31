@@ -5,22 +5,21 @@ export interface IEventHandlingService {
 }
 
 export interface IEventHandler {
-  (event: any): Promise<void> 
+  (event: any): Promise<void>
 }
 
 export type IEventHandlers = {
- [Key in EVENT_TYPE]: IEventHandler
+  [Key in EVENT_TYPE]: IEventHandler
 }
 
-const EventRouter
-  = (handlers: IEventHandlers) => {
-    const handleEvent = async(event: IEvent) => {
-      const { type } = event
-      await handlers[type](event)
-    }
-    return {
-      handleEvent,
-    }
+const EventRouter = (handlers: IEventHandlers) => {
+  const handleEvent = async (event: IEvent) => {
+    const { type } = event
+    await handlers[type](event)
   }
+  return {
+    handleEvent,
+  }
+}
 
 export default EventRouter

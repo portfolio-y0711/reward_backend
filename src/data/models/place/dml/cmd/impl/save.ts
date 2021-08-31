@@ -8,7 +8,9 @@ export const Save = (conn: IDatabaseConnector) => {
     const db = await conn.getConnection()
     const { placeId, country, name, bonusPoint } = place
 
-    const sql = `INSERT INTO PLACES(placeId,country,name,bonusPoint) VALUES('${ placeId ?? uuidv4() }', '${country}', '${name}', '${bonusPoint}')`
+    const sql = `INSERT INTO PLACES(placeId,country,name,bonusPoint) VALUES('${
+      placeId ?? uuidv4()
+    }', '${country}', '${name}', '${bonusPoint}')`
 
     db.run(sql, function (err) {
       if (err) {

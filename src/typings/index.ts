@@ -16,8 +16,7 @@ export interface IHttpResponse {
   body?: any
 }
 
-export type EVENT_TYPE = "REVIEW" | "BLAR_BLAR"
-
+export type EVENT_TYPE = 'REVIEW' | 'BLAR_BLAR'
 
 export interface IEvent {
   type: EVENT_TYPE
@@ -25,12 +24,12 @@ export interface IEvent {
 }
 
 export interface IEventDatabaseModels {
-  userModel: IUserModel,
-  placeModel: IPlaceModel,
+  userModel: IUserModel
+  placeModel: IPlaceModel
   reviewModel: IReviewModel
 }
 
-type REVIEW_ACTION = "ADD" | "MOD" | "DELETE"
+type REVIEW_ACTION = 'ADD' | 'MOD' | 'DELETE'
 
 export interface IReviewEvent {
   type: string

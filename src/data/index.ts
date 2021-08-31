@@ -33,7 +33,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
   let reviewModel: IReviewModel
   let userRewardModel: IReviewRewardModel
 
-  const close = async() => {
+  const close = async () => {
     const db = await dbConnector.getConnection()
     return new _Promise<void>((res, rej) => {
       db.close((err) => {
@@ -46,7 +46,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     })
   }
   const init = async () => {
-    [userModel, placeModel, reviewModel, userRewardModel] = createModel(dbConnector)
+    ;[userModel, placeModel, reviewModel, userRewardModel] = createModel(dbConnector)
 
     // await userModel.dropSchema()
     await userModel.createSchema()
@@ -67,20 +67,18 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     await userRewardModel.removeAll()
   }
   const seed = async () => {
-
     await Promise.all(
       users.map(async (user: any) => {
         return await userModel.save(
           {
             userId: user.userId,
             name: user.name,
-            rewardPoint: parseInt(user.rewardPoint)
+            rewardPoint: parseInt(user.rewardPoint),
           },
           user.id,
         )
       }),
     )
-
 
     await Promise.all(
       places.map(async (place: any) => {
@@ -95,7 +93,6 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
         )
       }),
     )
-
 
     await Promise.all(
       reviews.map(async (review: any) => {
@@ -121,6 +118,6 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     getUserModel: () => userModel,
     getPlaceModel: () => placeModel,
     getReviewModel: () => reviewModel,
-    getReviewRewardModel: () => userRewardModel
+    getReviewRewardModel: () => userRewardModel,
   }
 }

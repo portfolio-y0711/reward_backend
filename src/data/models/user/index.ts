@@ -12,7 +12,7 @@ export interface IUserModel extends ISchemaAdaptor {
   removeAll: () => Promise<void>
   createIndex: () => Promise<void>
   findUsers: () => Promise<IUser[]>
-  saveReviewPoint: (userId: string, points: number) => Promise<number>
+  updateReviewPoint: (userId: string, points: number) => Promise<number>
   findUserById: (userId: string) => Promise<IUser>
   findUserRewardPoint: (userId: string) => Promise<number>
 }
@@ -43,7 +43,9 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
   const save = async (user: IUser, id?: string) => {
     const db = await conn.getConnection()
     const { userId, name, rewardPoint } = user
-    const sql = `INSERT INTO USERS(userId,name,rewardPoint) VALUES('${userId ?? uuidv4()}', '${name}', '${rewardPoint}')`
+    const sql = `INSERT INTO USERS(userId,name,rewardPoint) VALUES('${
+      userId ?? uuidv4()
+    }', '${name}', '${rewardPoint}')`
     // const sql = `INSERT INTO USERS VALUES('${userId ?? uuidv4()}', '${name}', 'null')`
     return new _Promise<void>((res, rej) => {
       db.run(sql, function (err) {
@@ -54,10 +56,10 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
         } else {
           res()
         }
-      }) 
+      })
     })
   }
-  const remove = async () => { }
+  const remove = async () => {}
   const removeAll = async () => {
     const db = await conn.getConnection()
     const sql = `delete from USERS`
@@ -100,25 +102,24 @@ export const UserModel = (conn: IDatabaseConnector): IUserModel => {
       })
     })
   }
-  const saveReviewPoint = async (userId: string, points: number) => {
+  const updateReviewPoint = async (userId: string, points: number) => {
     const db = await conn.getConnection()
-    const currPoint = await findUserRewardPoint(userId)
-    const updatedPoint = currPoint + points
-    const sql = `UPDATE USERS SET rewardPoint = '${updatedPoint}' WHERE userID = '${userId}'`
+    const sql = `UPDATE USERS SET rewardPoint = '${points}' WHERE userID = '${userId}'`
     return await new _Promise<number>((res, rej) => {
       db.run(sql, function (this, err) {
         if (err) {
+          console.log(err.message)
           console.log('error running sql ' + sql)
           rej(err.message)
         } else {
-          res(updatedPoint)
+          res(points)
         }
       })
     })
   }
 
   return {
-    saveReviewPoint,
+    updateReviewPoint: updateReviewPoint,
     findUserById,
     createSchema,
     dropSchema,

@@ -6,17 +6,17 @@ import { IEventDatabase } from '@app/data'
 export const preconditions
   = (db: IEventDatabase) => {
     return async ({ given, and }: { given: DefineStepFunction, and: DefineStepFunction }) => {
-      db.init()
+      await db.init()
 
       given('아래와 같이 특정 장소가 등록되어 있음', async (places: IPlace[]) => {
-        // const placeModel = db.getPlaceModel()
-        // await placeModel.createSchema()
-        // await Promise.all(places.map(place => {
-        //   return placeModel.save(place)
-        // }))
-        // const expected = places.map(p => ({ ...p, bonusPoint: parseInt(p.bonusPoint as any) }))[0]
-        // const result = await placeModel.findPlaceByName(places[0].name)
-        // expect(result).toEqual(expect.objectContaining(expected))
+        const placeModel = db.getPlaceModel()
+        await placeModel.createSchema()
+        await Promise.all(places.map(place => {
+          return placeModel.save(place)
+        }))
+        const expected = places.map(p => ({ ...p, bonusPoint: parseInt(p.bonusPoint as any) }))[0]
+        const result = await placeModel.findPlaceByName(places[0].name)
+        expect(result).toEqual(expect.objectContaining(expected))
       })
 
       and('아래와 같이 특정 유저가 등록되어 있음', async (users: IUser[]) => {
