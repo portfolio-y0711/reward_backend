@@ -1,0 +1,117 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Triple Club Mileage Service",
+    "termsOfService": "",
+    "contact": {
+      "email": "portfolio-y0711@gmail.com"
+    }
+  },
+  "host": "localhost:8000",
+  "tags": [
+    {
+      "name": "Event",
+      "description": "",
+      "externalDocs": {
+        "description": "come visit",
+        "url": "http://portfolio-y0711.com:81"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/events": {
+      "post": {
+        "tags": [
+          "Event"
+        ],
+        "summary": "",
+        "description": "",
+        "operationId": "event",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pet object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Event": {
+      "type": "object",
+      "required": [
+        "type",
+        "action",
+        "content",
+        "userId",
+        "placeId"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "REVIEW",
+          "enum": [
+            "REVIEW",
+            "BLAR_BLAR"
+          ]
+        },
+        "action": {
+          "type": "string",
+          "example": "ADD",
+          "enum": [
+            "ADD",
+            "MOD",
+            "DELETE"
+          ]
+        },
+        "reviewId": {
+          "type": "string",
+          "example": "240a0658-dc5f-4878-9831-ebb7b26687772"
+        },
+        "content": {
+          "type": "string",
+          "example": "좋아요"
+        },
+        "attachedPhotoIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "e4d1a64e-a531-46de-88d0-ff0ed70c0bb8",
+            "afb0cef2-851d-4a50-bb07-9cc15cbdc332"
+          ]
+        },
+        "userId": {
+          "type": "string",
+          "example": "3ede0ef2-92b7-4817-a5f3-0c575361f745"
+        },
+        "placeId": {
+          "type": "string",
+          "example": "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
+        }
+      }
+    }
+  }
+}

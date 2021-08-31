@@ -1,4 +1,4 @@
-import EventRouter, { IEventHandler, IEventHandlers } from '@app/services/event-handlers'
+import EventHandlerRouter, { IEventHandler, IEventHandlers } from '@app/services/event'
 import { IEvent } from '@app/typings'
 import { mock } from 'jest-mock-extended';
 
@@ -17,7 +17,7 @@ describe('[Event] service => handlers', () => {
         "REVIEW": spy,
         "BLAR_BLAR": mock<IEventHandler>()
       }
-      const eventHandlingService = EventRouter(fakeHandlers)
+      const eventHandlingService = EventHandlerRouter(fakeHandlers)
       const event: IEvent = {
         "type": "REVIEW",
         "action": "ADD",

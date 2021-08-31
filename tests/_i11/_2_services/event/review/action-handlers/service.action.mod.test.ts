@@ -1,10 +1,10 @@
 import { Database, IEventDatabase } from '@app/data'
-import { IReviewPointEvent, ReviewEventActionRouter, REVIEW_ACTION } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent, ReviewEventActionRouter, REVIEW_ACTION } from '@app/services/event/review/actions'
 import DatabaseConnector from '@app/data/connection'
 import { IDatabaseConnector } from '@app/data/connection'
-import EventRouter, { IEventHandlingService } from '@app/services/event-handlers'
+import EventHandlerRouter, { IEventHandlingService } from '@app/services/event'
 import { IEvent, EVENT_TYPE } from '@app/typings'
-import { BlarBlarEventHandler } from '@app/services/event-handlers/review/action-handlers/blar_blar/handler.blar_blar-event'
+import { BlarBlarEventHandler } from '@app/services/event/review/actions/blar_blar/handler.blar_blar-event'
 import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, ReviewSeeder, RewardSeeder, UserSeeder } from '@tests/helpers'
@@ -30,7 +30,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
     await db.init()
     await db.clear()
 
-    service = EventRouter({
+    service = EventHandlerRouter({
       "REVIEW": ReviewEventActionRouter(db).route,
       "BLAR_BLAR": BlarBlarEventHandler(db)
     })
@@ -109,51 +109,11 @@ describe('[Event: REVIEW, MOD] service => model', () => {
         userId
       })
 
-      const isRewarded = await reviewModel.findReviewAndCheckRewarded(userId)
+      await service.handleEvent(event)
 
-      if (isRewarded) {
-        const placeModel = db.getPlaceModel() 
-        const bonusPoint = await placeModel.findBonusPoint(placeId)
-
-        const totalPoint
-          = (event["content"].length > 1 ? 1 : 0) +
-          (event["attachedPhotoIds"].length > 1 ? 1 : 0) +
-          bonusPoint
-    
-        const reviewRewardModel = db.getReviewRewardModel()
-        const latestRewardRecord = await reviewRewardModel.findLatestUserReviewRewardByReviewId(userId, reviewId)
-
-        const diff = (totalPoint - latestRewardRecord.pointDelta) 
-
-        if (diff != 0) {
-          await reviewRewardModel.save({
-            rewardId: uuidv4(),
-            reviewId,
-            userId,
-            operation: "SUB",
-            pointDelta: latestRewardRecord.pointDelta,
-            reason: "MOD",
-          })
-
-          await new Promise(res => setTimeout(res, 1000))
-
-          await reviewRewardModel.save({
-            rewardId: uuidv4(),
-            reviewId,
-            userId,
-            operation: "ADD",
-            pointDelta: totalPoint,
-            reason: "MOD",
-          })
-
-          const userModel = db.getUserModel()
-          const currPoint = await userModel.findUserRewardPoint(userId)
-          await userModel.updateReviewPoint(userId, currPoint + diff)
-
-          const result = await userModel.findUserRewardPoint(userId)
-          expect(result).toEqual(2)
-        }
-      }
+      const userModel = db.getUserModel()
+      const result = await userModel.findUserRewardPoint(userId)
+      expect(result).toEqual(2)
     })
 
     // action이 MOD이면

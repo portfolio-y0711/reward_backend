@@ -1,33 +1,31 @@
 import express from 'express'
-import createUserRouter from './routers/user'
-// import createUserController from './controllers/user'
-// import createUserService from './services/users'
 import createDatabaseConnector from './data/connection'
-
-import createEventRouter from './routers/event'
-import createEventController from './controllers/event'
+import swaggerUI from 'swagger-ui-express'
+import * as swaggerDocument from './swagger.json'
+import { createEventRouter } from  './routers/event/routes'
 import { Database } from './data'
-import { IEvent } from './typings'
-import { uuidv4 } from '@app/util'
 
 export default async () => {
   const app = express()
   const dbConnector = createDatabaseConnector({
     filename: './dev.db',
   })
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
 
   const db = Database(dbConnector)
   await db.init()
+  await db.seed()
 
-  // const userService = createUserService(db)
-  // const userController = createUserController(userService)
-  // const userRouter = createUserRouter(userController)
+  const router = createEventRouter({ db })
+  router.get('/healthCheck', (req: express.Request, res: express.Response ) => {
+    res.json({
+      status: 'UP'
+    })
+  })
+  app.use('/', router)
 
-  // const eventController = createEventController({ handleEvent: (type: IEvent) => 'service' })
-  const eventRouter = createEventRouter({ postEvent: () => {} })
-
-  // app.use('/api', userRouter)
-  app.use('/api', eventRouter)
+  app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
   return app
 }
 

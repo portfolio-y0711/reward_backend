@@ -1,9 +1,9 @@
 import DatabaseConnector, { IDatabaseConnector } from '@app/data/connection'
 import { defineFeature, loadFeature } from 'jest-cucumber'
-import { preconditions } from '../shared/preconditions.mod'
+import { preconditions } from '../preconditions/preconditions.mod,delete'
 import { Database, IEventDatabase } from '@app/data'
-import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
-import EventRouter, { IEventHandler } from '@app/services/event-handlers'
+import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event/review/actions'
+import EventHandlerRouter, { IEventHandler } from '@app/services/event'
 import { mock } from 'jest-mock-extended'
 
 const feature = loadFeature('./tests/_usecase/features/basic/scenarios.mod.feature')
@@ -22,14 +22,14 @@ defineFeature(feature, (test) => {
 
     preconditions(db)({ given, and })
 
-    given('유저의 과거 포인트 부여 기록이 아래와 같음', async (placeId: string) => {
-      const reviewModel = db.getReviewModel()
-      const reviewCount = await reviewModel.findReviewCountsByPlaceId(placeId)
-      expect(reviewCount).toEqual(0)
+    given('유저의 현재 포인트 총점은 아래와 같음', async (userInfo: { userId: string, totalPoint: string }[]) => {
+      const userModel = db.getUserModel()
+      const userPoint = await userModel.findUserRewardPoint(userInfo[0].userId)
+      expect(userPoint).toEqual(parseInt(userInfo[0].totalPoint))
     })
 
     when('유저가 아래와 같이 작성했던 리뷰를 수정함', async (_reviewEvents: IReviewPointEvent[]) => {
-      const service = EventRouter({
+      const service = EventHandlerRouter({
         "REVIEW": ReviewEventActionRouter(db).route,
         "BLAR_BLAR": mock<IEventHandler>()
       })

@@ -1,13 +1,14 @@
 import { Database, IEventDatabase } from '@app/data'
-import { IReviewPointEvent, ReviewEventActionRouter, REVIEW_ACTION } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent, ReviewEventActionRouter, REVIEW_ACTION } from '@app/services/event/review/actions'
 import DatabaseConnector from '@app/data/connection'
 import { IDatabaseConnector } from '@app/data/connection'
-import EventRouter, { IEventHandlingService } from '@app/services/event-handlers'
+import EventHandlerRouter, { IEventHandlingService } from '@app/services/event'
 import { IEvent, EVENT_TYPE } from '@app/typings'
-import { BlarBlarEventHandler } from '@app/services/event-handlers/review/action-handlers/blar_blar/handler.blar_blar-event'
+import { BlarBlarEventHandler } from '@app/services/event/review/actions/blar_blar/handler.blar_blar-event'
 import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, UserSeeder } from '@tests/helpers'
+import { uuidv4 } from '@app/util'
 
 describe('[Event: REVIEW, DELETE] service => model', () => {
   let conn: IDatabaseConnector
@@ -25,7 +26,7 @@ describe('[Event: REVIEW, DELETE] service => model', () => {
     await db.init()
     await db.clear()
 
-    service = EventRouter({
+    service = EventHandlerRouter({
       "REVIEW": ReviewEventActionRouter(db).route,
       "BLAR_BLAR": BlarBlarEventHandler(db)
     })
@@ -45,7 +46,7 @@ describe('[Event: REVIEW, DELETE] service => model', () => {
       ].join('\n'), async() => {
 
       const type: EVENT_TYPE = "REVIEW"
-      const action: REVIEW_ACTION = "MOD"
+      const action: REVIEW_ACTION = "DELETE"
       const event: IReviewPointEvent & IEvent = {
         type,
         action,
@@ -58,7 +59,7 @@ describe('[Event: REVIEW, DELETE] service => model', () => {
       await userSeeder({
         userId: event["userId"],
         name: "Michael",
-        rewardPoint: 0
+        rewardPoint: 3
       })
 
       await placeSeeder({
@@ -70,9 +71,33 @@ describe('[Event: REVIEW, DELETE] service => model', () => {
 
       await service.handleEvent(event)
 
+      const reviewModel = db.getReviewModel()
+      const isRewarded = await reviewModel.findReviewAndCheckRewarded(event['userId'])
+
+      if (isRewarded) {
+        const reviewRewardModel = db.getReviewRewardModel()
+        const latestRewardRecord = await reviewRewardModel.findLatestUserReviewRewardByReviewId(
+          event['userId'],
+          event['reviewId']
+        )
+        const diff = - latestRewardRecord.pointDelta
+        
+        await reviewRewardModel.save({
+          rewardId: uuidv4(),
+          reviewId: event['reviewId'],
+          userId: event['userId'],
+          operation: 'SUB',
+          pointDelta: latestRewardRecord.pointDelta,
+          reason: 'DEL',
+        })
+        const userModel = db.getUserModel()
+        const currPoint = await userModel.findUserRewardPoint(event['userId'])
+        await userModel.updateReviewPoint(event['userId'], currPoint + diff)
+      }
+
       const userModel = db.getUserModel()
       const result = await userModel.findUserRewardPoint(event['userId'])
-      expect(result).toEqual(3)
+      expect(result).toEqual(0)
     })
 
     // action이 DELETE이면

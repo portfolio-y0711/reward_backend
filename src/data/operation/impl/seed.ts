@@ -14,6 +14,7 @@ export const Seed = (context: IEventDatabaseModels) => async () => {
         {
           userId: user.userId,
           name: user.name,
+          rewardPoint: user.rewardPoint
         },
         user.id,
       )

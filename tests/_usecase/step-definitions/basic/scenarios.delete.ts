@@ -1,8 +1,10 @@
 import DatabaseConnector, { IDatabaseConnector } from '@app/data/connection'
 import { defineFeature, loadFeature } from 'jest-cucumber'
-import { preconditions } from '../shared/preconditions.mod'
+import { preconditions } from '../preconditions/preconditions.mod,delete'
 import { Database, IEventDatabase } from '@app/data'
-import { IReviewPointEvent } from '@app/services/event-handlers/review/action-handlers/handler.review-event'
+import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event/review/actions'
+import EventHandlerRouter, { IEventHandler } from '@app/services/event'
+import { mock } from 'jest-mock-extended'
 
 const feature = loadFeature('./tests/_usecase/features/basic/scenarios.delete.feature')
 
@@ -19,27 +21,38 @@ defineFeature(feature, (test) => {
 
     preconditions(db)({ given, and })
     
-    given('유저의 과거 포인트 부여 기록이 아래와 같음', async(placeId: string) => {
-      // const reviewModel = db.getReviewModel()
-      // const reviewCount = await reviewModel.findReviewCountsByPlaceId(placeId)
-      // expect(reviewCount).toEqual(0)
+    given('유저의 현재 포인트 총점은 아래와 같음', async (userInfo: { userId: string, totalPoint: string }[]) => {
+      const userModel = db.getUserModel()
+      const userPoint = await userModel.findUserRewardPoint(userInfo[0].userId)
+      expect(userPoint).toEqual(parseInt(userInfo[0].totalPoint))
     })
 
-
     when('유저가 아래와 같이 작성했던 리뷰를 삭제함', async(_reviewEvents: IReviewPointEvent[]) => {
-      // const service = EventRouter({
-      //   "REVIEW": ReviewEventActionRouter(db),
-      //   "BLAR_BLAR": mock<IEventHandler>()
-      // })
-      // const reviewEvents = _reviewEvents.map(event => ({ ...event, attachedPhotoIds: (event.attachedPhotoIds as any).split(",")}))
-      // await service.handleEvent(reviewEvents[0])
+      const service = EventHandlerRouter({
+        "REVIEW": ReviewEventActionRouter(db).route,
+        "BLAR_BLAR": mock<IEventHandler>()
+      })
+      let attachedPhotoIds: string[]
+      let attachedPhotoStr = _reviewEvents[0].attachedPhotoIds as any as string
+
+      if (attachedPhotoStr == '') {
+        attachedPhotoIds = []
+      } else {
+        if (attachedPhotoStr.includes(",")) {
+          attachedPhotoIds = attachedPhotoStr.split(",")
+        } else {
+          attachedPhotoIds = [attachedPhotoStr]
+        }
+      }
+      const reviewEvents = _reviewEvents.map(event => ({ ...event, attachedPhotoIds }))
+      await service.handleEvent(reviewEvents[0])
     })
 
     then('유저의 포인트 총점이 아래와 같아짐', async(userInfo: { userId: string, totalPoint: string }[]) => {
-      // const userModel = db.getUserModel()
-      // const expected = parseInt(userInfo[0].totalPoint)
-      // const result = await userModel.findUserRewardPoint(userInfo[0].userId)
-      // expect(result).toEqual(expected)
+      const userModel = db.getUserModel()
+      const expected = parseInt(userInfo[0].totalPoint)
+      const result = await userModel.findUserRewardPoint(userInfo[0].userId)
+      expect(result).toEqual(expected)
     })
   })
 })
