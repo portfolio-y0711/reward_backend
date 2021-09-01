@@ -5,7 +5,7 @@ export const CreateReviewTable = (conn: IDatabaseConnector) => {
   return async () => {
     const db = await conn.getConnection()
     const sql = `CREATE TABLE IF NOT EXISTS 
-    PLACES_REVIEWS (
+    REVIEWS (
       reviewId VARCHAR PRIMARY KEY, 
       placeId INTEGER,
       content VARCHAR NOT NULL,

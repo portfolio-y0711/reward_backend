@@ -31,12 +31,12 @@ export const AddReviewActionHandler = (db: IEventDatabase) => {
 
       const transactionCmds: any[] = [
         [
-          `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
+          `INSERT INTO REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
           ...rewardParam,
         ],
         [`UPDATE USERS SET rewardPoint = ? WHERE userID = ?;`, totalpoint, eventInfo['userId']],
         [
-          `INSERT INTO PLACES_REVIEWS(reviewId,placeId,content,attachedPhotoIds,userId,rewarded) VALUES(?,?,?,?,?,?);`,
+          `INSERT INTO REVIEWS(reviewId,placeId,content,attachedPhotoIds,userId,rewarded) VALUES(?,?,?,?,?,?);`,
           eventInfo['reviewId'],
           eventInfo['placeId'],
           eventInfo['content'],

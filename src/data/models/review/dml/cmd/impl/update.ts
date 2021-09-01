@@ -7,7 +7,7 @@ export const UpdateRewardedReview = (conn: IDatabaseConnector) => {
     const db = await conn.getConnection()
     const { reviewId, content, attachedPhotoIds, rewarded } = review
 
-    const sql = `UPDATE PLACES_REVIEWS SET content = '${content}', attachedPhotoIds = '${attachedPhotoIds.join(
+    const sql = `UPDATE REVIEWS SET content = '${content}', attachedPhotoIds = '${attachedPhotoIds.join(
       ',',
     )}', rewarded = '${rewarded}' WHERE rewarded = '${
       BooleanCode.True

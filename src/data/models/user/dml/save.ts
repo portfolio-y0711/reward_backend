@@ -10,7 +10,6 @@ export const Save = (conn: IDatabaseConnector) => {
     const sql = `INSERT INTO USERS(userId,name,rewardPoint) VALUES('${
       userId ?? uuidv4()
     }', '${name}', '${rewardPoint}')`
-    // const sql = `INSERT INTO USERS VALUES('${userId ?? uuidv4()}', '${name}', 'null')`
     return new _Promise<void>((res, rej) => {
       db.run(sql, function (err) {
         if (err) {

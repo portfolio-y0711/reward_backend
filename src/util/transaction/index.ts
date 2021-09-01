@@ -1,4 +1,4 @@
-import { IDatabaseConnector } from '../../data/connection/index'
+import { IDatabaseConnector } from "@app/data/connection"
 
 const RunAsync = (conn: IDatabaseConnector) => {
   return async (sql: string, ...params: any[]) => {

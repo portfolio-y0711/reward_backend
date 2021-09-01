@@ -47,7 +47,7 @@ describe('[MODEL] USERS_REWARDS', () => {
     await userRewardModel.save(expected)
 
     const conn = await databaseConnector.getConnection()
-    const sql = `SELECT * FROM USERS_REWARDS WHERE rewardId = '${rewardId}'`
+    const sql = `SELECT * FROM REWARDS WHERE rewardId = '${rewardId}'`
 
     const result = await new Promise<IRewardRecord>((res, rej) => {
       conn.get(sql, function (this, err, row) {

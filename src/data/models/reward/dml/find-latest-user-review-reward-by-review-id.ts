@@ -7,7 +7,7 @@ export const FindLatestUserReviewRewardByReviewId = (conn: IDatabaseConnector) =
   return async (userId: string, reviewId: string) => {
     const db = await conn.getConnection()
     const operation: REWARD_OPERATION = 'ADD'
-    const sql = `SELECT * FROM USERS_REWARDS WHERE operation = '${operation}' AND userId = '${userId}' AND reviewId = '${reviewId}' ORDER BY timestamp DESC LIMIT 1`
+    const sql = `SELECT * FROM REWARDS WHERE operation = '${operation}' AND userId = '${userId}' AND reviewId = '${reviewId}' ORDER BY timestamp DESC LIMIT 1`
     return new _Promise<IRewardRecord>((res, rej) => {
       db.get(sql, function (this, err, record) {
         if (err) {

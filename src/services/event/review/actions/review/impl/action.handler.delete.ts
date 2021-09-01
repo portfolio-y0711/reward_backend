@@ -37,7 +37,7 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
 
       const transactionCmds: any[] = [
         [
-          `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
+          `INSERT INTO REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
           ...subtract_reward_param,
         ],
         [
@@ -46,7 +46,7 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
           eventInfo['userId'],
         ],
         [
-          `DELETE FROM PLACES_REVIEWS WHERE rewarded = ? AND reviewId = ? AND userId = ?;`,
+          `DELETE FROM REVIEWS WHERE rewarded = ? AND reviewId = ? AND userId = ?;`,
           BooleanCode.True,
           eventInfo['reviewId'],
           eventInfo['userId'],

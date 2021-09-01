@@ -6,7 +6,7 @@ export const CreateUserRewardTable = (conn: IDatabaseConnector) => {
     const db = await conn.getConnection()
 
     const sql = `CREATE TABLE IF NOT EXISTS 
-    USERS_REWARDS (
+    REWARDS (
       rewardId VARCHAR PRIMARY KEY,
       userId VARCHAR, 
       reviewId VARCHAR,

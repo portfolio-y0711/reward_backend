@@ -8,7 +8,7 @@ export const Save = (conn: IDatabaseConnector) => {
     const db = await conn.getConnection()
     const { reviewId, placeId, content, attachedPhotoIds, userId, rewarded } = review
 
-    const sql = `INSERT INTO PLACES_REVIEWS(reviewId,placeId,content,attachedPhotoIds,userId,rewarded) VALUES('${
+    const sql = `INSERT INTO REVIEWS(reviewId,placeId,content,attachedPhotoIds,userId,rewarded) VALUES('${
       reviewId ?? uuidv4()
     }','${placeId}', '${content}', '${attachedPhotoIds.join(',')}', '${userId}', '${rewarded}')`
 

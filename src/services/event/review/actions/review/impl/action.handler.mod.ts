@@ -60,11 +60,11 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
 
         const transactionCmds: any[] = [
           [
-            `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
+            `INSERT INTO REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
             ...subtract_reward_param,
           ],
           [
-            `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
+            `INSERT INTO REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
             ...add_reward_param,
           ],
           [
@@ -73,7 +73,7 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
             eventInfo['userId'],
           ],
           [
-            `UPDATE PLACES_REVIEWS SET content = ?, attachedPhotoIds = ? WHERE rewarded = ? AND reviewId = ? AND userId = ?;`,
+            `UPDATE REVIEWS SET content = ?, attachedPhotoIds = ? WHERE rewarded = ? AND reviewId = ? AND userId = ?;`,
             eventInfo['content'],
             eventInfo['attachedPhotoIds'].join(','),
             BooleanCode.True,
