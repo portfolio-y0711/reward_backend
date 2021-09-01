@@ -23,7 +23,6 @@ describe('[Point] controller => service', () => {
   afterEach(async () => {
     jest.clearAllMocks()
     await db.clear()
-    await db.close()
   })
 
   describe('when [GET: /users/{userId}/rewardPoint =>]', () => {

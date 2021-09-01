@@ -21,9 +21,9 @@ export const FindReviewCountsByPlaceId = (conn: IDatabaseConnector) => {
 }
 
 export const FindReviewAndCheckRewarded = (conn: IDatabaseConnector) => {
-  return async (userId: string) => {
+  return async (userId: string, reviewId: string) => {
     const db = await conn.getConnection()
-    const sql = `SELECT rewarded FROM PLACES_REVIEWS WHERE rewarded = '${BooleanCode.True}' AND userId = '${userId}'`
+    const sql = `SELECT rewarded FROM PLACES_REVIEWS WHERE rewarded = '${BooleanCode.True}' AND userId = '${userId}' AND reviewId = '${reviewId}'`
     let isRewarded = false
 
     return new Promise<boolean>((res, rej) => {
@@ -33,8 +33,12 @@ export const FindReviewAndCheckRewarded = (conn: IDatabaseConnector) => {
           console.log('error running sql ' + sql)
           rej(err.message)
         } else {
-          isRewarded = row['rewarded'] == BooleanCode.True
-          res(isRewarded)
+          if (row == undefined) {
+            res(false)
+          } else {
+            isRewarded = row['rewarded'] == BooleanCode.True
+            res(isRewarded)
+          }
         }
       })
     })

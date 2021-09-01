@@ -13,15 +13,15 @@ export interface IReviewPointEvent extends IEvent {
   placeId: string
 }
 
-export interface IReviewEventActionHandler {
+export interface IReviewEventActionRoute {
   (eventInfo: IReviewPointEvent): Promise<void>
 }
-export type IReviewEventActionHandlers = {
-  [Key in REVIEW_ACTION]: IReviewEventActionHandler
+export type IReviewEventActionRoutes = {
+  [Key in REVIEW_ACTION]: IReviewEventActionRoute
 }
 
-export const ComposeActionHandlerRoutes = (
-  createActionHandlers: (db: IEventDatabase) => IReviewEventActionHandlers,
+export const ComposeActionRoutes = (
+  createActionHandlers: (db: IEventDatabase) => IReviewEventActionRoutes,
 ) => {
   return (db: IEventDatabase) => {
     const actionHandlers = createActionHandlers(db)
@@ -34,4 +34,4 @@ export const ComposeActionHandlerRoutes = (
   }
 }
 
-export const ReviewEventActionRouter = ComposeActionHandlerRoutes(reviewEventActionRoutes)
+export const ReviewEventActionRouter = ComposeActionRoutes(reviewEventActionRoutes)

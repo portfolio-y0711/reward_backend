@@ -27,7 +27,7 @@ export interface IReview {
 
 export interface IReviewModelQuery {
   findReviewCountsByPlaceId: (placeId: string) => Promise<number>
-  findReviewAndCheckRewarded: (reviewId: string) => Promise<boolean>
+  findReviewAndCheckRewarded: (userId: string, reviewId: string) => Promise<boolean>
 }
 
 export interface IReviewModelCommand {

@@ -1,13 +1,13 @@
 import { IEventDatabase } from '@app/data'
-import { ComposeActionHandlerRoutes } from '@app/services/event/review/actions'
-import { IReviewEventActionHandler } from '@app/services/event/review/actions'
+import { ComposeActionRoutes } from '@app/services/event/review/actions'
+import { IReviewEventActionRoute } from '@app/services/event/review/actions'
 import { REVIEW_ACTION } from '@app/services/event/review/actions'
-import { IReviewEventActionHandlers } from '@app/services/event/review/actions'
+import { IReviewEventActionRoutes } from '@app/services/event/review/actions'
 import { IReviewPointEvent } from '@app/services/event/review/actions'
 import { mock, MockProxy } from 'jest-mock-extended'
 
 describe('[Event] service => handlers', () => {
-  let fakeComposeActionHandlers: (db: IEventDatabase) => IReviewEventActionHandlers
+  let fakeComposeActionHandlers: (db: IEventDatabase) => IReviewEventActionRoutes
   let spy: jest.Mock<any, any>
   let db: MockProxy<IEventDatabase>
   let eventInfoExceptAction: {
@@ -45,12 +45,12 @@ describe('[Event] service => handlers', () => {
       fakeComposeActionHandlers = (_: IEventDatabase) => {
         return {
           ADD: spy,
-          MOD: mock<IReviewEventActionHandler>(),
-          DELETE: mock<IReviewEventActionHandler>(),
+          MOD: mock<IReviewEventActionRoute>(),
+          DELETE: mock<IReviewEventActionRoute>(),
         }
       }
       const event = { ...eventInfoExceptAction, action }
-      await ComposeActionHandlerRoutes(fakeComposeActionHandlers)(db).route(event)
+      await ComposeActionRoutes(fakeComposeActionHandlers)(db).route(event)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(event)
     })
@@ -59,13 +59,13 @@ describe('[Event] service => handlers', () => {
       const action: REVIEW_ACTION = 'MOD'
       fakeComposeActionHandlers = (_: IEventDatabase) => {
         return {
-          ADD: mock<IReviewEventActionHandler>(),
+          ADD: mock<IReviewEventActionRoute>(),
           MOD: spy,
-          DELETE: mock<IReviewEventActionHandler>(),
+          DELETE: mock<IReviewEventActionRoute>(),
         }
       }
       const event = { ...eventInfoExceptAction, action }
-      await ComposeActionHandlerRoutes(fakeComposeActionHandlers)(db).route(event)
+      await ComposeActionRoutes(fakeComposeActionHandlers)(db).route(event)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(event)
     })
@@ -74,13 +74,13 @@ describe('[Event] service => handlers', () => {
       const action: REVIEW_ACTION = 'DELETE'
       fakeComposeActionHandlers = (_: IEventDatabase) => {
         return {
-          ADD: mock<IReviewEventActionHandler>(),
-          MOD: mock<IReviewEventActionHandler>(),
+          ADD: mock<IReviewEventActionRoute>(),
+          MOD: mock<IReviewEventActionRoute>(),
           DELETE: spy,
         }
       }
       const event = { ...eventInfoExceptAction, action }
-      await ComposeActionHandlerRoutes(fakeComposeActionHandlers)(db).route(event)
+      await ComposeActionRoutes(fakeComposeActionHandlers)(db).route(event)
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(event)
     })

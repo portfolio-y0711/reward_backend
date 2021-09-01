@@ -1,6 +1,5 @@
 import { IEventDatabase } from '@app/data'
 import { IReviewReward } from '@app/data/models/user-review-reward'
-import { mock } from 'jest-mock-extended'
 
 export interface IUserService {
   fetchUserReviewPoint: (userId: string) => Promise<number>

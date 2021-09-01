@@ -6,7 +6,7 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {
     const reviewModel = db.getReviewModel()
 
-    const isRewarded = await reviewModel.findReviewAndCheckRewarded(eventInfo['userId'])
+    const isRewarded = await reviewModel.findReviewAndCheckRewarded(eventInfo['userId'], eventInfo['reviewId'])
 
     if (isRewarded) {
       const placeModel = db.getPlaceModel()
