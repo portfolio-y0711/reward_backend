@@ -2,7 +2,7 @@ import { IEventDatabase } from '@app/data'
 import { IPlace } from '@app/data/models/place'
 import { IReview } from '@app/data/models/review'
 import { IUser } from '@app/data/models/user'
-import { IReviewReward } from '../../src/data/models/user-review-reward/index'
+import { IRewardRecord } from '../../src/data/models/reward/index'
 
 export const PlaceSeeder = (db: IEventDatabase) => {
   return async (place: IPlace) => {
@@ -26,7 +26,7 @@ export const ReviewSeeder = (db: IEventDatabase) => {
 }
 
 export const RewardSeeder = (db: IEventDatabase) => {
-  return async (reward: IReviewReward) => {
+  return async (reward: IRewardRecord) => {
     const rewardModel = db.getReviewRewardModel()
     await rewardModel.save(reward)
   }

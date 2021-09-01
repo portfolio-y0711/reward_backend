@@ -1,10 +1,10 @@
 import { IDatabaseConnector } from '@app/data/connection'
 import { uuidv4 } from '@app/util'
-import { IReviewReward } from '../index'
+import { IRewardRecord } from '../index'
 import _Promise from 'bluebird'
 
 export const Save = (conn: IDatabaseConnector) => {
-  return async (userReward: IReviewReward, id?: string) => {
+  return async (userReward: IRewardRecord, id?: string) => {
     const db = await conn.getConnection()
     const { rewardId, userId, reviewId, operation, pointDelta, reason } = userReward
     const sql = `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES('${

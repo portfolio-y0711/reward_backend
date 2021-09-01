@@ -10,17 +10,17 @@ import { REWARD_OPERATION, REWARD_REASON } from '@app/typings'
 import { Save } from './dml/save'
 import { RemoveAll } from './dml/remove-all'
 
-export interface IReviewRewardModel extends ISchemaAdaptor {
-  save: (user: IReviewReward, userId?: string) => Promise<void>
+export interface IRewardModel extends ISchemaAdaptor {
+  save: (user: IRewardRecord, userId?: string) => Promise<void>
   remove: () => Promise<void>
   removeAll: () => Promise<void>
   createIndex: () => Promise<void>
   createSchema: () => Promise<void>
-  findUserReviewRewardsByUserId: (userId: string) => Promise<IReviewReward[]>
-  findLatestUserReviewRewardByReviewId: (userId: string, reviewId: string) => Promise<IReviewReward>
+  findUserReviewRewardsByUserId: (userId: string) => Promise<IRewardRecord[]>
+  findLatestUserReviewRewardByReviewId: (userId: string, reviewId: string) => Promise<IRewardRecord>
 }
 
-export interface IReviewReward {
+export interface IRewardRecord {
   id?: string
   rewardId: string
   userId: string
@@ -30,7 +30,7 @@ export interface IReviewReward {
   reason: REWARD_REASON
 }
 
-export const ReviewRewardModel = (conn: IDatabaseConnector): IReviewRewardModel => {
+export const ReviewRewardModel = (conn: IDatabaseConnector): IRewardModel => {
   const dropSchema = DropUserRewardTable(conn)
   const createSchema = CreateUserRewardTable(conn)
   const createIndex = CreateUserRewardTableIndex(conn)

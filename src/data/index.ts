@@ -7,7 +7,7 @@ import { reviews, users } from '@app/data/seed/index'
 import { places } from '@app/data/seed/index'
 import _Promise from 'bluebird'
 import { BooleanCode } from './models/review/index'
-import { IReviewRewardModel } from './models/user-review-reward'
+import { IRewardModel } from './models/reward'
 
 export interface ISchemaAdaptor {
   dropSchema: () => Promise<any>
@@ -25,14 +25,14 @@ export interface IEventDatabase extends IDatabase {
   getUserModel: () => IUserModel
   getPlaceModel: () => IPlaceModel
   getReviewModel: () => IReviewModel
-  getReviewRewardModel: () => IReviewRewardModel
+  getReviewRewardModel: () => IRewardModel
 }
 
 export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
   let userModel: IUserModel
   let placeModel: IPlaceModel
   let reviewModel: IReviewModel
-  let userRewardModel: IReviewRewardModel
+  let userRewardModel: IRewardModel
   let conn: IDatabaseConnector
 
   const close = async () => {

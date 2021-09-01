@@ -1,9 +1,9 @@
 import { IEventDatabase } from '@app/data'
-import { IReviewReward } from '@app/data/models/user-review-reward'
+import { IRewardRecord } from '@app/data/models/reward'
 
 export interface IUserService {
   fetchUserReviewPoint: (userId: string) => Promise<number>
-  fetchUserRewards: (userId: string) => Promise<IReviewReward[]>
+  fetchUserRewards: (userId: string) => Promise<IRewardRecord[]>
 }
 
 export const createUserService = (db: IEventDatabase): IUserService => {

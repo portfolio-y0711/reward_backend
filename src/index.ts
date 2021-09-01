@@ -1,4 +1,4 @@
-import express, { NextFunction } from 'express'
+import express from 'express'
 import createDatabaseConnector from './data/connection'
 import swaggerUI from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'

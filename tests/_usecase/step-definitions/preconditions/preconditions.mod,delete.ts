@@ -3,7 +3,7 @@ import { IPlace } from '@app/data/models/place'
 import { DefineStepFunction } from 'jest-cucumber'
 import { IEventDatabase } from '@app/data'
 import { IReview } from '@app/data/models/review'
-import { IReviewReward } from '@app/data/models/user-review-reward'
+import { IRewardRecord } from '@app/data/models/reward'
 
 export const preconditions = (db: IEventDatabase) => {
   return async ({ given, and }: { given: DefineStepFunction; and: DefineStepFunction }) => {
@@ -61,7 +61,7 @@ export const preconditions = (db: IEventDatabase) => {
 
     and(
       '리뷰 작성에 대한 보상으로 아래와 같이 유저에게 포인트가 부여되었음',
-      async (reward: IReviewReward[]) => {
+      async (reward: IRewardRecord[]) => {
         const rewardModel = db.getReviewRewardModel()
         await rewardModel.createSchema()
         await Promise.all(

@@ -13,7 +13,7 @@ import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, ReviewSeeder, RewardSeeder, UserSeeder } from '@tests/helpers'
 import { BooleanCode, IReview } from '@app/data/models/review'
-import { IReviewReward } from '@app/data/models/user-review-reward'
+import { IRewardRecord } from '@app/data/models/reward'
 
 describe('[Event: REVIEW, DELETE] service => model', () => {
   let conn: IDatabaseConnector
@@ -23,7 +23,7 @@ describe('[Event: REVIEW, DELETE] service => model', () => {
   let userSeeder: (user: IUser) => Promise<void>
   let placeSeeder: (place: IPlace) => Promise<void>
   let reviewSeeder: (review: IReview) => Promise<void>
-  let rewardSeeder: (reward: IReviewReward) => Promise<void>
+  let rewardSeeder: (reward: IRewardRecord) => Promise<void>
 
   beforeAll(async () => {
     conn = DatabaseConnector({

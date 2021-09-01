@@ -2,7 +2,7 @@ import { mock } from 'jest-mock-extended'
 import { IEventDatabase } from '@app/data'
 import { IUserModel } from '@app/data/models/user'
 import { createUserService } from '@app/services/user'
-import { IReviewRewardModel } from '@app/data/models/user-review-reward'
+import { IRewardModel } from '@app/data/models/reward'
 
 describe('[User] service => database', () => {
   let spy: jest.Mock<any, any>
@@ -38,8 +38,8 @@ describe('[User] service => database', () => {
   describe('when [GET: /users/{userId}/rewards => controller.getUserRewards]', () => {
     it('service.fetchUserRewards => database.findUserReviewRewardByUserId', async () => {
       const spy = jest.fn()
-      const rewardModel: IReviewRewardModel = {
-        ...mock<IReviewRewardModel>(),
+      const rewardModel: IRewardModel = {
+        ...mock<IRewardModel>(),
         findUserReviewRewardsByUserId: spy,
       }
 
