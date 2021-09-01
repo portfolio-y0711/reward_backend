@@ -1,6 +1,6 @@
 import { IDatabaseConnector } from '@app/data/connection'
-import { IPlace } from '../../../index'
 import _Promise from 'bluebird'
+import { IPlace } from '@app/data/models/place'
 
 export const FindPlaceByName = (conn: IDatabaseConnector) => {
   return async (name: string) => {

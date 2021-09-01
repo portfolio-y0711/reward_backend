@@ -8,6 +8,7 @@ export const validateDto = (schema: any) => {
       req.body = validatedBody
       next()
     } catch (err) {
+      console.log(err)
       next(ApiError.badRequest(err))
     }
   }

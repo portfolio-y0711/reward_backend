@@ -71,7 +71,6 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     await userRewardModel.removeAll()
   }
   const seed = async () => {
-    console.log('called')
     await Promise.all(
       users.map(async (user: any) => {
         return await userModel.save(

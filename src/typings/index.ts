@@ -2,6 +2,7 @@ import { IPlaceModel } from '@app/data/models/place'
 import { IReviewModel } from '@app/data/models/review'
 import { IUserModel } from '@app/data/models/user'
 import { Request } from 'express'
+import bunyan from 'bunyan'
 
 export interface IHttpRequest {
   body: Request['body']
@@ -14,6 +15,10 @@ export interface IHttpResponse {
   message?: string
   body?: any
 }
+
+export type REWARD_OPERATION = 'ADD' | 'SUB'
+
+export type REWARD_REASON = 'NEW' | 'MOD' | 'DEL' | 'RED'
 
 export type EVENT_TYPE = 'REVIEW' | 'BLAR_BLAR'
 
@@ -31,7 +36,7 @@ export interface IEventDatabaseModels {
 type REVIEW_ACTION = 'ADD' | 'MOD' | 'DELETE'
 
 export interface IReviewEvent {
-  type: string
+  type: EVENT_TYPE
   action: REVIEW_ACTION
   reviewId: string
   content: string
@@ -62,5 +67,13 @@ export class CustomError {
   }
   static(msg: any, code?: number) {
     return new CustomError(msg, code)
+  }
+}
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      LOGGER: bunyan
+    }
   }
 }

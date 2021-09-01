@@ -28,9 +28,13 @@ export const runBatchAsync = (conn: IDatabaseConnector) => {
           }),
         Promise.resolve(),
       )
-      .catch((err) =>
-        runAsync('ROLLBACK').then(() => Promise.reject(err + ' in statement #' + results.length)),
-      )
+      .catch((err) => {
+        console.log(err)
+        runAsync('ROLLBACK').then(() => {
+          console.log('err!!!')
+          return Promise.reject(err + ' in statement #' + results.length)
+        })
+      })
       .then(() => results.slice(2))
   }
 }

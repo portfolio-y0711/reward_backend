@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction } from 'express'
 import createDatabaseConnector from './data/connection'
 import swaggerUI from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
@@ -7,6 +7,7 @@ import { Database } from './data'
 import createUserRouter from './routers/user'
 import path from 'path'
 import errorHandler from './middleware/error'
+import logger from './middleware/logger'
 
 export default async () => {
   const app = express()
@@ -23,6 +24,7 @@ export default async () => {
   const eventRouter = createEventRouter({ db })
   const userRouter = createUserRouter({ db })
 
+  app.use(logger)
   app.get('/healthCheck', (req: express.Request, res: express.Response) =>
     res.json({ status: 'UP' }),
   )
