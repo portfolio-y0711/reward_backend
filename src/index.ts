@@ -6,6 +6,7 @@ import { createEventRouter } from './routers/event'
 import { Database } from './data'
 import createUserRouter from './routers/user'
 import path from 'path'
+import errorHandler from './middleware/error/error'
 
 export default async () => {
   const app = express()
@@ -21,16 +22,14 @@ export default async () => {
 
   const eventRouter = createEventRouter({ db })
   const userRouter = createUserRouter({ db })
-  app.get('/healthCheck', (req: express.Request, res: express.Response) => {
-    res.json({
-      status: 'UP',
-    })
-  })
+
+  app.get('/healthCheck', (req: express.Request, res: express.Response) => res.json({ status: 'UP', }))
 
   app.use('/', eventRouter)
   app.use('/', userRouter)
-  app.use(express.static(path.join(__dirname, 'static')))
 
+  app.use(express.static(path.join(__dirname, 'static')))
   app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+  app.use(errorHandler)
   return app
 }

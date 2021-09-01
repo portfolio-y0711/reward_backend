@@ -80,7 +80,7 @@ describe('[Event: REVIEW, DELETE] service => model', () => {
       await reviewSeeder({
         userId: event['userId'],
         placeId: event['placeId'],
-        content: "좋아요",
+        content: '좋아요',
         attachedPhotoIds: [],
         reviewId: event['reviewId'],
         rewarded: BooleanCode.True,
@@ -88,11 +88,11 @@ describe('[Event: REVIEW, DELETE] service => model', () => {
 
       await rewardSeeder({
         userId: event['userId'],
-        reason: "NEW",
+        reason: 'NEW',
         pointDelta: 3,
-        operation: "ADD",
+        operation: 'ADD',
         reviewId: event['reviewId'],
-        rewardId: event['rewardId']
+        rewardId: event['rewardId'],
       })
 
       await service.handleEvent(event)
