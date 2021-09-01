@@ -1,7 +1,10 @@
-import { IEventDatabase } from "@app/data"
+import { IEventDatabase } from '@app/data'
+import { IReviewReward } from '@app/data/models/user-review-reward'
+import { mock } from 'jest-mock-extended'
 
 export interface IUserService {
   fetchUserReviewPoint: (userId: string) => Promise<number>
+  fetchUserRewards: (userId: string) => Promise<IReviewReward>
 }
 
 export const createUserService = (db: IEventDatabase): IUserService => {
@@ -10,7 +13,8 @@ export const createUserService = (db: IEventDatabase): IUserService => {
     return await userModel.findUserRewardPoint(userId)
   }
   return {
-    fetchUserReviewPoint
+    ...mock<IUserService>(),
+    fetchUserReviewPoint,
   }
 }
 

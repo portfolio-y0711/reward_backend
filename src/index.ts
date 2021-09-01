@@ -2,7 +2,7 @@ import express from 'express'
 import createDatabaseConnector from './data/connection'
 import swaggerUI from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
-import { createEventRouter } from  './routers/event'
+import { createEventRouter } from './routers/event'
 import { Database } from './data'
 import createUserRouter from './routers/user'
 import path from 'path'
@@ -21,12 +21,12 @@ export default async () => {
 
   const eventRouter = createEventRouter({ db })
   const userRouter = createUserRouter({ db })
-  app.get('/healthCheck', (req: express.Request, res: express.Response ) => {
+  app.get('/healthCheck', (req: express.Request, res: express.Response) => {
     res.json({
-      status: 'UP'
+      status: 'UP',
     })
   })
-  
+
   app.use('/', eventRouter)
   app.use('/', userRouter)
   app.use(express.static(path.join(__dirname, 'static')))
@@ -34,4 +34,3 @@ export default async () => {
   app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
   return app
 }
-

@@ -11,9 +11,9 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
       const reviewRewardModel = db.getReviewRewardModel()
       const latestRewardRecord = await reviewRewardModel.findLatestUserReviewRewardByReviewId(
         eventInfo['userId'],
-        eventInfo['reviewId']
+        eventInfo['reviewId'],
       )
-      const diff = - latestRewardRecord.pointDelta
+      const diff = -latestRewardRecord.pointDelta
 
       await reviewRewardModel.save({
         rewardId: uuidv4(),
@@ -27,6 +27,5 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
       const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
       await userModel.updateReviewPoint(eventInfo['userId'], currPoint + diff)
     }
-
   }
 }

@@ -22,7 +22,7 @@ describe('[User] service => database', () => {
     jest.clearAllMocks()
   })
 
-  describe('when [POST: /users/{userId}/points => controller.getUserReviewPoint]', () => {
+  describe('when [GET: /users/{userId}/points => controller.getUserReviewPoint]', () => {
     it('service.fetchUserRewardPoint => database.findUserRewardPoint', async() => {
 
       const userModel = db.getUserModel()
@@ -34,8 +34,6 @@ describe('[User] service => database', () => {
        
       const rewardPoint = await userService.fetchUserReviewPoint("3ede0ef2-92b7-4817-a5f3-0c575361f745")
       expect(rewardPoint).toEqual(1)
-
     })
-    
   })
 })

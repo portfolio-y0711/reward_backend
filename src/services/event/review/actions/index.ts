@@ -34,5 +34,4 @@ export const ComposeActionHandlerRoutes = (
   }
 }
 
-
 export const ReviewEventActionRouter = ComposeActionHandlerRoutes(reviewEventActionRoutes)

@@ -7,7 +7,7 @@ import { reviews, users } from '@app/data/seed/index'
 import { places } from '@app/data/seed/index'
 import _Promise from 'bluebird'
 import { BooleanCode } from './models/review/index'
-import { IReviewRewardModel as IReviewRewardModel } from './models/user-review-reward'
+import { IReviewRewardModel } from './models/user-review-reward'
 
 export interface ISchemaAdaptor {
   dropSchema: () => Promise<any>

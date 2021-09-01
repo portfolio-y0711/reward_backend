@@ -46,12 +46,8 @@ describe('[User] router test => controller.test', () => {
       res.json('')
     })
 
-    interface ITempUserController extends IUserController {
-      getUserRewards: (req: express.Request, res: express.Response, nex: express.NextFunction) => void
-     }
-
-    const controller: ITempUserController = {
-      ...mock<ITempUserController>(),
+    const controller: IUserController = {
+      ...mock<IUserController>(),
       getUserReviewPoint: (req: express.Request, res: express.Response) => {
         res.status(200)
         res.json('')
