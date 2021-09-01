@@ -1,4 +1,3 @@
-import { IDatabaseConnector } from '@app/data/connection'
 import { IPlaceModel } from '@app/data/models/place'
 import { IReviewModel } from '@app/data/models/review'
 import { IUserModel } from '@app/data/models/user'

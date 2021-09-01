@@ -1,38 +1,33 @@
-import { IEventDatabase } from "@app/data"
-import { IPlace } from "@app/data/models/place"
-import { IReview } from "@app/data/models/review"
-import { IUser } from "@app/data/models/user"
-import { IReviewReward } from '../../src/data/models/user-review-reward/index';
+import { IEventDatabase } from '@app/data'
+import { IPlace } from '@app/data/models/place'
+import { IReview } from '@app/data/models/review'
+import { IUser } from '@app/data/models/user'
+import { IReviewReward } from '../../src/data/models/user-review-reward/index'
 
-export const PlaceSeeder
-  = (db: IEventDatabase) => {
-    return async (place: IPlace) => {
-      const placeModel = db.getPlaceModel()
-      await placeModel.save(place)
-    }
+export const PlaceSeeder = (db: IEventDatabase) => {
+  return async (place: IPlace) => {
+    const placeModel = db.getPlaceModel()
+    await placeModel.save(place)
   }
+}
 
-export const UserSeeder
-  = (db: IEventDatabase) => {
-    return async (user: IUser) => {
-      const userModel = db.getUserModel()
-      await userModel.save(user)
-    }
+export const UserSeeder = (db: IEventDatabase) => {
+  return async (user: IUser) => {
+    const userModel = db.getUserModel()
+    await userModel.save(user)
   }
+}
 
-export const ReviewSeeder
-  = (db: IEventDatabase) => {
-    return async (review: IReview) => {
-      const reviewModel = db.getReviewModel()
-      await reviewModel.save(review)
-    }
+export const ReviewSeeder = (db: IEventDatabase) => {
+  return async (review: IReview) => {
+    const reviewModel = db.getReviewModel()
+    await reviewModel.save(review)
   }
+}
 
-export const RewardSeeder
-  = (db: IEventDatabase) => {
-    return async (reward: IReviewReward) => {
-      const rewardModel = db.getReviewRewardModel()
-      await rewardModel.save(reward)
-    }
+export const RewardSeeder = (db: IEventDatabase) => {
+  return async (reward: IReviewReward) => {
+    const rewardModel = db.getReviewRewardModel()
+    await rewardModel.save(reward)
   }
-
+}

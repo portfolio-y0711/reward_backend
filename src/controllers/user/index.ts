@@ -14,6 +14,6 @@ export default (service: IUserService): IUserController => {
   const getUserRewards = AsyncRequestHandler(GetUserReward(service))
   return {
     getUserReviewPoint,
-    getUserRewards
+    getUserRewards,
   }
 }

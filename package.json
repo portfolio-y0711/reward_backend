@@ -8,7 +8,7 @@
     "u": "jest --config ./jest.unit.json --detectOpenHandles --forceExit --runInBand",
     "i": "jest --config ./jest.i11.json --detectOpenHandles --forceExit",
     "f": "jest --config ./jest.feature.json --detectOpenHandles --forceExit --runInBand ",
-    "p": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "p": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/**/*.{ts,tsx,css}\"",
     "l": "yarn lint-staged"
   },
   "devDependencies": {

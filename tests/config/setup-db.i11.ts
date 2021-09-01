@@ -1,12 +1,12 @@
-import { Database, IEventDatabase } from "@app/data"
-import DatabaseConnector from "@app/data/connection"
+import { Database, IEventDatabase } from '@app/data'
+import DatabaseConnector from '@app/data/connection'
 
 let db: IEventDatabase
 
 beforeEach(async () => {
   const t0 = Date.now()
   const databaseConnector = DatabaseConnector({
-    filename: './i11.db'
+    filename: './i11.db',
   })
   db = Database(databaseConnector)
   await db.init()

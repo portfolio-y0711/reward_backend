@@ -1,6 +1,6 @@
-import { IDatabaseConnector } from "@app/data/connection"
+import { IDatabaseConnector } from '@app/data/connection'
 import _Promise from 'bluebird'
-import { IReviewReward } from '@app/data/models/user-review-reward';
+import { IReviewReward } from '@app/data/models/user-review-reward'
 
 export const FindUserReviewRewardsByUserId = (conn: IDatabaseConnector) => {
   return async (userId: string) => {

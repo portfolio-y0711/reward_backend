@@ -12,13 +12,13 @@ export const createUserService = (db: IEventDatabase): IUserService => {
     const userModel = db.getUserModel()
     return await userModel.findUserRewardPoint(userId)
   }
-  const fetchUserRewards = async(userId: string) => {
+  const fetchUserRewards = async (userId: string) => {
     const userRewardModel = db.getReviewRewardModel()
     return await userRewardModel.findUserReviewRewardsByUserId(userId)
   }
   return {
     fetchUserReviewPoint,
-    fetchUserRewards
+    fetchUserRewards,
   }
 }
 

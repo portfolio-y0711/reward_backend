@@ -14,14 +14,14 @@ export const GetUserReward = (service: IUserService) => {
       .then((res) => {
         httpResponse = {
           statusCode: 200,
-          body: res
+          body: res,
         }
         return httpResponse
       })
       .catch((err) => {
         httpResponse = {
           statusCode: 500,
-          message: err
+          message: err,
         }
         return httpResponse
       })

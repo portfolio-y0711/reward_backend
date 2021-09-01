@@ -2,7 +2,7 @@ import { IEventController } from '@app/controllers/event'
 import createRouter from '@app/routers/event/routes'
 import express from 'express'
 import request, { Request, Response } from 'supertest'
-import { mock } from 'jest-mock-extended';
+import { mock } from 'jest-mock-extended'
 
 describe('[Event] router => controller', () => {
   let spy: jest.Mock<any, any>
@@ -20,7 +20,7 @@ describe('[Event] router => controller', () => {
 
       const controller: IEventController = {
         ...mock<IEventController>(),
-        postEvent: spy
+        postEvent: spy,
       }
 
       const router = createRouter(controller)

@@ -1,5 +1,9 @@
 import { Database, IEventDatabase } from '@app/data'
-import { IReviewPointEvent, ReviewEventActionRouter, REVIEW_ACTION } from '@app/services/event/review/actions'
+import {
+  IReviewPointEvent,
+  ReviewEventActionRouter,
+  REVIEW_ACTION,
+} from '@app/services/event/review/actions'
 import DatabaseConnector from '@app/data/connection'
 import { IDatabaseConnector } from '@app/data/connection'
 import EventHandlerRouter, { IEventHandlingService } from '@app/services/event'
@@ -9,7 +13,7 @@ import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, ReviewSeeder, RewardSeeder, UserSeeder } from '@tests/helpers'
 import { BooleanCode, IReview } from '@app/data/models/review'
-import { IReviewReward } from '@app/data/models/user-review-reward';
+import { IReviewReward } from '@app/data/models/user-review-reward'
 import { uuidv4 } from '@app/util'
 
 describe('[Event: REVIEW, MOD] service => model', () => {
@@ -19,20 +23,20 @@ describe('[Event: REVIEW, MOD] service => model', () => {
 
   let userSeeder: (user: IUser) => Promise<void>
   let placeSeeder: (place: IPlace) => Promise<void>
-  let reviewSeeder:  (review: IReview) => Promise<void>
-  let rewardSeeder:  (reviewReward: IReviewReward) => Promise<void>
+  let reviewSeeder: (review: IReview) => Promise<void>
+  let rewardSeeder: (reviewReward: IReviewReward) => Promise<void>
 
-  beforeAll(async() => {
+  beforeAll(async () => {
     conn = DatabaseConnector({
-      filename: 'i11.db'
+      filename: 'i11.db',
     })
     db = Database(conn)
     await db.init()
     await db.clear()
 
     service = EventHandlerRouter({
-      "REVIEW": ReviewEventActionRouter(db).route,
-      "BLAR_BLAR": BlarBlarEventHandler(db)
+      REVIEW: ReviewEventActionRouter(db).route,
+      BLAR_BLAR: BlarBlarEventHandler(db),
     })
 
     userSeeder = UserSeeder(db)
@@ -41,63 +45,63 @@ describe('[Event: REVIEW, MOD] service => model', () => {
     rewardSeeder = RewardSeeder(db)
   })
 
-  afterEach(async() => {
+  afterEach(async () => {
     await db.clear()
   })
 
   describe('when [POST: /api/events => controller.postEvent => service.handleEvent => handlers.handleReviewEvent]', () => {
-    it([
-        'service.handleEvent =>',
-      ].join('\n'), async() => {
-
-      const type: EVENT_TYPE = "REVIEW"
-      const action: REVIEW_ACTION = "MOD"
-      const userId = "3ede0ef2-92b7-4817-a5f3-0c575361f745"
-      const reviewId = "240a0658-dc5f-4878-9381-ebb7b2667772"
-      const placeId = "2e4baf1c-5acb-4efb-a1af-eddada31b00f"
+    it(['service.handleEvent =>'].join('\n'), async () => {
+      const type: EVENT_TYPE = 'REVIEW'
+      const action: REVIEW_ACTION = 'MOD'
+      const userId = '3ede0ef2-92b7-4817-a5f3-0c575361f745'
+      const reviewId = '240a0658-dc5f-4878-9381-ebb7b2667772'
+      const placeId = '2e4baf1c-5acb-4efb-a1af-eddada31b00f'
 
       const event: IReviewPointEvent & IEvent = {
         type,
         action,
         reviewId,
-        "content": "좋긴 한데요..",
-        "attachedPhotoIds": [],
+        content: '좋긴 한데요..',
+        attachedPhotoIds: [],
         userId,
-        placeId
+        placeId,
       }
 
       await userSeeder({
         userId,
-        name: "Michael",
-        rewardPoint: 3
+        name: 'Michael',
+        rewardPoint: 3,
       })
 
       await placeSeeder({
         placeId,
         bonusPoint: 1,
-        country: "호주",
-        name: "시드니"
+        country: '호주',
+        name: '시드니',
       })
 
       await reviewSeeder({
         reviewId,
         placeId,
-        "content": "좋아요",
-        "attachedPhotoIds": ["e4d1a64e-a531-46de-88d0-ff0ed70c0bb8", "afb0cef2-851d-4a50-bb07-9cc15cbdc332"],
+        content: '좋아요',
+        attachedPhotoIds: [
+          'e4d1a64e-a531-46de-88d0-ff0ed70c0bb8',
+          'afb0cef2-851d-4a50-bb07-9cc15cbdc332',
+        ],
         userId,
-        "rewarded": BooleanCode.True
+        rewarded: BooleanCode.True,
       })
 
       await rewardSeeder({
         rewardId: uuidv4(),
         reviewId,
-        operation: "ADD",
+        operation: 'ADD',
         pointDelta: 3,
-        reason: "NEW",
-        userId
+        reason: 'NEW',
+        userId,
       })
 
-      await new Promise(res => setTimeout(res, 1000))
+      await new Promise((res) => setTimeout(res, 1000))
 
       const reviewModel = db.getReviewModel()
       await reviewModel.updateRewardedReview({
@@ -106,7 +110,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
         placeId,
         reviewId,
         rewarded: BooleanCode.True,
-        userId
+        userId,
       })
 
       await service.handleEvent(event)
@@ -118,7 +122,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
 
     // action이 MOD이면
     // 첫번째 리뷰인지 확인 (reviewId와 rewarded 플래그로 Review 테이블을 조회하여 첫번째 레코드인지 확인)
-    // => true이면 
+    // => true이면
     // 장소에 보너스 점수가 있는지 확인
     // content와 attachedPhotoIds로부터 점수 계산
     //   => 유저 점수 timestamp(이력) 테이블에서 점수 부여된 내역을 확인
