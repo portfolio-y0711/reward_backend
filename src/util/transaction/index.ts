@@ -17,14 +17,20 @@ export const runBatchAsync = (conn: IDatabaseConnector) => {
     const results: any = []
     const runAsync = RunAsync(conn)
     const batch = ['BEGIN', ...statements, 'COMMIT']
-    return batch.reduce((chain: Promise<any>, statement) => chain.then(async result => {
-      results.push(result)
-      if (Array.isArray(statement)) {
-        console.log(statement)
-        return await runAsync((statement as string[])[0], ...(statement as string[]).slice(1))
-      } else return await runAsync(statement)
-    }), Promise.resolve())
-      .catch(err => runAsync('ROLLBACK').then(() => Promise.reject(err + ' in statement #' + results.length)))
+    return batch
+      .reduce(
+        (chain: Promise<any>, statement) =>
+          chain.then(async (result) => {
+            results.push(result)
+            if (Array.isArray(statement)) {
+              return await runAsync((statement as string[])[0], ...(statement as string[]).slice(1))
+            } else return await runAsync(statement)
+          }),
+        Promise.resolve(),
+      )
+      .catch((err) =>
+        runAsync('ROLLBACK').then(() => Promise.reject(err + ' in statement #' + results.length)),
+      )
       .then(() => results.slice(2))
   }
 }

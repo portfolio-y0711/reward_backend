@@ -11,8 +11,8 @@ export const Save = (conn: IDatabaseConnector) => {
     const sql = `INSERT INTO PLACES_REVIEWS(reviewId,placeId,content,attachedPhotoIds,userId,rewarded) VALUES('${
       reviewId ?? uuidv4()
     }','${placeId}', '${content}', '${attachedPhotoIds.join(',')}', '${userId}', '${rewarded}')`
-    
-     return new _Promise<void>((res, rej) => {
+
+    return new _Promise<void>((res, rej) => {
       db.run(sql, function (err) {
         if (err) {
           console.log(err.message)
