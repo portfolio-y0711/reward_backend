@@ -46,7 +46,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
   })
 
   afterEach(async () => {
-    await db.clear()
+    // await db.clear()
   })
 
   describe('when [POST: /api/events => controller.postEvent => service.handleEvent => handlers.handleReviewEvent]', () => {
@@ -61,7 +61,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
         type,
         action,
         reviewId,
-        content: '좋긴 한데요..',
+        content: '좋긴 한데요..!!',
         attachedPhotoIds: [],
         userId,
         placeId,

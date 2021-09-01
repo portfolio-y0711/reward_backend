@@ -5,17 +5,17 @@ export const PostEvent = (service: IEventHandlingService) => {
   return async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
     const { body } = httpRequest
     try {
-      await  service.handleEvent(body)
-    } catch(e) {
-        return {
-          statusCode: 500,
-          message: 'event processing failed',
-        }
+      await service.handleEvent(body)
+    } catch (e) {
+      return {
+        statusCode: 500,
+        message: 'event processing failed',
+      }
     }
 
-    return ({
+    return {
       statusCode: 200,
       message: 'event processing succeeded',
-    })
+    }
   }
 }

@@ -19,6 +19,7 @@ export interface IDatabase {
   seed: () => Promise<void>
   close: () => Promise<void>
   clear: () => Promise<void>
+  getConnector: () => IDatabaseConnector
 }
 export interface IEventDatabase extends IDatabase {
   getUserModel: () => IUserModel
@@ -32,6 +33,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
   let placeModel: IPlaceModel
   let reviewModel: IReviewModel
   let userRewardModel: IReviewRewardModel
+  let conn: IDatabaseConnector
 
   const close = async () => {
     const db = await dbConnector.getConnection()
@@ -46,6 +48,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     })
   }
   const init = async () => {
+    conn = dbConnector
     ;[userModel, placeModel, reviewModel, userRewardModel] = createModel(dbConnector)
 
     await userModel.dropSchema()
@@ -117,6 +120,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
     init,
     seed,
     clear,
+    getConnector: () => conn,
     getUserModel: () => userModel,
     getPlaceModel: () => placeModel,
     getReviewModel: () => reviewModel,

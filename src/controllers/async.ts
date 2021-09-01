@@ -12,9 +12,7 @@ export const AsyncRequestHandler = (
     }
     requestHandler(httpRequest)
       .then((httpResponse: IHttpResponse) => {
-        console.log(httpResponse)
         if (httpResponse.body) {
-          console.log(httpResponse)
           res.status(httpResponse.statusCode).json({
             body: httpResponse.body,
           })

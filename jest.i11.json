@@ -8,7 +8,8 @@
   "testMatch": [
     "<rootDir>./tests/_i11/_1_databases/**/*test.ts",
     "<rootDir>./tests/_i11/_2_services/**/*test.ts",
-    "<rootDir>./tests/_i11/_3_controllers/**/*test.ts"
+    "<rootDir>./tests/_i11/_3_controllers/**/*test.ts",
+    "<rootDir>./tests/_util/**/*test.ts"
   ],
   "testEnvironment": "node",
   "transform": {

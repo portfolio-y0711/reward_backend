@@ -39,3 +39,28 @@ export interface IReviewEvent {
   userId: string
   placeId: string
 }
+
+export class ApiError {
+  message: string
+  code: number
+  constructor(code: number, message: string) {
+    this.message = message
+    this.code = code
+  }
+  static badRequest(msg: any) {
+    return new ApiError(400, msg)
+  }
+}
+
+export class CustomError {
+  message: string
+  code: number
+
+  constructor(message: string, code: number = 500) {
+    this.message = message
+    this.code = code
+  }
+  static(msg: any, code?: number) {
+    return new CustomError(msg, code)
+  }
+}
