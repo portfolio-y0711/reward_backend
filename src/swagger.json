@@ -31,7 +31,7 @@
         ],
         "summary": "",
         "description": "",
-        "operationId": "event",
+        "operationId": "events",
         "consumes": [
           "application/json"
         ],
@@ -52,6 +52,68 @@
         "responses": {
           "405": {
             "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/users/{userId}/rewardPoint": {
+      "get": {
+        "tags": [
+          "Point"
+        ],
+        "summary": "",
+        "description": "",
+        "operationid": "rewardPoint",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string",
+            "x-example": "3ede0ef2-92b7-4817-a5f3-0c575361f745"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "invalid input"
+          }
+        }
+      }
+    },
+    "/users/{userId}/rewards": {
+      "get": {
+        "tags": [
+          "Point"
+        ],
+        "summary": "",
+        "description": "",
+        "operationid": "rewards",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string",
+            "x-example": "3ede0ef2-92b7-4817-a5f3-0c575361f745"
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "invalid input"
           }
         }
       }

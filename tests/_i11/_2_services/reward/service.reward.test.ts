@@ -1,6 +1,4 @@
-import { mock } from 'jest-mock-extended'
 import { Database, IEventDatabase } from '@app/data'
-import { IUserModel } from '@app/data/models/user'
 import { createUserService, IUserService } from '@app/services/user'
 import DatabaseConnector from '@app/data/connection'
 import { IDatabaseConnector } from '@app/data/connection'

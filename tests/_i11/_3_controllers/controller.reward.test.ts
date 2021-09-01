@@ -21,11 +21,13 @@ describe('[Point] controller => service', () => {
     userService = createUserService(db)
   })
 
-  afterEach(() => {
+  afterEach(async() => {
     jest.clearAllMocks()
+    await db.clear()
+    await db.close()
   })
 
-  describe('when [POST: /events =>]', () => {
+  describe('when [GET: /users/{userId}/rewards =>]', () => {
     it('controller.getUserReviewPoint => service.fetchUserReviewPoint', async() => {
       const getUserReviewPoint = GetUserReviewPoint(userService)
 

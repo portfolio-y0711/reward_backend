@@ -1,13 +1,14 @@
 import { IUserService } from "@app/services/user"
-import express from "express"
+import { Request, Response, NextFunction } from "express"
+import { AsyncRequestHandler } from "../async";
 import { GetUserReviewPoint } from './impl/controller.get-user-review-point';
 
 export interface IUserController {
-  getUserReviewPoint: (req: express.Request, res: express.Response) => void
+  getUserReviewPoint: (req: Request, res: Response, next: NextFunction) => void
 }
 
 export default (service: IUserService): IUserController => {
-  const getUserReviewPoint = GetUserReviewPoint(service)
+  const getUserReviewPoint = AsyncRequestHandler(GetUserReviewPoint(service))
   return {
     getUserReviewPoint
   }
