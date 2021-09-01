@@ -2,7 +2,7 @@ import { IUserService } from '@app/services/user'
 import { Request, Response, NextFunction } from 'express'
 import { AsyncRequestHandler } from '../async'
 import { GetUserReviewPoint } from './impl/controller.get-user-review-point'
-import { mock } from 'jest-mock-extended'
+import { GetUserReward } from './impl/controller.get-user-rewards'
 
 export interface IUserController {
   getUserReviewPoint: (req: Request, res: Response, next: NextFunction) => void
@@ -11,8 +11,9 @@ export interface IUserController {
 
 export default (service: IUserService): IUserController => {
   const getUserReviewPoint = AsyncRequestHandler(GetUserReviewPoint(service))
+  const getUserRewards = AsyncRequestHandler(GetUserReward(service))
   return {
     getUserReviewPoint,
-    getUserRewards: mock<IUserController>().getUserRewards,
+    getUserRewards
   }
 }

@@ -27,8 +27,34 @@ describe('[Point] controller => service', () => {
     await db.close()
   })
 
-  describe('when [GET: /users/{userId}/rewards =>]', () => {
+  describe('when [GET: /users/{userId}/rewardPoint =>]', () => {
     it('controller.getUserReviewPoint => service.fetchUserReviewPoint', async() => {
+      const getUserReviewPoint = GetUserReviewPoint(userService)
+
+      const userModel = db.getUserModel()
+      await userModel.save({
+        userId: "3ede0ef2-92b7-4817-a5f3-0c575361f745",
+        name: "Michael",
+        rewardPoint: 1
+      })
+       
+      const httpRequest: IHttpRequest = {
+        body: {},
+        params: { userId: "3ede0ef2-92b7-4817-a5f3-0c575361f745" },
+        query: {}
+      }
+      const result = await getUserReviewPoint(httpRequest)
+      expect(result).toEqual({
+        "body": {
+          "rewardPoint": 1
+        }, 
+        "statusCode": 200
+      })
+    })
+  })
+
+  describe('when [GET: /users/{userId}/rewards =>]', () => {
+    it('controller.getUserRewards => service.fetchUserRewards', async() => {
       const getUserReviewPoint = GetUserReviewPoint(userService)
 
       const userModel = db.getUserModel()
