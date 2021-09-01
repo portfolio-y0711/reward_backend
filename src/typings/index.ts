@@ -53,13 +53,14 @@ export class ApiError {
 }
 
 export class CustomError {
-  message!: string
-  status!: number
-  additionalInfo!: any
+  message: string
+  code: number
 
-  constructor(message: string, status: number = 500, additionalInfo: any = {}) {
+  constructor(message: string, code: number = 500) {
     this.message = message
-    this.status = status
-    this.additionalInfo = additionalInfo
+    this.code = code
+  }
+  static(msg: any, code?: number) {
+    return new CustomError(msg, code)
   }
 }

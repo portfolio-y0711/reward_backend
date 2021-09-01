@@ -1,6 +1,9 @@
 import { IEventDatabase } from '@app/data'
 import { uuidv4 } from '@app/util'
 import { IReviewPointEvent } from '@app/services/event/review/actions'
+import { REWARD_OPERATION, REWARD_REASON } from '@app/data/models/user-review-reward'
+import { BooleanCode } from '@app/data/models/review'
+import { runBatchAsync } from '../../../../../../util/transaction/index';
 
 export const ModReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {
@@ -29,29 +32,50 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
       const diff = totalPoint - latestRewardRecord.pointDelta
 
       if (diff != 0) {
-        await reviewRewardModel.save({
-          rewardId: uuidv4(),
-          reviewId: eventInfo['reviewId'],
-          userId: eventInfo['userId'],
-          operation: 'SUB',
-          pointDelta: latestRewardRecord.pointDelta,
-          reason: 'MOD',
-        })
+        
+        const subtract_operation: REWARD_OPERATION = "SUB"
+        const subtract_reason: REWARD_REASON = "MOD"
+        const subtract_reward_param = [ uuidv4(), eventInfo['userId'], eventInfo['reviewId'], subtract_operation, latestRewardRecord.pointDelta, subtract_reason ]
+        // await reviewRewardModel.save({
+        //   rewardId: uuidv4(),
+        //   reviewId: eventInfo['reviewId'],
+        //   userId: eventInfo['userId'],
+        //   operation: 'SUB',
+        //   pointDelta: latestRewardRecord.pointDelta,
+        //   reason: 'MOD',
+        // })
 
-        await new Promise((res) => setTimeout(res, 1000))
-
-        await reviewRewardModel.save({
-          rewardId: uuidv4(),
-          reviewId: eventInfo['reviewId'],
-          userId: eventInfo['userId'],
-          operation: 'ADD',
-          pointDelta: totalPoint,
-          reason: 'MOD',
-        })
+        const add_operation: REWARD_OPERATION = "ADD"
+        const add_reason: REWARD_REASON = "MOD"
+        const add_reward_param = [ uuidv4(), eventInfo['userId'], eventInfo['reviewId'], add_operation, totalPoint, add_reason ]
 
         const userModel = db.getUserModel()
         const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
         await userModel.updateReviewPoint(eventInfo['userId'], currPoint + diff)
+
+        const transactionCmds: any[] = [
+          [`INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);` , ...subtract_reward_param],
+          [`INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);` , ...add_reward_param],
+          [`UPDATE USERS SET rewardPoint = ? WHERE userID = ?;`, currPoint + diff, eventInfo['userId'] ],
+          // [`UPDATE PLACES_REVIEWS WHERE = reviewId (,placeId,content,attachedPhotoIds,userId,rewarded) VALUES(?,?,?,?,?,?);`
+          //   ,uuidv4(), eventInfo['placeId'], eventInfo['content'], eventInfo['attachedPhotoIds'].join(), eventInfo['userId'], BooleanCode.True
+          // ]
+        ]
+        
+        // await reviewRewardModel.save({
+        //   rewardId: uuidv4(),
+        //   reviewId: eventInfo['reviewId'],
+        //   userId: eventInfo['userId'],
+        //   operation: 'ADD',
+        //   pointDelta: totalPoint,
+        //   reason: 'MOD',
+        // })
+        const conn = db.getConnector()
+        await runBatchAsync(conn)(transactionCmds)
+
+        //
+
+        //
       }
     }
   }

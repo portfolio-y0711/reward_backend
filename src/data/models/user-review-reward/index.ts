@@ -39,10 +39,7 @@ export const ReviewRewardModel = (conn: IDatabaseConnector): IReviewRewardModel 
   const save = async (userReward: IReviewReward, id?: string) => {
     const db = await conn.getConnection()
     const { rewardId, userId, reviewId, operation, pointDelta, reason } = userReward
-    const sql = `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES('${
-      rewardId ?? uuidv4()
-    }', '${userId}', '${reviewId}', '${operation}', '${pointDelta}', '${reason}')`
-
+    const sql = `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES('${ rewardId ?? uuidv4() }', '${userId}', '${reviewId}', '${operation}', '${pointDelta}', '${reason}')`
     return new _Promise<void>((res, rej) => {
       db.run(sql, function (err) {
         if (err) {

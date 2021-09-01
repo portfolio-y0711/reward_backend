@@ -1,19 +1,14 @@
-// import { ApiError, CustomError } from '@app/typings'
-// import { RequestHandler } from 'express'
-// import { Request, Response, NextFunction, ErrorRequestHandler } from 'express'
+import { ApiError, CustomError } from '@app/typings'
+import { Request, Response, NextFunction } from 'express'
 
-// const apiErrorHandler = (
-//   err: TypeError | CustomError,
-//   req: Request,
-//   res: Response,
-//   next: NextFunction,
-// ): ErrorRequestHandler => {
-//   console.error(err)
+function apiErrorHandler(err: any, req: Request, res: Response, next: NextFunction) {
+  if (err instanceof ApiError) {
+    return res.status(err.code).json(err.message)
+  } else if (err instanceof CustomError) {
+    return res.status((err as CustomError).code).json(err.message)
+  }
 
-//   if (err instanceof ApiError) {
-//     res.status(err.code).json(err.message)
-//     // return void
-//   }
+  return res.status(500).json('something went wrong')
+}
 
-//   res.status(500).json('something went wrong')
-// }
+export default apiErrorHandler
