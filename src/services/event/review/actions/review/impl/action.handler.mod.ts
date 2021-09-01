@@ -1,7 +1,7 @@
 import { IEventDatabase } from '@app/data'
 import { uuidv4 } from '@app/util'
 import { IReviewPointEvent } from '@app/services/event/review/actions'
-import { REWARD_OPERATION, REWARD_REASON } from '@app/data/models/user-review-reward'
+import { REWARD_OPERATION, REWARD_REASON } from '@app/typings'
 import { BooleanCode } from '@app/data/models/review'
 import { runBatchAsync } from '@app/util/transaction'
 
@@ -86,5 +86,6 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
         await runBatchAsync(conn)(transactionCmds)
       }
     }
+    return
   }
 }

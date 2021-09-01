@@ -9,6 +9,7 @@ import {
 } from './dml/query/impl/find-review-counts-by-placeId'
 import _Promise from 'bluebird'
 import { UpdateRewardedReview } from './dml/cmd/impl/update'
+import { RemoveAll } from './dml/cmd/impl/remove-all'
 
 export enum BooleanCode {
   True = 1,
@@ -45,20 +46,7 @@ export const ReviewModel = (conn: IDatabaseConnector): IReviewModel => {
   const save = Save(conn)
   const updateRewardedReview = UpdateRewardedReview(conn)
   const remove = async (reviewId: string) => {}
-  const removeAll = async () => {
-    const db = await conn.getConnection()
-    const sql = `DELETE FROM PLACES_REVIEWS`
-    return new _Promise<void>((res, rej) => {
-      db.run(sql, function (this, err) {
-        if (err) {
-          console.log('error running sql ' + sql)
-          rej(err.message)
-        } else {
-          res()
-        }
-      })
-    })
-  }
+  const removeAll = RemoveAll(conn)
   const findReviewCountsByPlaceId = FindReviewCountsByPlaceId(conn)
   const findReviewAndCheckRewarded = FindReviewAndCheckRewarded(conn)
 

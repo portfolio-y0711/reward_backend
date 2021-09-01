@@ -5,6 +5,8 @@ import _Promise from 'bluebird'
 import { FindPlaceByName } from './dml/query/impl/find-place-by-name'
 import { Save } from './dml/cmd/impl'
 import { ISchemaAdaptor } from '@app/data'
+import { RemoveAll } from './dml/query/impl/remove-all'
+import { FindBonusPoint } from './dml/query/impl/find-bonus-point'
 
 export interface IPlace {
   id?: string
@@ -27,36 +29,9 @@ export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
   const createSchema = CreatePlaceTable(conn)
   const save = Save(conn)
   const remove = () => {}
-  const removeAll = async () => {
-    const db = await conn.getConnection()
-    const sql = `DELETE FROM PLACES`
-    return new _Promise<void>((res, rej) => {
-      db.run(sql, function (this, err) {
-        if (err) {
-          console.log('error running sql ' + sql)
-          rej(err.message)
-        } else {
-          res()
-        }
-      })
-    })
-  }
   const findPlaceByName = FindPlaceByName(conn)
-  const findBonusPoint = async (placeId: string) => {
-    const db = await conn.getConnection()
-    const sql = `SELECT bonusPoint FROM PLACES WHERE placeId = '${placeId}'`
-    return new _Promise<number>((res, rej) => {
-      db.get(sql, function (err, row) {
-        if (err) {
-          console.log(err.message)
-          console.log('error running sql ' + sql)
-          rej(err.message)
-        } else {
-          res(row['bonusPoint'])
-        }
-      })
-    })
-  }
+  const removeAll = RemoveAll(conn)
+  const findBonusPoint = FindBonusPoint(conn)
 
   return {
     createSchema,

@@ -3,7 +3,7 @@ import { IReviewPointEvent } from '../..'
 import { BooleanCode } from '@app/data/models/review'
 import { uuidv4 } from '@app/util'
 import { runBatchAsync } from '@app/util/transaction'
-import { REWARD_OPERATION, REWARD_REASON } from '@app/data/models/user-review-reward/index'
+import { REWARD_OPERATION, REWARD_REASON } from '@app/typings'
 
 export const AddReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {
@@ -37,7 +37,7 @@ export const AddReviewActionHandler = (db: IEventDatabase) => {
         [`UPDATE USERS SET rewardPoint = ? WHERE userID = ?;`, totalpoint, eventInfo['userId']],
         [
           `INSERT INTO PLACES_REVIEWS(reviewId,placeId,content,attachedPhotoIds,userId,rewarded) VALUES(?,?,?,?,?,?);`,
-          uuidv4(),
+          eventInfo['reviewId'],
           eventInfo['placeId'],
           eventInfo['content'],
           eventInfo['attachedPhotoIds'].join(),
