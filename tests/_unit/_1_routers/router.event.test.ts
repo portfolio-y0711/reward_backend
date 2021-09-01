@@ -1,5 +1,5 @@
 import { IEventController } from '@app/controllers/event'
-import createRouter from '@app/routers/event'
+import createRouter from '@app/routers/event/routes'
 import express from 'express'
 import request, { Request, Response } from 'supertest'
 import { mock } from 'jest-mock-extended';

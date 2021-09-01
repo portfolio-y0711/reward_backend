@@ -1,7 +1,8 @@
-import createRouter, { IUserController } from '@app/routers/user'
 import express from 'express'
+import createRouter  from '@app/routers/user/routes'
 import { mock } from 'jest-mock-extended'
 import request, { Request, Response } from 'supertest'
+import { IUserController } from '@app/controllers/user'
 
 describe('[User] router test => controller.test', () => {
   let spy: jest.Mock<any, any>

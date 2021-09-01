@@ -2,7 +2,7 @@ import express from 'express'
 import createDatabaseConnector from './data/connection'
 import swaggerUI from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
-import { createEventRouter } from  './routers/event/routes'
+import { createEventRouter } from  './routers/event'
 import { Database } from './data'
 
 export default async () => {
