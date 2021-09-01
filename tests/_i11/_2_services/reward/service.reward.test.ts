@@ -28,7 +28,7 @@ describe('[User] service => database', () => {
     it('service.fetchUserRewardPoint => database.findUserRewardPoint', async() => {
 
       const userModel = db.getUserModel()
-      userModel.save({
+      await userModel.save({
         userId: "3ede0ef2-92b7-4817-a5f3-0c575361f745",
         name: "Michael",
         rewardPoint: 1

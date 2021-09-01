@@ -4,6 +4,7 @@ import swaggerUI from 'swagger-ui-express'
 import * as swaggerDocument from './swagger.json'
 import { createEventRouter } from  './routers/event'
 import { Database } from './data'
+import createUserRouter from './routers/user'
 
 export default async () => {
   const app = express()
@@ -17,13 +18,16 @@ export default async () => {
   await db.init()
   await db.seed()
 
-  const router = createEventRouter({ db })
-  router.get('/healthCheck', (req: express.Request, res: express.Response ) => {
+  const eventRouter = createEventRouter({ db })
+  const userRouter = createUserRouter({ db })
+  app.get('/healthCheck', (req: express.Request, res: express.Response ) => {
     res.json({
       status: 'UP'
     })
   })
-  app.use('/', router)
+  app.use('/', eventRouter)
+  app.use('/', userRouter)
+  
 
   app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
   return app

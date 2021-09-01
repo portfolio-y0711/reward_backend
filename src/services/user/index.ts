@@ -13,3 +13,5 @@ export const createUserService = (db: IEventDatabase): IUserService => {
     fetchUserReviewPoint
   }
 }
+
+export default createUserService
