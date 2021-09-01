@@ -38,9 +38,8 @@ describe('[User] service => database', () => {
     
   })
 
-  describe('when [GET: /users/{userId}/rewards => controller.getUserReviewPoint]', () => {
-    it('service.fetchUserRewardPoint => database.findUserRewardPoint', async() => {
-
+  describe('when [GET: /users/{userId}/rewards => controller.getUserRewards]', () => {
+    it('service.fetchUserRewards => database.findUserReviewRewardByUserId', async() => {
       const rewardModel: IReviewRewardModel = {
         ...mock<IReviewRewardModel>(),
         findUserReviewRewardsByUserId: spy,
@@ -57,6 +56,5 @@ describe('[User] service => database', () => {
       expect(spy).toBeCalledTimes(1)
       expect(spy).toBeCalledWith("3ede0ef2-92b7-4817-a5f3-0c575361f745")
     })
-    
   })
 })

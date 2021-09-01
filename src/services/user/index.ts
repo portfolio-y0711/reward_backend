@@ -4,7 +4,7 @@ import { mock } from 'jest-mock-extended'
 
 export interface IUserService {
   fetchUserReviewPoint: (userId: string) => Promise<number>
-  fetchUserRewards: (userId: string) => Promise<IReviewReward>
+  fetchUserRewards: (userId: string) => Promise<IReviewReward[]>
 }
 
 export const createUserService = (db: IEventDatabase): IUserService => {
@@ -12,9 +12,13 @@ export const createUserService = (db: IEventDatabase): IUserService => {
     const userModel = db.getUserModel()
     return await userModel.findUserRewardPoint(userId)
   }
+  const fetchUserRewards = async(userId: string) => {
+    const userRewardModel = db.getReviewRewardModel()
+    return await userRewardModel.findUserReviewRewardsByUserId(userId)
+  }
   return {
-    ...mock<IUserService>(),
     fetchUserReviewPoint,
+    fetchUserRewards
   }
 }
 

@@ -5,6 +5,7 @@ import _Promise from 'bluebird'
 import { uuidv4 } from '@app/util'
 import { ISchemaAdaptor } from '@app/data'
 import { CreateUserRewardTableIndex } from './ddl/create-index.table'
+import { FindUserReviewRewardsByUserId } from './dml/find-user-review-rewards-by-userId'
 
 export interface IReviewRewardModel extends ISchemaAdaptor {
   save: (user: IReviewReward, userId?: string) => Promise<void>
@@ -38,9 +39,8 @@ export const ReviewRewardModel = (conn: IDatabaseConnector): IReviewRewardModel 
   const save = async (userReward: IReviewReward, id?: string) => {
     const db = await conn.getConnection()
     const { rewardId, userId, reviewId, operation, pointDelta, reason } = userReward
-    const sql = `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES('${
-      rewardId ?? uuidv4()
-    }', '${userId}', '${reviewId}', '${operation}', '${pointDelta}', '${reason}')`
+    const sql = `INSERT INTO USERS_REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES('${rewardId ?? uuidv4()
+      }', '${userId}', '${reviewId}', '${operation}', '${pointDelta}', '${reason}')`
 
     return new _Promise<void>((res, rej) => {
       db.run(sql, function (err) {
@@ -55,7 +55,7 @@ export const ReviewRewardModel = (conn: IDatabaseConnector): IReviewRewardModel 
     })
   }
 
-  const remove = async () => {}
+  const remove = async () => { }
 
   const removeAll = async () => {
     const db = await conn.getConnection()
@@ -68,21 +68,7 @@ export const ReviewRewardModel = (conn: IDatabaseConnector): IReviewRewardModel 
       }
     })
   }
-  const findUserReviewRewardsByUserId = async (userId: string) => {
-    const db = await conn.getConnection()
-    const sql = `SELECT * FROM USERS_REWARDS WHERE userId = '${userId}'`
-    return new _Promise<IReviewReward[]>((res, rej) => {
-      db.all(sql, function (this, err, records) {
-        if (err) {
-          console.log(err.message)
-          console.log('error running sql ' + sql)
-          rej(err.message)
-        } else {
-          res(records)
-        }
-      })
-    })
-  }
+  const findUserReviewRewardsByUserId = FindUserReviewRewardsByUserId(conn)
   const findLatestUserReviewRewardByReviewId = async (userId: string, reviewId: string) => {
     const db = await conn.getConnection()
     const operation: REWARD_OPERATION = 'ADD'
