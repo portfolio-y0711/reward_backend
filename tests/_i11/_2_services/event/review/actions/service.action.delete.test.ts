@@ -10,7 +10,7 @@ import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, UserSeeder } from '@tests/helpers'
 import { uuidv4 } from '@app/util'
 
-describe('[Event: REVIEW, DELETE] service => model', () => {
+describe.skip('[Event: REVIEW, DELETE] service => model', () => {
   let conn: IDatabaseConnector
   let db: IEventDatabase
   let service: IEventHandlingService

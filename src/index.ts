@@ -5,6 +5,7 @@ import * as swaggerDocument from './swagger.json'
 import { createEventRouter } from  './routers/event'
 import { Database } from './data'
 import createUserRouter from './routers/user'
+import path from 'path'
 
 export default async () => {
   const app = express()
@@ -25,9 +26,10 @@ export default async () => {
       status: 'UP'
     })
   })
+  
   app.use('/', eventRouter)
   app.use('/', userRouter)
-  
+  app.use(express.static(path.join(__dirname, 'static')))
 
   app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
   return app

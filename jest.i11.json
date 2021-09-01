@@ -20,5 +20,14 @@
     "@tests/(.*)$": "<rootDir>/tests/$1"
   },
   "setupFilesAfterEnv": ["<rootDir>/tests/config/setup-db.i11.ts"],
-  "bail": 1
+  "bail": 1,
+  "reporters": [
+      "default",
+      ["jest-html-reporters", {
+        "publicPath": "./src/static",
+        "filename": "i11.html",
+        "expand": false,
+        "openReport": true
+      }]
+  ]
 }

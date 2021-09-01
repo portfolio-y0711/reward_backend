@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "concurrently \"nodemon\" \"sleep 5 && open http://localhost:8000\"",
     "u": "jest --config ./jest.unit.json --detectOpenHandles --forceExit --runInBand",
     "i": "jest --config ./jest.i11.json --detectOpenHandles --forceExit",
     "f": "jest --config ./jest.feature.json --detectOpenHandles --forceExit --runInBand ",
@@ -23,6 +24,7 @@
     "husky": "^7.0.2",
     "jest": "^27.0.6",
     "jest-cucumber": "^3.0.1",
+    "jest-html-reporters": "^2.1.6",
     "jest-mock-extended": "^2.0.2-beta2",
     "lint-staged": "^11.1.2",
     "supertest": "^6.1.6",
@@ -42,5 +44,11 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
+  },
+  "jest": {
+    "reporters": [
+      "default",
+      "jest-html-reporters"
+    ]
   }
 }

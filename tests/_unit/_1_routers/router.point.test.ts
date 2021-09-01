@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+import { IUserController } from '@app/controllers/user'
+import createRouter from '@app/routers/user'
+>>>>>>> Stashed changes
 import express from 'express'
 import createRouter  from '@app/routers/user/routes'
 import { mock } from 'jest-mock-extended'
@@ -30,7 +35,7 @@ describe('[User] router test => controller.test', () => {
       .get('/users/3ede0ef2-92b7-4817-a5f3-0c575361f745/points')
       .end((_err: Request, _res: Response) => {
         expect(spy).toBeCalledTimes(1)
-        expect(spy.mock.calls[0][0]).toEqual(expect.objectContaining({ params: { userId: '3ede0ef2-92b7-4817-a5f3-0c575361f745' }}))
+        expect(spy.mock.calls[0][0]).toEqual(expect.objectContaining({ params: { userId: '3ede0ef2-92b7-4817-a5f3-0c575361f745' } }))
         done()
       })
   })

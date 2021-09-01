@@ -18,5 +18,14 @@
     "@tests/(.*)$": "<rootDir>/tests/$1"
   },
   "setupFilesAfterEnv": ["<rootDir>/tests/config/setup-db.feature.ts"],
-  "bail": 1
+  "bail": 1,
+  "reporters": [
+      "default",
+      ["jest-html-reporters", {
+        "publicPath": "./src/static",
+        "filename": "feature.html",
+        "expand": false,
+        "openReport": true
+      }]
+  ]
 }
