@@ -5,6 +5,7 @@ import { Database, IEventDatabase } from '@app/data'
 import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event/review/actions'
 import EventRouter, { IEventRoute } from '@app/services/event'
 import { mock } from 'jest-mock-extended'
+import { IRewardRecord } from '@app/data/models/reward'
 
 const feature = loadFeature('./tests/_usecase/features/basic/scenarios.delete.feature')
 
@@ -23,10 +24,10 @@ defineFeature(feature, (test) => {
 
     given(
       '유저의 현재 포인트 총점은 아래와 같음',
-      async (userInfo: { userId: string; totalPoint: string }[]) => {
+      async (userInfo: { userId: string; rewardPoint: string }[]) => {
         const userModel = db.getUserModel()
         const userPoint = await userModel.findUserRewardPoint(userInfo[0].userId)
-        expect(userPoint).toEqual(parseInt(userInfo[0].totalPoint))
+        expect(userPoint).toEqual(parseInt(userInfo[0].rewardPoint))
       },
     )
 
@@ -54,14 +55,42 @@ defineFeature(feature, (test) => {
       },
     )
 
-    then(
+    then('유저의 리워드 레코드가 아래와 같이 변경됨', async (_reward: IRewardRecord[]) => {
+      const rewardModel = db.getReviewRewardModel()
+      const result = await rewardModel.findUserReviewRewardsByUserId(_reward[0].userId)
+      const expected = _reward.map(r => ({
+        pointDelta: parseInt(r.pointDelta as any),
+        reason: r.reason,
+        reviewId: r.reviewId,
+        userId: r.userId
+      }))
+
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(expected[0]),
+          expect.objectContaining(expected[1])
+        ])
+      )
+    })
+
+    and(
       '유저의 포인트 총점이 아래와 같아짐',
-      async (userInfo: { userId: string; totalPoint: string }[]) => {
+      async (userInfo: { userId: string; rewardPoint: string }[]) => {
         const userModel = db.getUserModel()
-        const expected = parseInt(userInfo[0].totalPoint)
+        const expected = parseInt(userInfo[0].rewardPoint)
         const result = await userModel.findUserRewardPoint(userInfo[0].userId)
         expect(result).toEqual(expected)
       },
     )
+
+    and(
+      '아래의 식별자를 가진 유저의 리뷰 레코드가 삭제됨',
+      async (reviewIds: { reviewId: string }[]) => {
+        const userReviewModel = db.getReviewModel()
+        const result = await userReviewModel.checkRecordExistsByReviewId(reviewIds[0].reviewId)
+        expect(result).toBeFalsy()
+      },
+    )
+
   })
 })

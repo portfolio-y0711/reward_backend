@@ -7,7 +7,7 @@ export const FindReviewCountsByPlaceId = (conn: IDatabaseConnector) => {
     const sql = `SELECT count(*) FROM REVIEWS WHERE placeId = '${id}'`
 
     return new Promise<number>((res, rej) => {
-      return db.get(sql, function (this, err, row) {
+      db.get(sql, function (this, err, row) {
         if (err) {
           console.log(err.message)
           console.log('error running sql ' + sql)

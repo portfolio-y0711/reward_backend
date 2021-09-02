@@ -1,15 +1,22 @@
 import { IEventDatabase } from '@app/data'
 import { uuidv4 } from '@app/util'
 import { IReviewPointEvent } from '@app/services/event/review/actions'
-import { REWARD_OPERATION, REWARD_REASON } from '@app/typings'
+import { ContextError, REWARD_OPERATION, REWARD_REASON } from '@app/typings'
 import { BooleanCode } from '@app/data/models/review'
 import { runBatchAsync } from '@app/util/transaction'
 import { appLogger } from '@app/util/applogger'
 
 export const ModReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {
-    appLogger.info(`[EVENT: ${eventInfo.type}/${eventInfo.action}] started process ============================`)
+    appLogger.info(`[EVENT: ReviewEventActionHandler (${eventInfo.action})] started process =========================START`)
     const reviewModel = db.getReviewModel()
+
+    const existRecord = await reviewModel.checkRecordExistsByReviewId(eventInfo['reviewId'])
+
+    if (!existRecord) {
+      appLogger.error(`no record exists by that reviewId`)
+      throw ContextError.contextError('no record exists by that reviewId', 422)
+    }
 
     const isRewarded = await reviewModel.findReviewAndCheckRewarded(
       eventInfo['userId'],
@@ -27,10 +34,10 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
         eventInfo['reviewId'],
       )
 
-      appLogger.info(` ▶ latest reward record`)
-      appLogger.info(`   ◻ review id: ${latestRewardRecord.reviewId}`)
-      appLogger.info(`   ◻︎ reason: ${latestRewardRecord.reason} review`)
-      appLogger.info(`   ◻︎ operation: ${latestRewardRecord.operation} ${latestRewardRecord.pointDelta}`)
+      appLogger.info(` ▶ search latest reward record with 'userId' and 'reviewId'`)
+      appLogger.info(`   review id: ${latestRewardRecord.reviewId}`)
+      appLogger.info(`   reason: ${latestRewardRecord.reason} review`)
+      appLogger.info(`   operation: ${latestRewardRecord.operation} ${latestRewardRecord.pointDelta}`)
 
       const placeModel = db.getPlaceModel()
       const bonusPoint = await placeModel.findBonusPoint(eventInfo['placeId'])
@@ -70,10 +77,10 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
           add_reason,
         ]
 
-      const userModel = db.getUserModel()
-      const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
+        const userModel = db.getUserModel()
+        const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
 
-      appLogger.info(` ▶ transaction started ------------------------------------BEGIN`)
+        appLogger.info(` ▶ transaction started ------------------------------------BEGIN`)
         const transactionCmds: any[] = [
           [
             `INSERT INTO REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
@@ -105,8 +112,10 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
         if (results[1].changes > 0) appLogger.info(` [✔︎] REWARDS ${add_operation} record created`)
         if (results[2].changes > 0) appLogger.info(` [✔︎] USERS reward point updated`)
         if (results[3].changes > 0) appLogger.info(` [✔︎] REVIEWS review has been updated`)
-        appLogger.info(` ▶ transaction finished -------------------------------------END\n`)
+        
+        appLogger.info(` ▶ transaction finished -------------------------------------END`)
       }
+      appLogger.info(`===================================================================================END`)
     }
     return
   }

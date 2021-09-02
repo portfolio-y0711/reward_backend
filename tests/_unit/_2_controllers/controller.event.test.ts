@@ -30,8 +30,8 @@ describe('[Event] controller => service', () => {
         query: {},
       }
       await postEvent(httpRequest)
-      expect(mockEventHandlingService.handleEvent).toBeCalledTimes(1)
-      expect(mockEventHandlingService.handleEvent).toBeCalledWith(httpRequest.body)
+      expect(mockEventHandlingService.routeEvent).toBeCalledTimes(1)
+      expect(mockEventHandlingService.routeEvent).toBeCalledWith(httpRequest.body)
     })
   })
 })

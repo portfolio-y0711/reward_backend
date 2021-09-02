@@ -10,15 +10,17 @@ import { REWARD_OPERATION, REWARD_REASON } from '@app/typings'
 import { Save } from './dml/save'
 import { RemoveAll } from './dml/remove-all'
 
-export interface IRewardModel extends ISchemaAdaptor {
-  save: (user: IRewardRecord, userId?: string) => Promise<void>
-  remove: () => Promise<void>
-  removeAll: () => Promise<void>
-  createIndex: () => Promise<void>
-  createSchema: () => Promise<void>
+export interface IRewardQuery {
   findUserReviewRewardsByUserId: (userId: string) => Promise<IRewardRecord[]>
   findLatestUserReviewRewardByReviewId: (userId: string, reviewId: string) => Promise<IRewardRecord>
 }
+export interface IRewardCommand {
+  save: (user: IRewardRecord, userId?: string) => Promise<void>
+  remove: () => Promise<void>
+  removeAll: () => Promise<void>
+}
+
+export interface IRewardModel extends ISchemaAdaptor, IRewardQuery, IRewardCommand { }
 
 export interface IRewardRecord {
   id?: string

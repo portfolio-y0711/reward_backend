@@ -12,6 +12,7 @@ import { IRewardModel } from './models/reward'
 export interface ISchemaAdaptor {
   dropSchema: () => Promise<any>
   createSchema: () => Promise<any>
+  createIndex: () => Promise<any>
 }
 
 export interface IDatabase {
@@ -53,7 +54,6 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
 
     await userModel.dropSchema()
     await userModel.createSchema()
-    // await userModel.createIndex()
 
     await placeModel.dropSchema()
     await placeModel.createSchema()
@@ -63,6 +63,11 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
 
     await userRewardModel.dropSchema()
     await userRewardModel.createSchema()
+
+    await userModel.createIndex()
+    await placeModel.createIndex()
+    // await reviewModel.createIndex()
+    await userRewardModel.createIndex()
   }
   const clear = async () => {
     await userModel.removeAll()

@@ -6,9 +6,9 @@ export const CreatePlaceTableIndex = (conn: IDatabaseConnector) => {
     const db = await conn.getConnection()
 
     const sqls = [
-      `CREATE UNIQUE INDEX index_places_country ON REVIEWS(country);`,
-      `CREATE UNIQUE INDEX index_places_name ON REVIEWS(name);`,
-      `CREATE UNIQUE INDEX index_places_country_name ON REVIEWS(country,name);`,
+      `CREATE INDEX IF NOT EXISTS index_places_country ON PLACES(country);`,
+      `CREATE INDEX IF NOT EXISTS index_places_name ON PLACES(name);`,
+      `CREATE INDEX IF NOT EXISTS index_places_country_name ON PLACES(country,name);`,
     ]
 
     await _Promise.all(

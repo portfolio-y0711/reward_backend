@@ -3,13 +3,21 @@ import { IReviewPointEvent } from '../..'
 import { uuidv4 } from '@app/util'
 import { BooleanCode } from '@app/data/models/review'
 import { runBatchAsync } from '@app/util/transaction'
-import { REWARD_OPERATION, REWARD_REASON } from '@app/typings'
+import { ContextError, REWARD_OPERATION, REWARD_REASON } from '@app/typings'
 import { appLogger } from '@app/util/applogger'
 
 export const DelReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {
-    appLogger.info(`[EVENT: ${eventInfo.type}/${eventInfo.action}] started process ============================`)
+    appLogger.info(`[EVENT: ReviewEventActionHandler (${eventInfo.action})] started process ======================START`)
+
     const reviewModel = db.getReviewModel()
+    const existRecord = await reviewModel.checkRecordExistsByReviewId(eventInfo['reviewId'])
+
+    if (!existRecord) {
+      appLogger.error(`no record exists by that reviewId`)
+      throw ContextError.contextError('no record exists by that reviewId', 422)
+    }
+
     const isRewarded = await reviewModel.findReviewAndCheckRewarded(
       eventInfo['userId'],
       eventInfo['reviewId'],
@@ -17,7 +25,7 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
 
     appLogger.info(` ▶︎ review id  : ${eventInfo['reviewId']}`)
     appLogger.info(` ▶︎ place id  : ${eventInfo['placeId']}`)
-    appLogger.info(` ▶ review rewarded?: ${isRewarded ? 'YES' : 'NO'} `)
+    appLogger.info(` ▶ was review rewarded?: ${isRewarded ? 'YES' : 'NO'} `)
 
     if (isRewarded) {
       const reviewRewardModel = db.getReviewRewardModel()
@@ -26,19 +34,20 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
         eventInfo['reviewId'],
       )
 
-      appLogger.info(` ▶ latest reward record`)
-      appLogger.info(`   ◻ review id: ${latestRewardRecord.reviewId}`)
-      appLogger.info(`   ◻︎ reason: ${latestRewardRecord.reason} review`)
-      appLogger.info(`   ◻︎ operation: ${latestRewardRecord.operation} ${latestRewardRecord.pointDelta}`)
+      appLogger.info(` ▶ search latest reward record with 'userId' and 'reviewId'`)
+      appLogger.info(`   review id: ${latestRewardRecord.reviewId}`)
+      appLogger.info(`   reason: ${latestRewardRecord.reason} review`)
+      appLogger.info(`   operation: ${latestRewardRecord.operation} ${latestRewardRecord.pointDelta}`)
 
-      const diff = -latestRewardRecord.pointDelta
+      const deductPoint = -latestRewardRecord.pointDelta
 
-      appLogger.info(` ▶ point diff: ${diff}`)
+      appLogger.info(` ▶ points to deduct: ${deductPoint}`)
 
       const userModel = db.getUserModel()
       const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
 
-      appLogger.info(` ▶ user's current rewards point: ${currPoint}`)
+      appLogger.info(`   user's current rewards point: ${currPoint}`)
+      appLogger.info(`   user's next rewards point: ${currPoint + deductPoint}`)
 
       const subtract_operation: REWARD_OPERATION = 'SUB'
       const subtract_reason: REWARD_REASON = 'DEL'
@@ -59,7 +68,7 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
         ],
         [
           `UPDATE USERS SET rewardPoint = ? WHERE userID = ?;`,
-          currPoint + diff,
+          currPoint + deductPoint,
           eventInfo['userId'],
         ],
         [
@@ -72,11 +81,13 @@ export const DelReviewActionHandler = (db: IEventDatabase) => {
       const conn = db.getConnector()
       const results = await runBatchAsync(conn)(transactionCmds)
 
-      if (results[0].changes > 0) appLogger.info(` [✔︎] REWARDS record revoked`)
-      if (results[1].changes > 0) appLogger.info(` [✔︎] USERS reward point updated`)
+      if (results[0].changes > 0) appLogger.info(` [✔︎] REWARDS deduction record created`)
+      if (results[1].changes > 0) appLogger.info(` [✔︎] USERS total reward point updated`)
       if (results[2].changes > 0) appLogger.info(` [✔︎] REVIEWS review has been deleted`)
 
       appLogger.info(` ▶ transaction finished -------------------------------------END\n`)
     }
+    appLogger.info(`===================================================================================END`)
+    return
   }
 }

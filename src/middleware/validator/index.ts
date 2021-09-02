@@ -1,4 +1,5 @@
-import { ApiError } from '@app/typings'
+import { ValidationError } from '@app/typings'
+import { appLogger } from '@app/util/applogger'
 import { Request, Response, NextFunction } from 'express'
 
 export const validateDto = (schema: any) => {
@@ -8,8 +9,8 @@ export const validateDto = (schema: any) => {
       req.body = validatedBody
       next()
     } catch (err) {
-      console.log(err)
-      next(ApiError.badRequest(err))
+      appLogger.error(`${err}`)
+      next(ValidationError.badRequest(err))
     }
   }
 }

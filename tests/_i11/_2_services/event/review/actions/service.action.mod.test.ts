@@ -113,7 +113,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
         userId,
       })
 
-      await service.handleEvent(event)
+      await service.routeEvent(event)
 
       const userModel = db.getUserModel()
       const result = await userModel.findUserRewardPoint(userId)

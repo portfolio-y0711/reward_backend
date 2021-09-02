@@ -1,5 +1,6 @@
 import { IEventDatabase } from '@app/data'
 import { IEvent } from '@app/typings'
+import { appLogger } from '@app/util/applogger'
 import { reviewEventActionRoutes } from './routes'
 
 export type REVIEW_ACTION = 'ADD' | 'MOD' | 'DELETE'
@@ -26,6 +27,7 @@ export const ComposeActionRoutes = (
   return (db: IEventDatabase) => {
     const actionRoutes = createActionRoutes(db)
     const route = async (eventInfo: IReviewPointEvent) => {
+      appLogger.info(`[EVENT: ReviewEventActionRouter] recevied '${eventInfo.action}' |action| event => relay event to '${eventInfo.action}' |action| handler\n`)
       await actionRoutes[eventInfo.action](eventInfo)
     }
     return {

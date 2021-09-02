@@ -1,15 +1,23 @@
 import { IEventRouteService as IEventRouteService } from '@app/services/event'
-import { IHttpRequest, IHttpResponse } from '@app/typings'
+import { IHttpRequest, IHttpResponse, ContextError } from '@app/typings';
 
 export const PostEvent = (service: IEventRouteService) => {
   return async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
     const { body } = httpRequest
     try {
-      await service.handleEvent(body)
-    } catch (e) {
-      return {
-        statusCode: 500,
-        message: 'event processing failed',
+      await service.routeEvent(body)
+    } catch (e: any) {
+      switch(true) {
+        case e instanceof ContextError:
+          return {
+            statusCode: (e as ContextError).code,
+            message: (e as ContextError).message
+          }
+        default: 
+          return {
+            statusCode: 500,
+            message: 'event processing failed',
+          }
       }
     }
 

@@ -27,8 +27,18 @@ Rule: 유저가 수정한 글이 리뷰 리워드 대상일 경우, 리뷰 포�
 
         When 유저가 아래와 같이 작성했던 리뷰를 수정함
             | type   | action | reviewId                              | content | attachedPhotoIds | userId                               | placeId                              |
-            | REVIEW | MOD    | 240a0658-dc5f-4878-9831-ebb7b26687772 | 좋아요    |                | 3ede0ef2-92b7-4817-a5f3-0c575361f745 |  2e4baf1c-5acb-4efb-a1af-eddada31b00f|
+            | REVIEW | MOD    | 240a0658-dc5f-4878-9831-ebb7b26687772 | 좋아요    |                  | 3ede0ef2-92b7-4817-a5f3-0c575361f745 |  2e4baf1c-5acb-4efb-a1af-eddada31b00f|
 
-        Then 유저의 포인트 총점이 아래와 같아짐
+        Then 유저의 리워드 레코드가 아래와 같이 변경됨
+            | userId                               | reviewId                              | operation | pointDelta | reason |
+            | 3ede0ef2-92b7-4817-a5f3-0c575361f745 | 240a0658-dc5f-4878-9831-ebb7b26687772 | SUB       | 3          | MOD    |
+            | 3ede0ef2-92b7-4817-a5f3-0c575361f745 | 240a0658-dc5f-4878-9831-ebb7b26687772 | ADD       | 3          | MOD    |
+            | 3ede0ef2-92b7-4817-a5f3-0c575361f745 | 240a0658-dc5f-4878-9831-ebb7b26687772 | ADD       | 2          | MOD    |
+
+        And 유저의 포인트 총점이 아래와 같아짐
             | userId                                | totalPoint |
             | 3ede0ef2-92b7-4817-a5f3-0c575361f745  | 2          |
+
+        And 유저의 리뷰 레코드가 아래와 같이 변경됨
+            | reviewId                               | placeId                               | content | attachedPhotoIds | userId                                | rewarded |
+            | 240a0658-dc5f-4878-9831-ebb7b26687772  | 2e4baf1c-5acb-4efb-a1af-eddada31b00f  | 좋아요    |                  | 3ede0ef2-92b7-4817-a5f3-0c575361f745  | 1        |

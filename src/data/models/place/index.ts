@@ -7,6 +7,7 @@ import { Save } from './dml/cmd/impl'
 import { ISchemaAdaptor } from '@app/data'
 import { RemoveAll } from './dml/query/impl/remove-all'
 import { FindBonusPoint } from './dml/query/impl/find-bonus-point'
+import { CreatePlaceTableIndex } from './ddl/create-index.table'
 
 export interface IPlace {
   id?: string
@@ -15,14 +16,18 @@ export interface IPlace {
   bonusPoint: number
   name: string
 }
-
-export interface IPlaceModel extends ISchemaAdaptor {
-  save: (place: IPlace, placeId?: string) => Promise<void>
-  remove: () => void
-  removeAll: () => Promise<void>
+export interface IPlaceModelQuery {
   findBonusPoint: (placeId: string) => Promise<number>
   findPlaceByName: (name: string) => Promise<IPlace>
 }
+
+export interface IPlaceModelCommand {
+  save: (place: IPlace, placeId?: string) => Promise<void>
+  remove: () => void
+  removeAll: () => Promise<void>
+}
+
+export interface IPlaceModel extends ISchemaAdaptor, IPlaceModelCommand, IPlaceModelQuery { }
 
 export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
   const dropSchema = DropPlaceTable(conn)
@@ -31,6 +36,7 @@ export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
   const remove = () => {}
   const findPlaceByName = FindPlaceByName(conn)
   const removeAll = RemoveAll(conn)
+  const createIndex = CreatePlaceTableIndex(conn)
   const findBonusPoint = FindBonusPoint(conn)
 
   return {
@@ -39,6 +45,7 @@ export const PlaceModel = (conn: IDatabaseConnector): IPlaceModel => {
     save,
     remove,
     removeAll,
+    createIndex,
     findBonusPoint,
     findPlaceByName,
   }

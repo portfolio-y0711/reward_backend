@@ -5,6 +5,8 @@ import { Database, IEventDatabase } from '@app/data'
 import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event/review/actions'
 import EventRouter, { IEventRoute } from '@app/services/event'
 import { mock } from 'jest-mock-extended'
+import { IReview } from '@app/data/models/review'
+import { IRewardRecord } from '@app/data/models/reward'
 
 const feature = loadFeature('./tests/_usecase/features/basic/scenarios.mod.feature')
 
@@ -55,7 +57,26 @@ defineFeature(feature, (test) => {
       },
     )
 
-    then(
+    then('유저의 리워드 레코드가 아래와 같이 변경됨', async (_reward: IRewardRecord[]) => {
+      const rewardModel = db.getReviewRewardModel()
+      const result = await rewardModel.findUserReviewRewardsByUserId(_reward[0].userId)
+      const expected = _reward.map(r => ({
+        pointDelta: parseInt(r.pointDelta as any),
+        reason: r.reason,
+        reviewId: r.reviewId,
+        userId: r.userId
+      }))
+
+      expect(result).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining(expected[0]),
+          expect.objectContaining(expected[1]),
+          expect.objectContaining(expected[2])
+        ])
+      )
+    })
+
+    and(
       '유저의 포인트 총점이 아래와 같아짐',
       async (userInfo: { userId: string; totalPoint: string }[]) => {
         const userModel = db.getUserModel()
@@ -64,5 +85,19 @@ defineFeature(feature, (test) => {
         expect(result).toEqual(expected)
       },
     )
+
+    and('유저의 리뷰 레코드가 아래와 같이 변경됨', async (_review: IReview[]) => {
+      const userReviewModel = db.getReviewModel()
+      const result = await userReviewModel.findReviewByReviewId(_review[0].reviewId)
+      const expected: IReview[] = _review.map((r:IReview) => ({
+        userId: r.userId,  
+        attachedPhotoIds: r.attachedPhotoIds,
+        content: r.content,
+        placeId: r.placeId,
+        reviewId: r.reviewId,
+        rewarded: parseInt(r.rewarded as any)
+      }))
+      expect(result).toEqual(expect.objectContaining(expected[0]))
+    })
   })
 })

@@ -45,7 +45,7 @@ export interface IReviewEvent {
   placeId: string
 }
 
-export class ApiError {
+export class ValidationError {
   message: string
   code: number
   constructor(code: number, message: string) {
@@ -53,20 +53,27 @@ export class ApiError {
     this.code = code
   }
   static badRequest(msg: any) {
-    return new ApiError(400, msg)
+    return new ValidationError(422, msg)
   }
 }
 
-export class CustomError {
-  message: string
-  code: number
+export class ContextError {
+  _message: string
+  _code: number
 
   constructor(message: string, code: number = 500) {
-    this.message = message
-    this.code = code
+    this._message = message
+    this._code = code
   }
-  static(msg: any, code?: number) {
-    return new CustomError(msg, code)
+  static contextError(msg: any, code?: number) {
+    return new ContextError(msg, code)
+  }
+  get message() {
+    return this._message
+  }
+
+  get code() {
+    return this._code
   }
 }
 

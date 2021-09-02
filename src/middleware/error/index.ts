@@ -1,14 +1,14 @@
-import { ApiError, CustomError } from '@app/typings'
+import { ValidationError, ContextError } from '@app/typings'
 import { Request, Response, NextFunction } from 'express'
 
-function apiErrorHandler(err: any, req: Request, res: Response, next: NextFunction) {
-  if (err instanceof ApiError) {
-    return res.status(err.code).json(err.message)
-  } else if (err instanceof CustomError) {
-    return res.status((err as CustomError).code).json(err.message)
+function ApiErrorHandler(err: any, req: Request, res: Response, next: NextFunction) {
+  switch(true) {
+    case err instanceof ValidationError:
+      return res.status(err.code).json(err.message)
+    case err instanceof ContextError:
+      return res.status((err as ContextError).code).json(err.message)
   }
-
   return res.status(500).json('something went wrong')
 }
 
-export default apiErrorHandler
+export default ApiErrorHandler
