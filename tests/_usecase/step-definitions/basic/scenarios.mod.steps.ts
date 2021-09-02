@@ -3,7 +3,7 @@ import { defineFeature, loadFeature } from 'jest-cucumber'
 import { preconditions } from '../preconditions/preconditions.mod,delete'
 import { Database, IEventDatabase } from '@app/data'
 import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event/review/actions'
-import EventHandlerRouter, { IEventHandler } from '@app/services/event'
+import EventRouter, { IEventRoute } from '@app/services/event'
 import { mock } from 'jest-mock-extended'
 
 const feature = loadFeature('./tests/_usecase/features/basic/scenarios.mod.feature')
@@ -34,9 +34,9 @@ defineFeature(feature, (test) => {
     when(
       '유저가 아래와 같이 작성했던 리뷰를 수정함',
       async (_reviewEvents: IReviewPointEvent[]) => {
-        const service = EventHandlerRouter({
+        const service = EventRouter({
           REVIEW: ReviewEventActionRouter(db).route,
-          BLAR_BLAR: mock<IEventHandler>(),
+          BLAR_BLAR: mock<IEventRoute>(),
         })
         let attachedPhotoIds: string[]
         let attachedPhotoStr = _reviewEvents[0].attachedPhotoIds as any as string
@@ -51,7 +51,7 @@ defineFeature(feature, (test) => {
           }
         }
         const reviewEvents = _reviewEvents.map((event) => ({ ...event, attachedPhotoIds }))
-        await service.handleEvent(reviewEvents[0])
+        await service.routeEvent(reviewEvents[0])
       },
     )
 

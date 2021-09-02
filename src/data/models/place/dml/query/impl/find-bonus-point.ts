@@ -1,6 +1,7 @@
 import { IDatabaseConnector } from '@app/data/connection'
 import _Promise from 'bluebird'
 
+
 export const FindBonusPoint = (conn: IDatabaseConnector) => {
   return async (placeId: string) => {
     const db = await conn.getConnection()

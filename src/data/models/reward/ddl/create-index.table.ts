@@ -5,7 +5,7 @@ export const CreateUserRewardTableIndex = (conn: IDatabaseConnector) => {
   return async () => {
     const db = await conn.getConnection()
 
-    const sql = `CREATE UNIQUE INDEX idx_users_name ON REWARDS(name)`
+    const sql = `CREATE UNIQUE INDEX index_rewards_name ON REWARDS(name)`
 
     new _Promise((res, rej) => {
       db.run(sql, function (err) {

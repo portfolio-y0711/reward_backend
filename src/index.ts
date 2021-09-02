@@ -8,8 +8,10 @@ import createUserRouter from './routers/user'
 import path from 'path'
 import errorHandler from './middleware/error'
 import logger from './middleware/logger'
+import { appLogger } from './util/applogger'
 
 export default async () => {
+  appLogger.debug("app started")
   const app = express()
   const dbConnector = createDatabaseConnector({
     filename: './dev.db',
@@ -25,7 +27,7 @@ export default async () => {
   const userRouter = createUserRouter({ db })
 
   app.use(logger)
-  app.get('/healthCheck', (req: express.Request, res: express.Response) =>
+  app.get('/healthCheck', (_: express.Request, res: express.Response) =>
     res.json({ status: 'UP' }),
   )
 

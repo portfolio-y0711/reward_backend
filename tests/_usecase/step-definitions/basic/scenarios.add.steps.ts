@@ -2,7 +2,7 @@ import DatabaseConnector, { IDatabaseConnector } from '@app/data/connection'
 import { defineFeature, loadFeature } from 'jest-cucumber'
 import { preconditions } from '../preconditions/preconditions.add'
 import { Database, IEventDatabase } from '@app/data'
-import EventHandlerRouter, { IEventHandler } from '@app/services/event'
+import EventRouter, { IEventRoute } from '@app/services/event'
 import { mock } from 'jest-mock-extended'
 import { IReviewPointEvent, ReviewEventActionRouter } from '@app/services/event/review/actions'
 
@@ -28,15 +28,15 @@ defineFeature(feature, (test) => {
     })
 
     when('유저가 아래와 같이 리뷰글을 작성함', async (_reviewEvents: IReviewPointEvent[]) => {
-      const service = EventHandlerRouter({
+      const service = EventRouter({
         REVIEW: ReviewEventActionRouter(db).route,
-        BLAR_BLAR: mock<IEventHandler>(),
+        BLAR_BLAR: mock<IEventRoute>(),
       })
       const reviewEvents = _reviewEvents.map((event) => ({
         ...event,
         attachedPhotoIds: (event.attachedPhotoIds as any).split(','),
       }))
-      await service.handleEvent(reviewEvents[0])
+      await service.routeEvent(reviewEvents[0])
     })
 
     then(

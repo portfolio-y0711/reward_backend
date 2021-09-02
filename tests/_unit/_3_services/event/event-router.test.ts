@@ -1,9 +1,9 @@
-import EventHandlerRouter, { IEventHandler, IEventHandlers } from '@app/services/event'
+import EventRouter, { IEventRoute, IEventRoutes } from '@app/services/event'
 import { IEvent } from '@app/typings'
 import { mock } from 'jest-mock-extended'
 
 describe('[Event] service => handlers', () => {
-  let fakeHandlers: IEventHandlers
+  let fakeHandlers: IEventRoutes
   let spy: jest.Mock<any, any>
 
   beforeAll(() => {
@@ -14,9 +14,9 @@ describe('[Event] service => handlers', () => {
     it('service.handleEvent => handlers.handleReviewEvent', () => {
       fakeHandlers = {
         REVIEW: spy,
-        BLAR_BLAR: mock<IEventHandler>(),
+        BLAR_BLAR: mock<IEventRoute>(),
       }
-      const eventHandlingService = EventHandlerRouter(fakeHandlers)
+      const eventHandlingService = EventRouter(fakeHandlers)
       const event: IEvent = {
         type: 'REVIEW',
         action: 'ADD',
@@ -29,7 +29,7 @@ describe('[Event] service => handlers', () => {
         userId: '3ede0ef2-92b7-4817-a5f3-0c575361f745',
         placeId: '2e4baf1c-5acb-4efb-a1af-eddada31b00f',
       }
-      eventHandlingService.handleEvent(event)
+      eventHandlingService.routeEvent(event)
       expect(spy).toBeCalledTimes(1)
       expect(spy).toBeCalledWith(event)
     })

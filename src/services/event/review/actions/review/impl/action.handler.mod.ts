@@ -4,9 +4,11 @@ import { IReviewPointEvent } from '@app/services/event/review/actions'
 import { REWARD_OPERATION, REWARD_REASON } from '@app/typings'
 import { BooleanCode } from '@app/data/models/review'
 import { runBatchAsync } from '@app/util/transaction'
+import { appLogger } from '@app/util/applogger'
 
 export const ModReviewActionHandler = (db: IEventDatabase) => {
   return async (eventInfo: IReviewPointEvent) => {
+    appLogger.info(`[EVENT: ${eventInfo.type}/${eventInfo.action}] started process ============================`)
     const reviewModel = db.getReviewModel()
 
     const isRewarded = await reviewModel.findReviewAndCheckRewarded(
@@ -14,22 +16,36 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
       eventInfo['reviewId'],
     )
 
+    appLogger.info(` ▶︎ review id  : ${eventInfo['reviewId']}`)
+    appLogger.info(` ▶︎ place id  : ${eventInfo['placeId']}`)
+    appLogger.info(` ▶ review rewarded?: ${isRewarded ? 'YES' : 'NO'} `)
+
     if (isRewarded) {
-      const placeModel = db.getPlaceModel()
-      const bonusPoint = await placeModel.findBonusPoint(eventInfo['placeId'])
-
-      const totalPoint =
-        (eventInfo['content'].length > 1 ? 1 : 0) +
-        (eventInfo['attachedPhotoIds'].length > 1 ? 1 : 0) +
-        bonusPoint
-
       const reviewRewardModel = db.getReviewRewardModel()
       const latestRewardRecord = await reviewRewardModel.findLatestUserReviewRewardByReviewId(
         eventInfo['userId'],
         eventInfo['reviewId'],
       )
 
+      appLogger.info(` ▶ latest reward record`)
+      appLogger.info(`   ◻ review id: ${latestRewardRecord.reviewId}`)
+      appLogger.info(`   ◻︎ reason: ${latestRewardRecord.reason} review`)
+      appLogger.info(`   ◻︎ operation: ${latestRewardRecord.operation} ${latestRewardRecord.pointDelta}`)
+
+      const placeModel = db.getPlaceModel()
+      const bonusPoint = await placeModel.findBonusPoint(eventInfo['placeId'])
+
+      appLogger.info(` ▶ bonusPoint counts: ${bonusPoint}`)
+
+      const totalPoint =
+        (eventInfo['content'].length > 1 ? 1 : 0) +
+        (eventInfo['attachedPhotoIds'].length > 1 ? 1 : 0) +
+        bonusPoint
+
+      appLogger.info(` ▶ total point : ${totalPoint}`)
+
       const diff = totalPoint - latestRewardRecord.pointDelta
+      appLogger.info(` ▶ point diff: ${diff}`)
 
       if (diff != 0) {
         const subtract_operation: REWARD_OPERATION = 'SUB'
@@ -54,10 +70,10 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
           add_reason,
         ]
 
-        const userModel = db.getUserModel()
-        const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
-        await userModel.updateReviewPoint(eventInfo['userId'], currPoint + diff)
+      const userModel = db.getUserModel()
+      const currPoint = await userModel.findUserRewardPoint(eventInfo['userId'])
 
+      appLogger.info(` ▶ transaction started ------------------------------------BEGIN`)
         const transactionCmds: any[] = [
           [
             `INSERT INTO REWARDS(rewardId,userId,reviewId,operation,pointDelta,reason) VALUES(?, ?, ?, ?, ?, ?);`,
@@ -83,7 +99,13 @@ export const ModReviewActionHandler = (db: IEventDatabase) => {
         ]
 
         const conn = db.getConnector()
-        await runBatchAsync(conn)(transactionCmds)
+        const results = await runBatchAsync(conn)(transactionCmds)
+
+        if (results[0].changes > 0) appLogger.info(` [✔︎] REWARDS ${subtract_operation} record created`)
+        if (results[1].changes > 0) appLogger.info(` [✔︎] REWARDS ${add_operation} record created`)
+        if (results[2].changes > 0) appLogger.info(` [✔︎] USERS reward point updated`)
+        if (results[3].changes > 0) appLogger.info(` [✔︎] REVIEWS review has been updated`)
+        appLogger.info(` ▶ transaction finished -------------------------------------END\n`)
       }
     }
     return

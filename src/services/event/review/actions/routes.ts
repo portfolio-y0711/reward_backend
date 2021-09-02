@@ -7,8 +7,8 @@ import { IReviewEventActionRoutes } from './index'
 
 export const reviewEventActionRoutes = (db: IEventDatabase): IReviewEventActionRoutes => {
   return {
-    ADD: AddReviewActionHandler(db),
-    MOD: ModReviewActionHandler(db),
-    DELETE: DelReviewActionHandler(db),
+    "ADD": AddReviewActionHandler(db),
+    "MOD": ModReviewActionHandler(db),
+    "DELETE": DelReviewActionHandler(db),
   }
 }

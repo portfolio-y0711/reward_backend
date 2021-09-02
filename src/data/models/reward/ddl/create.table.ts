@@ -31,11 +31,3 @@ export const CreateUserRewardTable = (conn: IDatabaseConnector) => {
     })
   }
 }
-
-// userId "3ede0ef2-92b7-4817-a5f3-0c575361f745",
-// name "Michael"
-// reviewId "e50855fc-c1d5-42fb-9597-e0f02d8beb8b", nullable
-// operation "add|subtract",
-// delta 2
-// reason "new|mod|del|redemp"
-// timestamp

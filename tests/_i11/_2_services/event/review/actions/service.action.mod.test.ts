@@ -6,9 +6,9 @@ import {
 } from '@app/services/event/review/actions'
 import DatabaseConnector from '@app/data/connection'
 import { IDatabaseConnector } from '@app/data/connection'
-import EventHandlerRouter, { IEventHandlingService } from '@app/services/event'
+import EventRouter, { IEventRouteService } from '@app/services/event'
 import { IEvent, EVENT_TYPE } from '@app/typings'
-import { BlarBlarEventHandler } from '@app/services/event/review/actions/blar_blar/handler.blar_blar-event'
+import {BlarBlarEventActionRouter  } from '@app/services/event/review/actions/blar_blar'
 import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, ReviewSeeder, RewardSeeder, UserSeeder } from '@tests/helpers'
@@ -19,7 +19,7 @@ import { uuidv4 } from '@app/util'
 describe('[Event: REVIEW, MOD] service => model', () => {
   let conn: IDatabaseConnector
   let db: IEventDatabase
-  let service: IEventHandlingService
+  let service: IEventRouteService
 
   let userSeeder: (user: IUser) => Promise<void>
   let placeSeeder: (place: IPlace) => Promise<void>
@@ -34,9 +34,9 @@ describe('[Event: REVIEW, MOD] service => model', () => {
     await db.init()
     await db.clear()
 
-    service = EventHandlerRouter({
+    service = EventRouter({
       REVIEW: ReviewEventActionRouter(db).route,
-      BLAR_BLAR: BlarBlarEventHandler(db),
+      BLAR_BLAR: BlarBlarEventActionRouter(db).route,
     })
 
     userSeeder = UserSeeder(db)
@@ -46,7 +46,7 @@ describe('[Event: REVIEW, MOD] service => model', () => {
   })
 
   afterEach(async () => {
-    // await db.clear()
+    await db.clear()
   })
 
   describe('when [POST: /api/events => controller.postEvent => service.handleEvent => handlers.handleReviewEvent]', () => {
@@ -119,14 +119,5 @@ describe('[Event: REVIEW, MOD] service => model', () => {
       const result = await userModel.findUserRewardPoint(userId)
       expect(result).toEqual(2)
     })
-
-    // action이 MOD이면
-    // 첫번째 리뷰인지 확인 (reviewId와 rewarded 플래그로 Review 테이블을 조회하여 첫번째 레코드인지 확인)
-    // => true이면
-    // 장소에 보너스 점수가 있는지 확인
-    // content와 attachedPhotoIds로부터 점수 계산
-    //   => 유저 점수 timestamp(이력) 테이블에서 점수 부여된 내역을 확인
-    //   => 유저 점수와 계산된 점수를 비교하여 점수 가감이 필요한 경우 관련 레코드 생성
-    // => false이면 리턴
   })
 })

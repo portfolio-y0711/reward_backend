@@ -6,17 +6,17 @@ import {
 } from '@app/services/event/review/actions'
 import DatabaseConnector from '@app/data/connection'
 import { IDatabaseConnector } from '@app/data/connection'
-import EventHandlerRouter, { IEventHandlingService } from '@app/services/event'
+import EventRouter, { IEventRouteService } from '@app/services/event'
 import { IEvent, EVENT_TYPE } from '@app/typings'
-import { BlarBlarEventHandler } from '@app/services/event/review/actions/blar_blar/handler.blar_blar-event'
 import { IUser } from '@app/data/models/user'
 import { IPlace } from '@app/data/models/place'
 import { PlaceSeeder, UserSeeder } from '@tests/helpers'
+import { BlarBlarEventActionRouter } from '@app/services/event/review/actions/blar_blar'
 
 describe('[Event: REVIEW, ADD] service => model', () => {
   let conn: IDatabaseConnector
   let db: IEventDatabase
-  let service: IEventHandlingService
+  let service: IEventRouteService
 
   let userSeeder: (user: IUser) => Promise<void>
   let placeSeeder: (place: IPlace) => Promise<void>
@@ -29,9 +29,9 @@ describe('[Event: REVIEW, ADD] service => model', () => {
     await db.init()
     await db.clear()
 
-    service = EventHandlerRouter({
+    service = EventRouter({
       REVIEW: ReviewEventActionRouter(db).route,
-      BLAR_BLAR: BlarBlarEventHandler(db),
+      BLAR_BLAR: BlarBlarEventActionRouter(db).route,
     })
 
     userSeeder = UserSeeder(db)
@@ -77,21 +77,5 @@ describe('[Event: REVIEW, ADD] service => model', () => {
       const result = await userModel.findUserRewardPoint(event['userId'])
       expect(result).toEqual(3)
     })
-
-    // action이 ADD이면
-    // 첫번째 리뷰인지 확인 (placeId로 Review 테이블을 조회하여 레코드가 없는지 확인)
-    // => true이면
-    // 장소에 보너스 점수가 있는지 확인
-    // content와 attachedPhotoIds로부터 점수 계산
-    //   => 점수 계산 후 유저 점수 부여
-    // => false이면 리턴
-
-    // action이 DELETE이면
-    // 첫번째 리뷰인지 확인 (placeId와 reviewId로 Review 테이블을 조회하여 첫번째 레코드인지 확인)
-    // 장소에 보너스 점수가 있는지 확인
-    // => true이면
-    // content와 attachedPhotoIds로부터 점수 계산
-    //   => 유저 점수 timestamp(이력) 테이블에서 점수 부여된 내역을 확인
-    //   => 계산된 점수만큼 차감하는 레코드 생성
   })
 })

@@ -1,13 +1,13 @@
 import { PostEvent } from '@app/controllers/event/impl/controller.post-event'
-import { IEventHandlingService } from '@app/services/event'
+import { IEventRouteService } from '@app/services/event'
 import { IHttpRequest } from '@app/typings'
 import { mock, MockProxy } from 'jest-mock-extended'
 
 describe('[Event] controller => service', () => {
-  let mockEventHandlingService: MockProxy<IEventHandlingService>
+  let mockEventHandlingService: MockProxy<IEventRouteService>
 
   beforeAll(() => {
-    mockEventHandlingService = mock<IEventHandlingService>()
+    mockEventHandlingService = mock<IEventRouteService>()
   })
 
   describe('when [POST: /events =>]', () => {

@@ -1,7 +1,7 @@
 import { IDatabaseConnector } from '@app/data/connection'
 import { uuidv4 } from '@app/util'
-import { IReview } from '../../../index'
 import _Promise from 'bluebird'
+import { IReview } from '@app/data/models/review'
 
 export const Save = (conn: IDatabaseConnector) => {
   return async (review: IReview) => {

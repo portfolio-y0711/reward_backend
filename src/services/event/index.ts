@@ -1,25 +1,25 @@
 import { IEvent, EVENT_TYPE } from '@app/typings'
 
-export interface IEventHandlingService {
+export interface IEventRouteService {
   handleEvent: (type: IEvent) => Promise<void>
 }
 
-export interface IEventHandler {
+export interface IEventRoute {
   (event: any): Promise<void>
 }
 
-export type IEventHandlers = {
-  [Key in EVENT_TYPE]: IEventHandler
+export type IEventRoutes = {
+  [Key in EVENT_TYPE]: IEventRoute
 }
 
-const EventHandlerRouter = (routes: IEventHandlers) => {
-  const handleEvent = async (event: IEvent) => {
+const EventRouter = (routes: IEventRoutes) => {
+  const routeEvent = async (event: IEvent) => {
     const { type } = event
     await routes[type](event)
   }
   return {
-    handleEvent,
+    routeEvent,
   }
 }
 
-export default EventHandlerRouter
+export default EventRouter

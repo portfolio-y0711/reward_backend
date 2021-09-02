@@ -5,7 +5,7 @@ export const CreateUserTableIndex = (conn: IDatabaseConnector) => {
   return async () => {
     const db = await conn.getConnection()
 
-    const sql = `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_name ON users(name)`
+    const sql = `CREATE UNIQUE INDEX IF NOT EXISTS index_users_name ON users(name)`
 
     new _Promise((res, rej) => {
       db.run(sql, function (err) {

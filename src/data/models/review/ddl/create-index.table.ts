@@ -5,7 +5,7 @@ export const CreateReviewTableIndex = (conn: IDatabaseConnector) => {
   return async () => {
     const db = await conn.getConnection()
 
-    const sql = `CREATE UNIQUE INDEX IF NOT EXISTS idx_reviews_rewarded ON REVIEWS(rewarded)`
+    const sql = `CREATE UNIQUE INDEX IF NOT EXISTS index_reviews_rewarded ON REVIEWS(rewarded)`
 
     new _Promise((res, rej) => {
       db.run(sql, function (err) {

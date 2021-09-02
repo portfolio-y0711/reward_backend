@@ -1,12 +1,12 @@
 import { IEventDatabase } from '@app/data'
-import { IEventHandlers } from '.'
-import { BlarBlarEventHandler } from './review/actions/blar_blar/handler.blar_blar-event'
+import { IEventRoutes } from '.'
 import { ReviewEventActionRouter } from './review/actions'
+import { BlarBlarEventActionRouter } from './review/actions/blar_blar'
 
-export const EventHandlerRoutes = (context: { db: IEventDatabase }): IEventHandlers => {
+export const EventHandlerRoutes = (context: { db: IEventDatabase }): IEventRoutes => {
   const { db } = context
   return {
     REVIEW: ReviewEventActionRouter(db).route,
-    BLAR_BLAR: BlarBlarEventHandler(db),
+    BLAR_BLAR: BlarBlarEventActionRouter(db).route,
   }
 }

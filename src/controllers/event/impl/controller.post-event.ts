@@ -1,7 +1,7 @@
-import { IEventHandlingService as IEventHandlingService } from '@app/services/event'
+import { IEventRouteService as IEventRouteService } from '@app/services/event'
 import { IHttpRequest, IHttpResponse } from '@app/typings'
 
-export const PostEvent = (service: IEventHandlingService) => {
+export const PostEvent = (service: IEventRouteService) => {
   return async (httpRequest: IHttpRequest): Promise<IHttpResponse> => {
     const { body } = httpRequest
     try {

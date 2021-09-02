@@ -21,12 +21,12 @@ export type IReviewEventActionRoutes = {
 }
 
 export const ComposeActionRoutes = (
-  createActionHandlers: (db: IEventDatabase) => IReviewEventActionRoutes,
+  createActionRoutes: (db: IEventDatabase) => IReviewEventActionRoutes,
 ) => {
   return (db: IEventDatabase) => {
-    const actionHandlers = createActionHandlers(db)
+    const actionRoutes = createActionRoutes(db)
     const route = async (eventInfo: IReviewPointEvent) => {
-      await actionHandlers[eventInfo.action](eventInfo)
+      await actionRoutes[eventInfo.action](eventInfo)
     }
     return {
       route,
