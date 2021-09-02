@@ -25,7 +25,7 @@
   "reporters": [
       "default",
       ["jest-html-reporters", {
-        "publicPath": "./src/static",
+        "publicPath": "./src/static/test",
         "filename": "i11.html",
         "expand": false,
         "openReport": true

@@ -5,7 +5,7 @@ import { IRewardRecord } from '@app/data/models/reward'
 export const FindUserReviewRewardsByUserId = (conn: IDatabaseConnector) => {
   return async (userId: string) => {
     const db = await conn.getConnection()
-    const sql = `SELECT * FROM REWARDS WHERE userId = '${userId}'`
+    const sql = `SELECT * FROM REWARDS WHERE userId = '${userId}' ORDER BY timestamp ASC, operation DESC;`
     return new _Promise<IRewardRecord[]>((res, rej) => {
       db.all(sql, function (this, err, records) {
         if (err) {

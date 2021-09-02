@@ -66,7 +66,7 @@ export const Database = (dbConnector: IDatabaseConnector): IEventDatabase => {
 
     await userModel.createIndex()
     await placeModel.createIndex()
-    // await reviewModel.createIndex()
+    await reviewModel.createIndex()
     await userRewardModel.createIndex()
   }
   const clear = async () => {

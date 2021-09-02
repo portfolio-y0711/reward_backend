@@ -22,7 +22,7 @@
   "reporters": [
       "default",
       ["jest-html-reporters", {
-        "publicPath": "./src/static",
+        "publicPath": "./src/static/test",
         "filename": "feature.html",
         "expand": false,
         "openReport": true
