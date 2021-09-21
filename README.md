@@ -10,6 +10,8 @@
 
 [동일한 기능의 Java / Spring boot 버전 바로가기 >>>>>](https://github.com/portfolio-y0711/reward_springboot)
 
+[동일한 기능의 Kotlin / Spring boot 버전 바로가기 >>>>>](https://github.com/portfolio-y0711/reward_springboot_kotlin)
+
 <br/>
 
 **목차**
